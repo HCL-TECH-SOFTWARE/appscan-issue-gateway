@@ -65,6 +65,7 @@ test.json:
 			"apikeyid":     "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
 			"apikeysecret": "kkV0jB/bClfdgjd4dfgmkjftfgo0Dfj/YNkMPp6w=",
 			"appid":        "75c285f9-1995-e711-80ba-002324b5f40c",
+			"policyids":    "351231200-0134212346-123461234asdrs6",
 			"issuestates":  "New,Open",
 			"maxissues":    3,
 			"issuefilters": { "Status": "Open" }
@@ -97,6 +98,7 @@ Hopefully some of the JSON is self-explanatory, but here's a quick summary of wh
 __appscanData__: configuration required to connect to IBM Application Security on Cloud and extract issues
 * url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
 * appid: The id of the application that will be used when querying for issues
+* policiyids: (Optional) Specific Policy Ids to be used when pulling the results from AppScan. If speciying multiple Policy Ids then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application's registered polices will be pulled.
 * issuestates: (Optional) A specific set of issue states to focus on. Default = "Open"
 * maxissues: (Optional) The maximum number of issues you want to process in this job.  This is helpful when playing
 with the service and you just want to see what it will do with a small subset of your total issues. Default = 25
