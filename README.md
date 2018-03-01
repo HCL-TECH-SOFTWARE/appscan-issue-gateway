@@ -51,12 +51,14 @@ Some things to note:
 Now let's take a look at submitting jobs to the service. The following curl will do the trick:
 
 curl command:
+
 	curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json 
 
 
 The command above uses a JSON file which looks like the following
 
 test.json:	
+
 	{
 		"appscanData": {
 			"url":          "https://appscan.ibmcloud.com",
