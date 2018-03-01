@@ -28,7 +28,7 @@ Choosing a different port is done like this:
 	
 The server will be started in a few seconds and you should see a Spring Boot logo printed. In a browser navigate to the REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) : 
 
-	[Swagger Doc](images/swagger.png)
+	![Swagger Doc](images/swagger.png?raw=true)
 
 The service is currently very simple and provides two resources: 
 1. GET /providers - Query the currently registered providers
