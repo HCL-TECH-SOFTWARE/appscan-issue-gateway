@@ -28,51 +28,57 @@ Choosing a different port is done like this:
 	
 The server will be started in a few seconds and you should see a Spring Boot logo printed. In a browser navigate to the REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) : 
 
-	![Swagger Doc](images/swagger.png?raw=true)
+![](images/swagger.png?raw=true)
 
 The service is currently very simple and provides two resources: 
 1. GET /providers - Query the currently registered providers
-2. POST|GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA 
+2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA 
 
 To confirm that things are working correctly, expand the "GET /providers" API and hit the "Try It Out" button
-You should see that there are to providers registered: The JIRA Provider and a Sample Provider that is present to demonstrate the ease with which other providers can be added to the system.
+![](images/tryitout.png?raw=true)
+You should see that there are two providers registered: The JIRA Provider and a Sample Provider that is present to demonstrate the ease with which other providers can be added to the system.
+![](images/providers.png?raw=true)
+
+To submit a job the service, the following curl will work
 
 curl command:
 
 	curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json 
-	 
+
+The command above uses a JSON file which looks like the following
+
 test.json:
 	
 	{
-	   "appscanData": {
-	       "url":          "https://appscan.ibmcloud.com",
-		    "apikeyid":     "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
-		    "apikeysecret": "kkV0jB/bClfdgjd4dfgmkjftfgo0Dfj/YNkMPp6w=",
-		    "appid":        "75c285f9-1995-e711-80ba-002324b5f40c",
-		    "issuestates":  "New,Open",
-	        "maxissues":    3,
-     	    "issuefilters": { "Status": "Open" }
-	   },
-	   "imData": {
-		    "provider": "jira",
-		    "config": {
-			    "url":        "http://localhost:8081",
-			    "username":   "xxxxxxxxxxxxxx",
-			    "password":   "xxxxxxxxxxxxxx",
-			    "projectkey": "SEC",
-			    "issuetype":  "Bug",
-			    "summary":    "Security issue: %IssueType% found by %Scanner%",
-			    "severitymap": {
-			       "High":   "High",
-			       "Medium": "High",
-			       "Low":    "Low",
-			       "Informational": "Low"
-			     },
-			     "otherfields": {
-                   "labels" : [ "appscan", "security" ]
-			     }
-		    }
-	    }
+		"appscanData": {
+			"url":          "https://appscan.ibmcloud.com",
+			"apikeyid":     "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
+			"apikeysecret": "kkV0jB/bClfdgjd4dfgmkjftfgo0Dfj/YNkMPp6w=",
+			"appid":        "75c285f9-1995-e711-80ba-002324b5f40c",
+			"issuestates":  "New,Open",
+			"maxissues":    3,
+     			issuefilters": { "Status": "Open" }
+		},
+		"imData": {
+			"provider": "jira",
+				"config": {
+				"url":        "http://localhost:8081",
+				"username":   "xxxxxxxxxxxxxx",
+				"password":   "xxxxxxxxxxxxxx",
+				"projectkey": "SEC",
+				"issuetype":  "Bug",
+				"summary":    "Security issue: %IssueType% found by %Scanner%",
+				"severitymap": {
+					"High":   "High",
+					"Medium": "High",
+					"Low":    "Low",
+					"Informational": "Low"
+				},
+				"otherfields": {
+					"labels" : [ "appscan", "security" ]
+				}
+			}
+		}
 	} 
 }
 
