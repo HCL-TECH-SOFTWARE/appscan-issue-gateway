@@ -1,0 +1,26 @@
+<configuration>
+    
+<appender name="rollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <fileNamePattern>logs/appscan-issue-gateway-%d{yyyy-MM-dd}.log</fileNamePattern>
+        <maxHistory>30</maxHistory> 
+        <totalSizeCap>1GB</totalSizeCap>
+    </rollingPolicy>
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+        <maxFileSize>3MB</maxFileSize>
+    </triggeringPolicy>
+    <encoder>
+    	<immediateFlush>true</immediateFlush>
+        <pattern>%date %level [%thread] %logger{10} [%file:%line] %msg%n</pattern>
+    </encoder>
+</appender>
+
+    <!-- custom logging levels -->
+    <logger name="com.hcl" level="TRACE">
+    	 <appender-ref ref="rollingFile" />
+    </logger>	 
+    <root level="ERROR">
+        <appender-ref ref="rollingFile" />
+    </root>
+</configuration>

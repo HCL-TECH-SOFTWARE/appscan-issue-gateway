@@ -1,0 +1,23 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0 http://maven.apache.org/xsd/assembly-2.0.0.xsd">
+	<id>distribution</id>
+
+	<formats>
+		<format>zip</format>
+		<format>tar.gz</format>
+	</formats>
+	<fileSets>
+		<fileSet>
+			<directory>${basedir}/providers</directory>
+			<outputDirectory>appscan-issue-gateway/providers</outputDirectory>
+		</fileSet>
+		<fileSet>
+			<directory>${project.build.directory}</directory>
+			<includes>
+				<include>appscan-issue-gateway*.jar</include>
+			</includes>
+			<outputDirectory>appscan-issue-gateway/</outputDirectory>
+		</fileSet>
+	</fileSets>
+</assembly>
