@@ -34,7 +34,7 @@ The service is currently very simple and provides two resources:
 1. GET /providers - Query the currently registered providers
 2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA 
 
-To confirm that things are working correctly, expand the "GET /providers" API and hit the "Try It Out" button
+To confirm that things are working correctly, expand the "GET /providers" API and hit the "Try It out!" button
 ![](images/tryitout.png?raw=true)
 
 You should see that there are two providers registered: The JIRA Provider and a Sample Provider that is present to demonstrate the ease with which other providers can be added to the system.
@@ -46,20 +46,17 @@ Before we start submitting jobs, let's take a look at the end goal: An automatic
 
 Some things to note:
 * All fields have been programmatically set including the Summary, the Description, the Priority and also some Labels
-* There is a file attached which is a single-issue report that a developer can use to understand the details fo the issue.
-
-![](images/issuedetails.png?raw=true)
+* There is a file attached which is a single-issue report that a developer can use to understand the details of the issue.
 
 Now let's take a look at submitting jobs to the service. The following curl will do the trick:
 
 curl command:
-
 	curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json 
+
 
 The command above uses a JSON file which looks like the following
 
-test.json:
-	
+test.json:	
 	{
 		"appscanData": {
 			"url":          "https://appscan.ibmcloud.com",
