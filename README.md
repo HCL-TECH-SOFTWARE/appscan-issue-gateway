@@ -17,7 +17,7 @@ This service is brand new code and should be considered an early Alpha. We expec
 
 # Getting Started:
 
-To try out the AppScan Issue Management Gateway Service, just download and unzip the latest release.Then run the following
+To try out the AppScan Issue Management Gateway Service, just download and unzip [the latest release](https://github.com/hclproducts/appscan-issue-gateway/releases).Then run the following
 command to start the service on the default port (8080):
 
 	java -jar appscan-issue-gateway.jar 
@@ -36,6 +36,7 @@ The service is currently very simple and provides two resources:
 
 To confirm that things are working correctly, expand the "GET /providers" API and hit the "Try It Out" button
 ![](images/tryitout.png?raw=true)
+
 You should see that there are two providers registered: The JIRA Provider and a Sample Provider that is present to demonstrate the ease with which other providers can be added to the system.
 ![](images/providers.png?raw=true)
 
@@ -57,11 +58,11 @@ test.json:
 			"appid":        "75c285f9-1995-e711-80ba-002324b5f40c",
 			"issuestates":  "New,Open",
 			"maxissues":    3,
-     			issuefilters": { "Status": "Open" }
+			"issuefilters": { "Status": "Open" }
 		},
 		"imData": {
 			"provider": "jira",
-				"config": {
+			"config": {
 				"url":        "http://localhost:8081",
 				"username":   "xxxxxxxxxxxxxx",
 				"password":   "xxxxxxxxxxxxxx",
@@ -80,7 +81,19 @@ test.json:
 			}
 		}
 	} 
-}
+
+
+Hopefully some of the JSON is self-explanatory, but here's a quick summary of what is being specified there:
+appscanData: configuration required to connect to IBM Application Security on Cloud and extract issues
+* url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
+* appid: The id of the application that will be used when querying for issues
+* issuestates: (Optional) A specific set of issue states to focus on. Default = "Open"
+* maxissues: (Optional) The maximum number of issues you want to process in this job.  This is helpful when playing
+with the service and you just want to see what it will do with a small subset of your total issues. Default = 25
+* issuefilters: (Optional) Additional filters to be used to further trim the results. These filters are regex expresion
+that can act on issue attribute
+
+
 
 # Known Limitations
 
