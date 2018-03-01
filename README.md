@@ -40,7 +40,17 @@ To confirm that things are working correctly, expand the "GET /providers" API an
 You should see that there are two providers registered: The JIRA Provider and a Sample Provider that is present to demonstrate the ease with which other providers can be added to the system.
 ![](images/providers.png?raw=true)
 
-To submit a job the service, the following curl will work
+Before we start submitting jobs, let's take a look at the end goal: An automatically submitted JIRA issue with fields filled in from AppScan:
+
+![](images/jirabug.png?raw=true)
+
+Some things to note:
+* All fields have been programmatically set including the Summary, the Description, the Priority and also some Labels
+* There is a file attached which is a single-issue report that a developer can use to understand the details fo the issue.
+
+![](images/issuedetails.png?raw=true)
+
+Now let's take a look at submitting jobs to the service. The following curl will do the trick:
 
 curl command:
 
@@ -67,7 +77,7 @@ test.json:
 				"username":   "xxxxxxxxxxxxxx",
 				"password":   "xxxxxxxxxxxxxx",
 				"projectkey": "SEC",
-				"issuetype":  "Bug",
+				"issuetype":  "Security",
 				"summary":    "Security issue: %IssueType% found by %Scanner%",
 				"severitymap": {
 					"High":   "High",
@@ -84,7 +94,8 @@ test.json:
 
 
 Hopefully some of the JSON is self-explanatory, but here's a quick summary of what is being specified there:
-appscanData: configuration required to connect to IBM Application Security on Cloud and extract issues
+
+__appscanData__: configuration required to connect to IBM Application Security on Cloud and extract issues
 * url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
 * appid: The id of the application that will be used when querying for issues
 * issuestates: (Optional) A specific set of issue states to focus on. Default = "Open"
@@ -93,6 +104,13 @@ with the service and you just want to see what it will do with a small subset of
 * issuefilters: (Optional) Additional filters to be used to further trim the results. These filters are regex expresion
 that can act on issue attribute
 
+__imData__: configuration required to connect to the Issue Management system (JIRA in this case)
+* url, username, password: authentication
+* projectkey: All issues submitted in JIRA must be submitted against a project
+* issuetype: (Optional) Used if you would like to override the default issue type. Default = "Bug"
+* summary: (Optional) Override the default summary that the JIRA provider uses.  Notice that there is basic support here for variable expansion to include required issue data in the summary
+* severitymap: AppScan severitys are High, Medium, Low, Informational. With this setting you can change how those will be mapped when submitted the issue to JIRA.  For example, perhaps your team considers Medium security issuues to be High priority
+* otherfields: This is an area where you can provide any other JSON that JIRA understands.  
 
 
 # Known Limitations
