@@ -117,7 +117,7 @@ public class ReportHandler {
         HttpEntity<String> entity = new HttpEntity<>(headers);
 		ResponseEntity<byte[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class, "1");
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
-			File tempFile = File.createTempFile("appscan", ".pdf");
+			File tempFile = File.createTempFile("appscan", ".html");
 			FileOutputStream stream = new FileOutputStream(tempFile);
 			try {
 			    stream.write(responseEntity.getBody());
@@ -138,13 +138,21 @@ public class ReportHandler {
 	
 	@SuppressWarnings("unused")
 	private static class CreateReportRequestConfiguration {
+		public boolean Summary = true;
 		public boolean Details = true;
 		public boolean Discussion = true;
+		public boolean Overview = true;
+		public boolean TableOfContent = false;
 		public boolean Advisories = true;
 		public boolean FixRecommendation = true;
 		public boolean History = true;
-	}	
-
+		//public boolean Title = false;
+		//public boolean Notes = false;
+		public boolean IsTrialReport = false;
+		public String  RegulationReportType = "None";
+		public String  ReportFileType = "Html";
+	}
+	
 	@SuppressWarnings("unused")
 	private static class ReportJobResponse {
 		public String Id;

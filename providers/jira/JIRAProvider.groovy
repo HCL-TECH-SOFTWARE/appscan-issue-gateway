@@ -103,7 +103,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			def attachUrl = config.get(SERVER_URL) + API_ADDATTACHMENT.replace("{issueKey}", jiraIssueKey)
 			def issueDetails = appscanIssue.issueDetails
 			def jiraHeaders = ['X-Atlassian-Token':'no-check']
-			postResultText = RESTUtils.postMultiPartFileUpload(attachUrl, authorization, issueDetails, "IssueDetails.pdf", jiraHeaders, errors)
+			postResultText = RESTUtils.postMultiPartFileUpload(attachUrl, authorization, issueDetails, "IssueDetails-" + jiraIssueKey + ".html", jiraHeaders, errors)
 			if (postResultText == null) {
 				errors.add("Something went wrong while attaching report to JIRA issue at " + attachUrl);
 			}

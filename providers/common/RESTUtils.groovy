@@ -83,7 +83,7 @@ class RESTUtils {
 		StringBuffer buf = new StringBuffer();
 		buf.append("--" + boundaryString + "\r\n")
 		buf.append("Content-Disposition: form-data; name=\"file\"; filename=\""+ fileName +"\"\r\n");
-		buf.append("\nContent-Type: application/pdf\r\n");
+		buf.append("\nContent-Type: text/html\r\n");
 		buf.append("\r\n");		 
 		// Write the actual file contents
 		BufferedReader br = new BufferedReader(new FileReader(theFile))
