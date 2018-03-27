@@ -1,7 +1,7 @@
 # AppScan Issue Management Gateway Service (Alpha)
 
 The AppScan Issue Management Gateway service helps to synchronize issues between [IBM Application Security on Cloud](https://appscan.ibmcloud.com/)
-and other issue management systems such as JIRA. This capability should appeal to any AppScan users who need to get security 
+and other issue management systems such as JIRA. This capability should appeal to any AppScan users who need security 
 issue data "pushed" into other systems and want to avoid building all the REST calls and plumbing themselves.  This service itself operates as a REST API, 
 but as you'll see below the intent is to make this as painless as possible. 
 
