@@ -125,6 +125,10 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		def projectKey = config.get(PROJECTKEY)
 		def issueType = escape(config.get("issuetype"))
 		def severity = config.get("severitymap").get(appscanIssue.get("Severity"))
+		def severityField = config.get("severityfield")
+		if (severityField == null) {
+			severityField = "priority"
+		}
 
 		//Must use \\n instead of \n for newlines when submitting to JIRA's REST API
 		String description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue"
@@ -145,11 +149,11 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		"""
             {
                 "fields": {
-                    "project":      { "key":  "${projectKey}" },
-                    "issuetype":    { "name": "${issueType}" },
-                    "priority":     { "name": "${severity}" },
-                    "summary":     "${summary}",
-                    "description": "${description}"
+                    "project":            { "key":  "${projectKey}" },
+                    "issuetype":          { "name": "${issueType}" },
+                    "${severityField}":   { "name": "${severity}" },
+                    "summary":            "${summary}",
+                    "description":        "${description}"
                     ${otherfields}
                 }
             }

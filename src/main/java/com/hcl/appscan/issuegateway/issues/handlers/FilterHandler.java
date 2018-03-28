@@ -70,10 +70,12 @@ public class FilterHandler {
 		CommentHandler commentHandler = new CommentHandler();
 		for (AppScanIssue issue : issues) {
 			boolean foundOurComment = false;
-			for (String comment : commentHandler.getComments(issue, jobData, errors)) {
-				if (comment.startsWith(commentHandler.getCommentToken())) {
-					foundOurComment = true;
-					break;
+			if (!jobData.appscanData.other.get("checkduplicates").equals("false")) {
+				for (String comment : commentHandler.getComments(issue, jobData, errors)) {
+					if (comment.startsWith(commentHandler.getCommentToken())) {
+						foundOurComment = true;
+						break;
+					}
 				}
 			}
 			if (!foundOurComment) {

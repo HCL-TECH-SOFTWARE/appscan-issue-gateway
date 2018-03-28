@@ -33,6 +33,8 @@ public class PushJobData {
 		public String policyids;	
 		@ApiModelProperty(position = 8, required = false, value = "List of regex experessions to run on Issue fields, to further filter the results")
 		public Map<String, String> issuefilters;
+		@ApiModelProperty(position = 9, required = false, value = "Other internal debug or demo settings")
+		public Map<String, String> other;
 
 	}
 	

@@ -110,6 +110,7 @@ __imData__: configuration required to connect to the Issue Management system (JI
 * projectkey: All issues submitted in JIRA must be submitted against a project
 * issuetype: (Optional) Used if you would like to override the default issue type. Default = "Bug"
 * summary: (Optional) Override the default summary that the JIRA provider uses.  Notice that there is basic support here for variable expansion to include required issue data in the summary
+* severityfield: (Optional) The field name for the given issuetype that represents the "severity" or "priority". This field will be populated with the issue severity which can be configured with the "severitymap" field below.  Default = "priority"
 * severitymap: (Optional) AppScan severities are High, Medium, Low, Informational. With this setting you can change how those will be mapped when submitting the issue to JIRA.  For example, perhaps your team considers Medium security issues to be High priority
 * otherfields: (Optional) This is an area where you can provide any other JSON that JIRA understands.  
 
@@ -120,7 +121,7 @@ __imData__: configuration required to connect to the Issue Management system (JI
 - The JIRA support only handles Basic Auth (username and password)
 - Some basic logging is in place for the service, but more work is needed to gracefully handle problems
 - More work is required on build and packaging scripts
-- An robust automated test suite is required
+- A robust automated test suite is required
 - The service is English only and would need to go through a String externalization exercise 
 
 # License
