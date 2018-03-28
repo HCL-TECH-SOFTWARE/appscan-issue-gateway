@@ -117,7 +117,6 @@ __imData__: configuration required to connect to the Issue Management system (JI
 # Known Issues & Limitations
 
 - The service currently only supports JIRA but we are hoping to see more support added very quickly
-- We are seeing an issue where in some cases the PDF report that gets attached to a JIRA issue is getting corrupted and appears blank when opened. We are currently investigating this
 - The JIRA support only handles Basic Auth (username and password)
 - Some basic logging is in place for the service, but more work is needed to gracefully handle problems
 - More work is required on build and packaging scripts
