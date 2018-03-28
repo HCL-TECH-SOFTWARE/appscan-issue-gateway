@@ -64,6 +64,11 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			config.put(SERVER_URL, serverURL.substring(0, serverURL.length() -1))
 		}
 		
+		//Fill in the severityfield if one wasn't specified
+		if (config.get(SEVERITYFIELD) == null) {
+			config.put(SEVERITYFIELD, "priority")
+		}
+		
 		//Fill in a severity map if one wasn't specified		
 		if (config.get(SEVERITYMAP) == null)  {
 		Map<String, String> severityMap = new HashMap<String, String>();
@@ -123,13 +128,10 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def projectKey = config.get(PROJECTKEY)
-		def issueType = escape(config.get("issuetype"))
-		def severity = config.get("severitymap").get(appscanIssue.get("Severity"))
-		def severityField = config.get("severityfield")
-		if (severityField == null) {
-			severityField = "priority"
-		}
-
+		def issueType = escape(config.get(ISSUETYPE))
+		def severity = escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+		def severityField = escape(config.get(SEVERITYFIELD))
+			
 		//Must use \\n instead of \n for newlines when submitting to JIRA's REST API
 		String description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue"
         description += "\\n{quote}"

@@ -18,22 +18,25 @@ public class JIRAConstants {
 	static def PROJECTKEY  = "projectkey"
 	
 	//Optional fields
-	static def SEVERITYMAP = "severitymap"
-	static def SUMMARY     = "summary"
-	static def OTHERFIELDS = "otherfields"
+	static def ISSUETYPE     = "issuetype"
+	static def SEVERITYFIELD = "severityfield"
+	static def SEVERITYMAP   = "severitymap"
+	static def SUMMARY       = "summary"
+	static def OTHERFIELDS   = "otherfields"
 	
 	//Description
 	static def PROVIDER_DESCRIPTION =
 	[
 		'JIRA provider. Configuration fields are below',
-		'(Required)' + SERVER_URL  + ': the JIRA URL to connect to',
-		'(Required)' + USERNAME    + ': User name',
-		'(Required)' + PASSWORD    + ': Password',
-		'(Required)' + PROJECTKEY  + ': Project Key',
-	    '(Optional)' + SUMMARY     + ': Override default issue summary. Issue attributes can be included with %% subsitution varibles.  For example the default is \'AppScan: %IssueType% found at %Location%\'',
-		'(Optional)' + SEVERITYMAP + ': Map of AppScan Severities to JIRA Priorities.  If set, a mapping must be provided for High, Medium, Low, Informational',
-		'(Optional)' + OTHERFIELDS + ': Additional JSON that should be sent when creating JIRA issues.  For example:  { labels: [\'appscan\',\'security\'] }',
-		'Complete JSON Example: (replace single quotes with double quotes)                                                       ',
+		'(Required)' + SERVER_URL    + ': the JIRA URL to connect to',
+		'(Required)' + USERNAME      + ': User name',
+		'(Required)' + PASSWORD      + ': Password',
+		'(Required)' + PROJECTKEY    + ': Project Key',
+	    '(Optional)' + SUMMARY       + ': Override default issue summary. Issue attributes can be included with %% subsitution varibles.  For example the default is \'AppScan: %IssueType% found at %Location%\'',
+		'(Optional)' + SEVERITYFIELD + ': Field Id that corresponds to \'priority\' or \'severity\'. This field will be populated with the AppScan Issue Severity.  Default value = \'priority\'',
+		'(Optional)' + SEVERITYMAP   + ': Map of AppScan Severities to JIRA Priorities.  If set, a mapping must be provided for High, Medium, Low, Informational',
+		'(Optional)' + OTHERFIELDS   + ': Additional JSON that should be sent when creating JIRA issues.  For example:  { labels: [\'appscan\',\'security\'] }',
+		'Complete JSON Example: (replace single quotes with double quotes and ignore leading and trailing double quotes on each line)                                                       ',
 		'     {                                                                                                    ',                                                                 
 	    '       \'appscanData\': {                                                                                   ',                                     
 		'           \'url\': \'https://appscan.ibmcloud.com\',                                                         ',
@@ -55,6 +58,7 @@ public class JIRAConstants {
         '            \'projectkey\': \'ABC\',                                                                          ',
         '            \'issuetype\': \'Story\',                                                                         ',
         '            \'summary\': \'Security issue: %IssueType% found by %Scanner%.  We must fix it!\',                ',
+        '            \'severityfield\': \'severity\'                                                                   ',
         '            \'severitymap\':  {                                                                             ',
         '              \'High\': \'Highest\',                                                                          ',
         '              \'Medium\': \'Highest\',                                                                        ',
