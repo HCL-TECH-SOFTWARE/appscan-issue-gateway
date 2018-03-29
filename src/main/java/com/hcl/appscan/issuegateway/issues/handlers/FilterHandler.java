@@ -70,7 +70,7 @@ public class FilterHandler {
 		CommentHandler commentHandler = new CommentHandler();
 		for (AppScanIssue issue : issues) {
 			boolean foundOurComment = false;
-			if (!jobData.appscanData.other.get("checkduplicates").equals("false")) {
+			if (shouldCheckDuplicates(jobData)) {
 				for (String comment : commentHandler.getComments(issue, jobData, errors)) {
 					if (comment.startsWith(commentHandler.getCommentToken())) {
 						foundOurComment = true;
@@ -89,5 +89,15 @@ public class FilterHandler {
 		
 		return filteredIssues.toArray(new AppScanIssue[filteredIssues.size()]);
 	}
-
+	
+	private boolean shouldCheckDuplicates(PushJobData jobData) {
+		if (jobData.appscanData.other != null) {
+			if (jobData.appscanData.other.get("checkduplicates") != null) {
+				if (jobData.appscanData.other.get("checkduplicates").equals("false")) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }
