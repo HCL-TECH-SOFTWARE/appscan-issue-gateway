@@ -1,4 +1,4 @@
-# AppScan Issue Management Gateway Service (Alpha)
+# AppScan Issue Management Gateway Service (Beta)
 
 The AppScan Issue Management Gateway service helps to synchronize issues between [IBM Application Security on Cloud](https://appscan.ibmcloud.com/)
 and other issue management systems such as JIRA. This capability should appeal to any AppScan users who need security 
@@ -7,7 +7,7 @@ but as you'll see below the intent is to make this as painless as possible.
 
 The ideal use case for this service is as a part of an automated scanning workflow where it is getting called when necessary to perform the issue processing.
 
-This service is brand new code and should be considered an early Alpha. We expect this service to evolve very quickly and welcome all feedback. 
+This service is currently in Beta. We expect this service to evolve very quickly and welcome all feedback. 
 
 # Prerequisites:
 
