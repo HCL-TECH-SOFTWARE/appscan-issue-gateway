@@ -83,6 +83,11 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		if (config.get(SUMMARY) == null) {
 			config.put(SUMMARY, "AppScan: %IssueType% found at %Location%");
 		}
+		
+		//Set a default issuetype if one doesn't exist
+		if (config.get(ISSUETYPE) == null) {
+			config.put(ISSUETYPE, "Bug");
+		}
 		return valid;
 	}
 	
@@ -116,7 +121,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			def jiraIssue = config.getAt(SERVER_URL) + "/browse/" + createdIssue.key
 			results.put(appscanIssue.get("Id"), jiraIssue);
 		} catch (Exception e) {
-			errors.add("Internal Server Error while creating JIRA issues" + e.metMessage())
+			errors.add("Internal Server Error while creating JIRA issues: " + e.getMessage())
 		}
 	}
 			

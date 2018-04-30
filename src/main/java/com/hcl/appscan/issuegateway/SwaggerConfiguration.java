@@ -10,6 +10,8 @@ import java.util.Collections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
@@ -49,4 +51,15 @@ public class SwaggerConfiguration {
     			"http://www.apache.org/licenses/LICENSE-2.0",
     			Collections.emptyList());
     }
+    
+    @Bean
+    public WebMvcConfigurerAdapter forwardToIndex() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addViewControllers(ViewControllerRegistry registry) {
+            	registry.addViewController("/").setViewName("redirect:/swagger-ui.html");
+            }
+        };
+    }
+
 }

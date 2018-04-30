@@ -42,8 +42,10 @@ public class FilterHandler {
 	
 		//Pre-compile the patterns so we don't have to do it each issue iteration
 		Map<String, Pattern> patterns = new HashMap<String, Pattern>();
-		for (String field: jobData.appscanData.issuefilters.keySet()) {
-			patterns.put(field, Pattern.compile(jobData.appscanData.issuefilters.get(field)));
+		if (jobData.appscanData.issuefilters != null) {
+			for (String field: jobData.appscanData.issuefilters.keySet()) {
+				patterns.put(field, Pattern.compile(jobData.appscanData.issuefilters.get(field)));
+			}
 		}
 		
 		for (AppScanIssue issue : issues) {
