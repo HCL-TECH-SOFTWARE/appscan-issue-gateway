@@ -29,7 +29,7 @@ Choosing a different port is done like this:
 
 	java -Dserver.port=4444 -jar appscan-issue-gateway.jar
 	
-The server will be started in a few seconds and you should see a Spring Boot logo printed. In a browser navigate to the REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) : 
+The server will be started in a few seconds and you should see a Spring Boot logo. In a browser navigate to the REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) : 
 
 ![](images/swagger.png?raw=true)
 
