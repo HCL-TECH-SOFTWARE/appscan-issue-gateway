@@ -27,7 +27,7 @@ command to start the service on the default port (8080):
 
 Choosing a different port is done like this:
 
-	java -Dserver.port=4444 -jar appscan-issue-gateway.jar
+	java -Dserver.port=4444 -jar appscan-issue-gateway.jar  
 	
 The server will be started in a few seconds and you should see a Spring Boot logo. In a browser navigate to the REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) : 
 
@@ -58,7 +58,7 @@ curl command:
 	curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json 
 
 
-The command above uses a JSON file which looks like the following
+The command above uses a JSON file which looks like this
 
 test.json:	
 
