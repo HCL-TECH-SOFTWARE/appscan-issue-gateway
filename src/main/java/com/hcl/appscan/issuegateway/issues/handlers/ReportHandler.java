@@ -133,6 +133,7 @@ public class ReportHandler {
 	@SuppressWarnings("unused")
 	private static class CreateReportRequest {
 		public String OdataFilter;
+		public String[] PolicyIds = new String[] {""};
 		public CreateReportRequestConfiguration Configuration;
 	}
 	
@@ -146,8 +147,8 @@ public class ReportHandler {
 		public boolean Advisories = true;
 		public boolean FixRecommendation = true;
 		public boolean History = true;
-		//public boolean Title = false;
-		//public boolean Notes = false;
+		public String Title = "Single Issue Report";
+		//public String Notes = "";
 		public boolean IsTrialReport = false;
 		public String  RegulationReportType = "None";
 		public String  ReportFileType = "Html";
