@@ -133,7 +133,7 @@ public class ReportHandler {
 	@SuppressWarnings("unused")
 	private static class CreateReportRequest {
 		public String OdataFilter;
-		public String[] PolicyIds = new String[] {""};
+		public String[] PolicyIds = new String[] {"00000000-0000-0000-0000-000000000000"};
 		public CreateReportRequestConfiguration Configuration;
 	}
 	
@@ -158,6 +158,8 @@ public class ReportHandler {
 	private static class ReportJobResponse {
 		public String Id;
 		public String Status;
+		public String Message;
+		public String Key;
 		//public Integer Progress;
 	}
 }
