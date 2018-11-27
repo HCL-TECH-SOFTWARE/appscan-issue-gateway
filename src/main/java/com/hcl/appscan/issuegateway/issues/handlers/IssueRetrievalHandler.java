@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -38,6 +39,7 @@ public class IssueRetrievalHandler {
 	 	    headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData));
 	 	    headers.add("Content-Type", "application/json");
 	 		headers.add("Accept", "application/json");
+	 		headers.add("Accept-Language", "en-US,en;q=0.9");
 	 		
 	        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
 	        UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.appscanData.url)
@@ -56,7 +58,7 @@ public class IssueRetrievalHandler {
 	        }
 	        return response.getBody();
 	    }
-	    catch (Exception e) {
+	    catch (RestClientException e) {
 			errors.add("Internal Server Error while retrieving AppScan Issues: " + e.getMessage());
 			logger.error("Internal Server Error while retrieving AppScan Issues", e);
 	    }
