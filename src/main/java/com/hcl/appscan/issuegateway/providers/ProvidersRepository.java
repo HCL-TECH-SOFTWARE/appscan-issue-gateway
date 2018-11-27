@@ -7,10 +7,12 @@ package com.hcl.appscan.issuegateway.providers;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.groovy.control.CompilationFailedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,25 +34,23 @@ public class ProvidersRepository {
 	@Autowired
 	Messages messages;
 	
-	public synchronized static Map<String,IProvider> getProviders(List<String> errors) {
+	public synchronized static Map<String, IProvider> getProviders(List<String> errors) {
 		if (providers == null) {
 			providers = new HashMap<String, IProvider>();
 			File providersRoot = new File(System.getProperty("providers.path", "."));
-			try {
 			for (File providerPath : getSubFolders(providersRoot)) {
 				File providerGroovy = getFirstProvider(providerPath);
 				if (providerGroovy == null) {
 					continue;
 				}
-				GroovyClassLoader classLoader = new GroovyClassLoader();
-				classLoader.addClasspath(providersRoot.getAbsolutePath());
-				IProvider provider = (IProvider)classLoader.parseClass(providerGroovy).newInstance();
-			    providers.put(provider.getId(), provider);
-			    classLoader.close();
-			}
-			} catch (Exception e) {
-				errors.add("Internal Server Error: Problem loading providers : " + e.getMessage());
-				logger.error("Internal Server Error while loading providers", e);
+				try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
+					classLoader.addClasspath(providersRoot.getAbsolutePath());
+					IProvider provider = (IProvider) classLoader.parseClass(providerGroovy).newInstance();
+					providers.put(provider.getId(), provider);
+				} catch (CompilationFailedException | InstantiationException | IllegalAccessException | IOException e) {
+					errors.add("Internal Server Error: Problem loading providers : " + e.getMessage());
+					logger.error("Internal Server Error while loading providers", e);
+				}
 			}
 		}
 		return providers;
