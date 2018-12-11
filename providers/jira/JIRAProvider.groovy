@@ -168,8 +168,10 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	}
 	
 	//For now just remove any double quotes.  Causes problems
+	//Replace all backslashes with double backslashes to handle windows paths in Location
 	private String escape(String theString) {
 		theString.replaceAll("\"", "'")
+		theString.replaceAll("\\\\", "\\\\\\\\") 
 	}
 	
 	private String computeSummary(IAppScanIssue appscanIssue, Map<String, Object> config) {
