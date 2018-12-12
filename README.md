@@ -122,7 +122,6 @@ __imData__: configuration required to connect to the Issue Management system (JI
 
 - The JIRA support only handles Basic Auth (username and password)
 - Some basic logging is in place for the service, but more work is needed to gracefully handle problems
-- More work is required on build and packaging scripts
 - A robust automated test suite is required
 - The service is English only and would need to go through a String externalization exercise 
 
