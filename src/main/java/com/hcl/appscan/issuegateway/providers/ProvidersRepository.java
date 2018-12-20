@@ -13,10 +13,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.hcl.appscan.issuegateway.Messages;
 
 import common.IProvider;
 import groovy.lang.GroovyClassLoader;
@@ -29,9 +26,7 @@ public class ProvidersRepository {
 	private static Map<String, IProvider> providers = null;
 	
     private static final Logger logger = LoggerFactory.getLogger(ProvidersRepository.class);
-	@Autowired
-	Messages messages;
-	
+    
 	public synchronized static Map<String,IProvider> getProviders(List<String> errors) {
 		if (providers == null) {
 			providers = new HashMap<String, IProvider>();

@@ -23,7 +23,7 @@ public class JobManager {
 	private static JobManager jobManager;
 	private Map<String, PushJobResult> jobResults;
 	private ExecutorService executor;
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final Logger logger = LoggerFactory.getLogger(JobManager.class);
 		
 	public static synchronized JobManager getInstance() {
 		if (jobManager == null) {

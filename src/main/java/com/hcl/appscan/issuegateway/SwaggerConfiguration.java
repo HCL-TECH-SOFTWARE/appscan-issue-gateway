@@ -25,7 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class SwaggerConfiguration {
 	
 	@Autowired
-	Messages messages;
+	private Messages messages;
 
     @Bean
     public Docket api() { 

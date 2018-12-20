@@ -76,7 +76,6 @@ public class CommentHandler {
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static class Comment {
 		public String Comment;
 	}
