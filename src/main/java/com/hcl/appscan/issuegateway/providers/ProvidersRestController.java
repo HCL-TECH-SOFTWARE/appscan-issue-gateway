@@ -8,7 +8,6 @@ package com.hcl.appscan.issuegateway.providers;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,10 +20,6 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "providers")
 @RequestMapping("/providers")
 public class ProvidersRestController {
-
-	@Autowired
-    public ProvidersRestController() {
-    }
         
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value="Get configured issue service providers",notes="Returns all configured issue service providers. " +

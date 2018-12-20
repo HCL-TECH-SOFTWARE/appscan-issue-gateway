@@ -37,7 +37,7 @@ public class AuthHandler {
 		String apikeyid     = jobData.appscanData.apikeyid;
 		String apikeysecret = jobData.appscanData.apikeysecret;
 		
-		String key = url + apikeyid; //keys are the url + the apikeyid since we want to support mutliple servers and users
+		String key = url + apikeyid; //keys are the url + the apikeyid since we want to support multiple servers and users
 		
 		String bearerToken = bearerTokens.get(key);  
 		if ( (bearerToken != null) && isStillValid(url, bearerToken)) {

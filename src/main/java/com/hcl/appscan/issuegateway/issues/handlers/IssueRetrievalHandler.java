@@ -118,7 +118,6 @@ public class IssueRetrievalHandler {
 		return policyIds;
 	}
 	
-	@SuppressWarnings("unused")
 	private static class Policy {
 		public boolean Enabled;
 		public String Id;
