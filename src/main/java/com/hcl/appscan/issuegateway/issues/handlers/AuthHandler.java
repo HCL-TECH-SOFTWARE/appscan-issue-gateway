@@ -13,6 +13,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import com.hcl.appscan.issuegateway.issues.PushJobData;
@@ -68,7 +69,7 @@ public class AuthHandler {
 	        if(response.getStatusCode().is2xxSuccessful()) {
 	        	return true;
 	        }
-		} catch (Exception e) {
+		} catch (RestClientException e) {
 			//Will return false below
 		}
 		return false;

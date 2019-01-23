@@ -133,7 +133,8 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def projectKey = config.get(PROJECTKEY)
-		def issueType = escape(config.get(ISSUETYPE))
+		def issueType = config.get(ISSUETYPE)
+
 		def severity = escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
 		def severityField = escape(config.get(SEVERITYFIELD))
 			
@@ -170,17 +171,21 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	//For now just remove any double quotes.  Causes problems
 	//Replace all backslashes with double backslashes to handle windows paths in Location
 	private String escape(String theString) {
-		theString.replaceAll("\"", "'")
-		theString.replaceAll("\\\\", "\\\\\\\\") 
+		if (theString != null) {
+			theString.replaceAll("\"", "'")
+			theString.replaceAll("\\\\", "\\\\\\\\") 
+		} else {
+			theString = ""
+		}
 	}
 	
 	private String computeSummary(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def summary = config.get(SUMMARY)
 		def elements = summary.split("%")
 		String computedSummary = ""
-		for (int i=0; i<elements.size(); i+=2) {
+		for (int i = 0; i < elements.size(); i += 2) {
 			computedSummary += elements[i]
-			if (i+1<elements.size()) {
+			if (i + 1 < elements.size()) {
 				computedSummary += escape(appscanIssue.get(elements[i+1]))
 			}
 		}
