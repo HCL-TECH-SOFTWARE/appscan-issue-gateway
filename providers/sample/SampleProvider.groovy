@@ -28,4 +28,11 @@ class SampleProvider implements IProvider {
 			results.put(issue.get("Id"), issue.get("Severity"));
 		}
 	}
+	
+	public void submitIssue(IAppScanIssue issues, Map<String, Object> config, List<String> errors, Map<String, String> results) {
+		//Just extract the Id and Severity out of each issue and return them back as a result Map (which the caller of the Service REST API could do something with);
+		//for (IAppScanIssue issue : issues) {
+			results.put(issue.get("Id"), issue.get("Severity"));
+		//}
+	}
 }

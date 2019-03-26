@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.issues.PushJobResult;
 
 public class JobManager {
@@ -43,7 +44,10 @@ public class JobManager {
 		return jobResults.get(job.getId());
 	}
 	
-	public PushJobResult getJobResult(String id) {
+	public PushJobResult getJobResult(String id) throws EntityNotFoundException{
+		if (!jobResults.containsKey(id)) {
+			throw new EntityNotFoundException(PushJobResult.class,"id" ,id);
+		}
 		return jobResults.get(id);
 	}
 	

@@ -96,6 +96,9 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		def API_ADDATTACHMENT = "/rest/api/latest/issue/{issueKey}/attachments"
 		
 		try {
+			//TODO : need to put the validation out of it and find a more appropriate place to do it so that it wont be called multiple times .
+			//Currently this is to support the processing of issues one by one in ASE.
+			validate(config,errors);
 			def authorization = getAuthString(config)
 			
 			//Submit issue
@@ -119,7 +122,13 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			}
 			
 			def jiraIssue = config.getAt(SERVER_URL) + "/browse/" + createdIssue.key
-			results.put(appscanIssue.get("Id"), jiraIssue);
+			if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
+				results.put(appscanIssue.get("id"), jiraIssue);
+			}
+			else {
+				results.put(appscanIssue.get("Id"), jiraIssue);
+			}
+			
 		} catch (Exception e) {
 			errors.add("Internal Server Error while creating JIRA issues: " + e.getMessage())
 		}
@@ -134,16 +143,22 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def projectKey = config.get(PROJECTKEY)
 		def issueType = config.get(ISSUETYPE)
-
+		def issueTypeString = "Issue Type"
+		def scanNameString ="Scan Name";
+		
+		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueType)=="" ){
+			issueTypeString="IssueType";
+			scanNameString ="ScanName";
+		}
 		def severity = escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
 		def severityField = escape(config.get(SEVERITYFIELD))
 			
 		//Must use \\n instead of \n for newlines when submitting to JIRA's REST API
 		String description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue"
         description += "\\n{quote}"
-		description += "\\n*Issue Type*: " + escape(appscanIssue.get("IssueType"))
+		description += "\\n*Issue Type*: " + escape(appscanIssue.get(issueTypeString))
 		description += "\\n*Location*: "   + escape(appscanIssue.get("Location"))
-		description += "\\n*Scan Name*: "  + escape(appscanIssue.get("ScanName"))
+		description += "\\n*Scan Name*: "  + escape(appscanIssue.get(scanNameString))
 		description += "\\n{quote}"
 		description += "\\nSee the attached report for more information"
 	

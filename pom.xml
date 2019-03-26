@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.hcl.appscan</groupId>
 	<artifactId>appscan-issue-gateway</artifactId>
-	<version>0.0.11</version>
+	<version>0.0.16</version>
 	<packaging>jar</packaging>
 	<name>appscan-issue-gateway</name>
 	<description>AppScan Issue Gateway Service</description>
@@ -61,6 +61,11 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
 			<version>4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5</version>
 		</dependency>
 	</dependencies>
 	<build>

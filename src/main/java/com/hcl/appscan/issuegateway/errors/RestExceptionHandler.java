@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -41,6 +42,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
    @ExceptionHandler(ApiException.class)
    protected ResponseEntity<Object> handleDataIntegrityViolation(ApiException ex, WebRequest request) {
        return buildResponseEntity(new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, "Server Configuration Error", ex));
+   }
+   
+   @Override
+   protected ResponseEntity<Object> handleMethodArgumentNotValid(
+           MethodArgumentNotValidException ex,
+           HttpHeaders headers,
+           HttpStatus status,
+           WebRequest request) {
+       ApiError apiError = new ApiError(BAD_REQUEST,"Validation Error",ex);
+       apiError.addValidationErrors(ex.getBindingResult().getFieldErrors());
+       apiError.addValidationError(ex.getBindingResult().getGlobalErrors());
+       return buildResponseEntity(apiError);
+   }
+   
+   @ExceptionHandler(EntityNotFoundException.class)
+   protected ResponseEntity<Object> handleEntityNotFound(
+           EntityNotFoundException ex) {
+       ApiError apiError = new ApiError(HttpStatus.NOT_FOUND,ex.getMessage(),ex);
+       return buildResponseEntity(apiError);
    }
 
 }

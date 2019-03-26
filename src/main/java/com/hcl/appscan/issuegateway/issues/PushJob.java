@@ -14,7 +14,10 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hcl.appscan.issuegateway.AppscanProvider;
+import com.hcl.appscan.issuegateway.issues.handlers.ASEIssueReportHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.CommentHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.CreateIssueAndSyncHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.FilterHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.IssueRetrievalHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.ReportHandler;
@@ -43,21 +46,36 @@ public class PushJob extends Job {
 			AppScanIssue[] issues =  new IssueRetrievalHandler().retrieveIssues(jobData, errors);
 
 			updateResult(new PushJobResult(getId(), "Running - Filtering AppScan issues", errors, results));
-			AppScanIssue[] filteredIssues = new FilterHandler().filterIssues(issues, jobData, errors);
+			FilterHandler filterHandler=new FilterHandler();
+			AppScanIssue[] filteredIssues = filterHandler.filterIssues(issues, jobData, errors);
+			//CreateIssueAndSyncHandler createIssueAndSyncHandler= new CreateIssueAndSyncHandler();
+			//createIssueAndSyncHandler.setExternalIdHandler(filterHandler.getExternalIdHandler());
 		
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issue reports", errors, results));
-			new ReportHandler().retrieveReports(filteredIssues, jobData, errors);
-	
-			IProvider provider = ProvidersRepository.getProviders(errors).get(jobData.imData.provider);
+			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
+				new ASEIssueReportHandler().retrieveReports(filteredIssues, jobData, errors);
+			}
+			else {
+				new ReportHandler().retrieveReports(filteredIssues, jobData, errors);
+			}
+			
+			IProvider provider = ProvidersRepository.getProviders(errors).get(jobData.getImData().getProvider());
 			if (provider == null) {
 				updateResult(new PushJobResult(getId(), "Complete - Failed with errors", errors, results));
 				return false; 
-			}		
-			updateResult(new PushJobResult(getId(), "Running - Submitting issues", errors, results));
-			provider.submitIssues(filteredIssues, jobData.imData.config, errors, results);
-            		
-			updateResult(new PushJobResult(getId(), "Running - Updating AppScan issues", errors, results));
-			new CommentHandler().submitComments(jobData, errors, results);
+			}
+			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
+				updateResult(new PushJobResult(getId(), "Running - Submitting issues and updating Appscan Issues", errors, results));
+				//createIssueAndSyncHandler.createDefectAndUpdateId(filteredIssues, jobData, jobData.getImData().getConfig(), errors, results, provider);
+				new CreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, jobData.getImData().getConfig(), errors, results, provider);
+			}
+			else {
+				updateResult(new PushJobResult(getId(), "Running - Submitting issues", errors, results));
+				provider.submitIssues(filteredIssues, jobData.getImData().getConfig(), errors, results);
+	            		
+				updateResult(new PushJobResult(getId(), "Running - Updating AppScan issues", errors, results));
+				new CommentHandler().submitComments(jobData, errors, results);
+			}
 			
 			updateResult(new PushJobResult(getId(), "Completed", errors, results));
 			return true;
@@ -67,7 +85,6 @@ public class PushJob extends Job {
 			updateResult(new PushJobResult(getId(), "Complete - Failed with errors", Arrays.asList(error), null));
 			logger.error("Interal Server Error: ", e);
 		}
-	
 		return true;
 	}
 		

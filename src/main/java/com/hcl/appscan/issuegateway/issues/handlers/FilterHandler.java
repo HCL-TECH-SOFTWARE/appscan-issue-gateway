@@ -6,6 +6,7 @@
 package com.hcl.appscan.issuegateway.issues.handlers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,16 +16,31 @@ import java.util.regex.Pattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.hcl.appscan.issuegateway.AppscanProvider;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public class FilterHandler {
 	
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private ExternalIdHandler externalIdHandler=new ExternalIdHandler();
+
+	public ExternalIdHandler getExternalIdHandler() {
+		return externalIdHandler;
+	}
 
 	public AppScanIssue[] filterIssues(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
+		List<AppScanIssue> filteredIssues=null ;
 		try {
-			List<AppScanIssue> filteredIssues = filterWithRegex(issues, jobData);
+			if (jobData.getAppscanData().getAppscanProvider().equals(AppscanProvider.ASE.name())) {
+				
+				filteredIssues= includeFilterWithRegex(issues, jobData);
+				filteredIssues= excludeFilterWithRegex(filteredIssues, jobData);
+			}
+			else {
+				filteredIssues= includeFilterWithRegex(issues, jobData);
+			}
+			
 			AppScanIssue[] finalizedIssues = filterOutPreviouslyHandledIssues(filteredIssues, jobData, errors);
 			return finalizedIssues;
 		} catch (Exception e) {
@@ -35,27 +51,73 @@ public class FilterHandler {
 		return new AppScanIssue[0];
 	}
 	
-	private List<AppScanIssue> filterWithRegex(AppScanIssue[] issues, PushJobData jobData) {
+	private List<AppScanIssue> includeFilterWithRegex(AppScanIssue[] issues, PushJobData jobData) {
+		
+		if ((jobData.getAppscanData().getIncludeIssuefilters()==null || jobData.getAppscanData().getIncludeIssuefilters().isEmpty())||jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
+			return Arrays.asList(issues);
 		
 		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
 		
-	
 		//Pre-compile the patterns so we don't have to do it each issue iteration
-		Map<String, Pattern> patterns = new HashMap<String, Pattern>();
-		if (jobData.appscanData.issuefilters != null) {
-			for (String field: jobData.appscanData.issuefilters.keySet()) {
-				patterns.put(field, Pattern.compile(jobData.appscanData.issuefilters.get(field)));
+		Map<String, List<Pattern>> patterns = new HashMap<String, List<Pattern>>();
+		for (String field: jobData.getAppscanData().getIncludeIssuefilters().keySet()) {
+			String [] values=jobData.getAppscanData().getIncludeIssuefilters().get(field).split(",");
+			List<Pattern> list=new ArrayList<>();
+			for (String value:values) {
+				list.add(Pattern.compile(value));
 			}
+			patterns.put(field, list);
 		}
 		
 		for (AppScanIssue issue : issues) {
 			boolean foundMatch = false;
+			second:
 			for (String field: patterns.keySet()) {
-				Matcher m = patterns.get(field).matcher(issue.get(field));
-				if (m.matches()) {
-					foundMatch = true;
-					break;
+				for (Pattern p :patterns.get(field)) {
+					Matcher m = p.matcher(issue.get(field));
+					if (m.matches()) {
+						foundMatch = true;
+						break second;
+					}
 				}
+				
+			}
+			if (foundMatch) {
+				filteredIssues.add(issue);
+			}
+		}
+ 	   
+		return filteredIssues;	
+	}
+	
+	private List<AppScanIssue> excludeFilterWithRegex(List<AppScanIssue> issues, PushJobData jobData) {
+		if ((jobData.getAppscanData().getExcludeIssuefilters() == null||jobData.getAppscanData().getExcludeIssuefilters().isEmpty())||jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
+			return issues;
+		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
+		
+		//Pre-compile the patterns so we don't have to do it each issue iteration
+		Map<String, List<Pattern>> patterns = new HashMap<String, List<Pattern>>();
+		for (String field: jobData.getAppscanData().getIncludeIssuefilters().keySet()) {
+			String [] values=jobData.getAppscanData().getIncludeIssuefilters().get(field).split(",");
+			List<Pattern> list=new ArrayList<>();
+			for (String value:values) {
+				list.add(Pattern.compile(value));
+			}
+			patterns.put(field, list);
+		}
+		
+		for (AppScanIssue issue : issues) {
+			boolean foundMatch = false;
+			second:
+			for (String field: patterns.keySet()) {
+				for (Pattern p :patterns.get(field)) {
+					Matcher m = p.matcher(issue.get(field));
+					if (m.matches()) {
+						foundMatch = true;
+						break second;
+					}
+				}
+				
 			}
 			if (!foundMatch) {
 				filteredIssues.add(issue);
@@ -65,9 +127,20 @@ public class FilterHandler {
 		return filteredIssues;	
 	}
 	
-	private AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) {
-		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
+	private AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) throws Exception {
 		
+		String productId=jobData.getAppscanData().getAppscanProvider();
+		if (productId.equalsIgnoreCase(AppscanProvider.ASE.name())) {
+			return filterBasedOnExternalId(issues, jobData, errors);
+		}
+		else {
+			return filterBasedOnComment(issues, jobData, errors);
+		}
+	}
+	
+	private AppScanIssue[] filterBasedOnComment(List<AppScanIssue> issues, PushJobData jobData, List<String> errors)throws Exception {
+		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
+		final int maxIssueCount=jobData.getAppscanData().getMaxissues();
 		int issueCount = 0;
 		CommentHandler commentHandler = new CommentHandler();
 		for (AppScanIssue issue : issues) {
@@ -83,7 +156,27 @@ public class FilterHandler {
 			if (!foundOurComment) {
 				filteredIssues.add(issue);
 				issueCount++;
-				if (issueCount >= jobData.appscanData.maxissues) {
+				if (issueCount >= maxIssueCount) {
+					break;
+				}
+			}
+		}
+		
+		return filteredIssues.toArray(new AppScanIssue[filteredIssues.size()]);
+	}
+	
+	private AppScanIssue[] filterBasedOnExternalId(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) throws Exception{
+        List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
+        final int maxIssueCount=jobData.getAppscanData().getMaxissues();
+		int issueCount = 0;
+		for (AppScanIssue issue : issues) {
+			if (shouldCheckDuplicates(jobData)) {
+				if (!externalIdHandler.isExternalIdPresent(issue, jobData, errors)) {
+					filteredIssues.add(issue);
+					issueCount++;
+				}
+					
+				if (issueCount >= maxIssueCount) {
 					break;
 				}
 			}
@@ -93,9 +186,9 @@ public class FilterHandler {
 	}
 	
 	private boolean shouldCheckDuplicates(PushJobData jobData) {
-		if (jobData.appscanData.other != null) {
-			if (jobData.appscanData.other.get("checkduplicates") != null) {
-				if (jobData.appscanData.other.get("checkduplicates").equals("false")) {
+		if (jobData.getAppscanData().getOther() != null) {
+			if (jobData.getAppscanData().getOther().get("checkduplicates") != null) {
+				if (jobData.getAppscanData().getOther().get("checkduplicates").equals("false")) {
 					return false;
 				}
 			}

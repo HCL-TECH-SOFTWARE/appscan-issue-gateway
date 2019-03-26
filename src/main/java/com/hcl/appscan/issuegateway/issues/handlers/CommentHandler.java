@@ -15,24 +15,24 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import com.hcl.appscan.issuegateway.IssueGatewayConstants;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
-public class CommentHandler {
+public class CommentHandler implements IssueGatewayConstants{
 	
-	private final String REST_COMMENT = "/api/v2/Issues/ISSUEID/Comments";
-	private final String COMMENT_TOKEN = "AppScan Issue Gateway";
+	
 		
-	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) { 
-		String url = jobData.appscanData.url + REST_COMMENT.replaceAll("ISSUEID",issue.get("Id"));
+	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) throws Exception{ 
+		String url = jobData.getAppscanData().getUrl() + ASOC_API_COMMENT.replaceAll("ISSUEID",issue.get("Id"));
 	
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData));
-		headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-		headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HEADER_AUTHORIZATION, AuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<String> entity = new HttpEntity<>(headers);
 		ResponseEntity<Comment[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Comment[].class);
 	    if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -50,7 +50,7 @@ public class CommentHandler {
 		return COMMENT_TOKEN;
 	}
 
-	public void submitComments(PushJobData jobData, List<String> errors, Map<String, String> results) {
+	public void submitComments(PushJobData jobData, List<String> errors, Map<String, String> results)throws Exception  {
 		
 		for (String issueId : results.keySet()) {
 			//Only handle result entries that have a value that starts with "http" (A link to a defect)
@@ -58,14 +58,14 @@ public class CommentHandler {
 				break;
 			}
 			
-			String url = jobData.appscanData.url + REST_COMMENT.replaceAll("ISSUEID",issueId);
+			String url = jobData.getAppscanData().getUrl() + ASOC_API_COMMENT.replaceAll("ISSUEID",issueId);
 			
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData));
-			headers.add("Content-Type", MediaType.APPLICATION_JSON_VALUE);
-			headers.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+			headers.add(HEADER_AUTHORIZATION, AuthHandler.getInstance().getBearerToken(jobData,errors));
+			headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+			headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 			Comment comment = new Comment();
 			comment.Comment = getCommentToken() + " created the following issue:\n" + results.get(issueId);
 			HttpEntity<Comment> entity = new HttpEntity<Comment>(comment, headers);

@@ -34,7 +34,7 @@ public class ReportHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	
-	public void retrieveReports(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
+	public void retrieveReports(AppScanIssue[] issues, PushJobData jobData, List<String> errors) throws Exception {
 	
 		for (AppScanIssue issue : issues) {
 		    try {
@@ -43,7 +43,7 @@ public class ReportHandler {
 				//Step 3: Download the report and add it to the issue		    	
 		    	String reportId = postReportJob(jobData, issue.get("Id"), errors);
 		    	if ((reportId != null) && reportId.length() > 1) {
-		    		if (waitForReportJob(jobData, reportId)) {
+		    		if (waitForReportJob(jobData, reportId,errors)) {
 		    			File reportFile = downloadReport(jobData, reportId, errors);
 		    			if (reportFile != null) {
 		    				issue.setIssueDetails(reportFile);
@@ -52,20 +52,20 @@ public class ReportHandler {
 		    			errors.add("Error: Timed out waiting for issue report job to finish");
 		    		}
 		    	}
-		    }  catch (Exception e) {
+		    }  catch (IOException e) {
 					errors.add("Internal Server Error while retrieving issue reports: " + e.getMessage());
 					logger.error("Internal Server Error while retrieving reports", e);
 	        }
 	    }
     }
 	
-	private String postReportJob(PushJobData jobData, String issueId, List<String> errors) { 
-		String url = jobData.appscanData.url + REST_CREATEREPORT.replaceAll("APPID",jobData.appscanData.appid);
+	private String postReportJob(PushJobData jobData, String issueId, List<String> errors)throws Exception { 
+		String url = jobData.getAppscanData().getUrl() + REST_CREATEREPORT.replaceAll("APPID",jobData.getAppscanData().getAppid());
 		
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData));
+		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData,errors));
 		headers.add("Content-Type", "application/json");
 		headers.add("Accept", "application/json");	
 		CreateReportRequest createReportRequest = new CreateReportRequest();
@@ -81,14 +81,14 @@ public class ReportHandler {
 		return null;
 	}
 	
-	private Boolean waitForReportJob(PushJobData jobData, String reportId) { 
-		String url = jobData.appscanData.url + REST_REPORTJOBS.replaceAll("REPORTID",reportId);
+	private Boolean waitForReportJob(PushJobData jobData, String reportId,List<String> errors) throws Exception{ 
+		String url = jobData.getAppscanData().getUrl() + REST_REPORTJOBS.replaceAll("REPORTID",reportId);
 	
 		for (long stop=System.nanoTime()+TimeUnit.MINUTES.toNanos(2);stop>System.nanoTime();) {
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData));
+			headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData,errors));
 			headers.add("Content-Type", "application/json");
 			headers.add("Accept", "application/json");	
 			HttpEntity<Object> entity = new HttpEntity<Object>(headers);
@@ -105,15 +105,15 @@ public class ReportHandler {
 		return false;
 	}
 	
-	private File downloadReport(PushJobData jobData, String reportId, List<String> errors) throws IOException { 
-		String url          = jobData.appscanData.url + REST_REPORTS.replaceAll("REPORTID",reportId);
+	private File downloadReport(PushJobData jobData, String reportId, List<String> errors) throws IOException,Exception { 
+		String url          = jobData.getAppscanData().getUrl() + REST_REPORTS.replaceAll("REPORTID",reportId);
 
 	    List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
 	    messageConverters.add(new ByteArrayHttpMessageConverter());
 		RestTemplate restTemplate = new RestTemplate(messageConverters);
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData));
+		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData,errors));
         HttpEntity<String> entity = new HttpEntity<>(headers);
 		ResponseEntity<byte[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class, "1");
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
