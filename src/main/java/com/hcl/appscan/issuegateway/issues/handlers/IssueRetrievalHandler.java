@@ -165,12 +165,15 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 			
 		}
 		else {
-			String[] states = jobData.getAppscanData().getIssuestates().split(",");
-			for (String state : states) {
-				issueFilters +="Status=" +state+",";
+			if (jobData.getAppscanData().getIssuestates()!=null && jobData.getAppscanData().getIssuestates()!="") {
+				String[] states = jobData.getAppscanData().getIssuestates().split(",");
+				
+				for (String state : states ) {
+					issueFilters +="Status=" +state+",";
+				}
 			}
 			
-			if (filters.containsKey("Severity") && filters.get("Severity")!=null) {
+			if (filters.containsKey("Severity") && filters.get("Severity")!=null ) {
 				String severityValuesString=filters.get("Severity");
 				String[] severityValues = severityValuesString.split(",");
 				for (String value: severityValues) {
@@ -178,7 +181,7 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 				}
 			}
 			
-			if (filters.containsKey("Issue Type") && filters.get("Issue Type")!=null) {
+			if (filters.containsKey("Issue Type") && (filters.get("Issue Type")!=null)) {
 				String severityValuesString=filters.get("Issue Type");
 				String[] severityValues = severityValuesString.split(",");
 				for (String value: severityValues) {
