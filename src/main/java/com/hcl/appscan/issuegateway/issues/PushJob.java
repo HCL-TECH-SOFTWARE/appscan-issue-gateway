@@ -67,7 +67,7 @@ public class PushJob extends Job {
 			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
 				updateResult(new PushJobResult(getId(), "Running - Submitting issues and updating Appscan Issues", errors, results));
 				//createIssueAndSyncHandler.createDefectAndUpdateId(filteredIssues, jobData, jobData.getImData().getConfig(), errors, results, provider);
-				new CreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, jobData.getImData().getConfig(), errors, results, provider);
+				new CreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, errors, results, provider);
 			}
 			else {
 				updateResult(new PushJobResult(getId(), "Running - Submitting issues", errors, results));

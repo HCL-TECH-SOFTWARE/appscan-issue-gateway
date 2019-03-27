@@ -4,15 +4,32 @@
  */
 package com.hcl.appscan.issuegateway.issues.handlers;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 import common.IAppScanIssue;
 import common.IProvider;
 
 public class CreateIssueAndSyncHandler {
+	//Provider name
+	//private static String  PROVIDER_NAME = "jira";
+
+	//Required fields
+	static String SERVER_URL  = "url";
+	static String USERNAME    = "username";
+	static String PASSWORD    = "password";
+	static String PROJECTKEY  = "projectkey";
+		
+	//Optional fields
+	private static String ISSUETYPE  = "issuetype";
+	private static String SEVERITYFIELD = "severityfield";
+	private static String SEVERITYMAP   = "severitymap";
+	private static String SUMMARY       = "summary";
+	//private static String OTHERFIELDS   = "otherfields";
 	ExternalIdHandler externalIdHandler = new ExternalIdHandler();
 	
 	
@@ -21,10 +38,62 @@ public class CreateIssueAndSyncHandler {
 	}*/
 
 
-	public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, Map<String, Object> config, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
-		for (IAppScanIssue issue:issues) {
-			provider.submitIssue(issue, config, errors, results);
-			externalIdHandler.updateExternalId(issue.get("id"), jobData, errors, results);
+	public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
+		if (validate(jobData.getImData().getConfig())) {
+			for (IAppScanIssue issue:issues) {
+				provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
+				externalIdHandler.updateExternalId(issue.get("id"), jobData, errors, results);
+			}
 		}
+		
+	}
+	
+	private boolean validate (Map<String, Object> config) throws EntityNotFoundException {
+				//Check for required fields
+						
+				if (!config.containsKey(SERVER_URL) || (config.get(SERVER_URL)==null || config.get(SERVER_URL)=="")) {
+					throw new EntityNotFoundException(PushJobData.class,SERVER_URL,"URL of Defect Tracking System is not found ");
+				}
+				if (!config.containsKey(USERNAME)|| (config.get(USERNAME)==null || config.get(USERNAME)=="")) {
+					throw new EntityNotFoundException(PushJobData.class,USERNAME,"username of Defect Tracking System is not found ");
+				}
+				if (!config.containsKey(PASSWORD)|| (config.get(PASSWORD)==null || config.get(PASSWORD)=="")) {
+					throw new EntityNotFoundException(PushJobData.class,PASSWORD,"password of Defect tracking system is not found ");
+				}
+				if (!config.containsKey(PROJECTKEY)|| (config.get(PROJECTKEY)==null || config.get(PROJECTKEY)=="")) {
+					throw new EntityNotFoundException(PushJobData.class,PROJECTKEY,"project key is not found ");
+				}
+				
+				//If there is a trailing / on the passed in JIRA URL remove it
+				String serverURL = (String)config.get(SERVER_URL) ;
+				if (serverURL.endsWith("/")) {
+					config.put(SERVER_URL, serverURL.substring(0, serverURL.length() -1));
+				}
+				
+				//Fill in the severityfield if one wasn't specified
+				if (config.get(SEVERITYFIELD) == null || config.get(SEVERITYFIELD)=="") {
+					config.put(SEVERITYFIELD, "priority");
+				}
+				
+				//Fill in a severity map if one wasn't specified		
+				if (config.get(SEVERITYMAP) == null || config.get(SEVERITYMAP)=="")  {
+				Map<String, String> severityMap = new HashMap<String, String>();
+					severityMap.put("High", "Highest");
+					severityMap.put("Medium", "High");
+					severityMap.put("Low", "Low");
+					severityMap.put("Information", "Lowest");
+					config.put(SEVERITYMAP, severityMap);
+				}
+				
+				//Set a String default summary if one doesn't exist
+				if (config.get(SUMMARY) == null) {
+					config.put(SUMMARY, "AppScan: %IssueType% found at %Location%");
+				}
+				
+				//Set a Stringault issuetype if one doesn't exist
+				if (config.get(ISSUETYPE) == null) {
+					config.put(ISSUETYPE, "Bug");
+				}
+				return true;
 	}
 }

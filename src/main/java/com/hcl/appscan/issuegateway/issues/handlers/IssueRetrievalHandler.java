@@ -40,10 +40,8 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 			
-	public AppScanIssue[] retrieveIssues(PushJobData jobData, List<String> errors)  throws EntityNotFoundException,Exception{
+	public AppScanIssue[] retrieveIssues(PushJobData jobData, List<String> errors)  throws Exception{
 		String productId=jobData.getAppscanData().getAppscanProvider();
-		if(!productId.equalsIgnoreCase(AppscanProvider.ASE.name()) && !productId.equalsIgnoreCase(AppscanProvider.ASOC.name()))
-			throw new EntityNotFoundException(AppscanProvider.class,productId,"appscanProvider is not found ");
 		RestTemplate restTemplate;
 		try {
 			if (productId.equalsIgnoreCase(AppscanProvider.ASE.name()))

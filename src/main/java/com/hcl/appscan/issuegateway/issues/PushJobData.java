@@ -39,9 +39,8 @@ public class PushJobData {
 	}
 
 	static public class AppScanData {
-		@ApiModelProperty(position = 1, required = true, value = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC")
-		@NotBlank
-		private String appscanProvider;
+		@ApiModelProperty(position = 1, required = false, value = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.If not provided , the default value would be ASOC")
+		private String appscanProvider="ASOC";
 		@ApiModelProperty(position = 2, required = true, value = "The root URL of the ASE instance if the product is ASE and production site of Appscan on Cloud if it is ASoC", example = "https://hostname:port_number/ase , \"https://appscan.ibmcloud.com\"")
 		@NotBlank
 		private String url ;

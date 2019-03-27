@@ -22,10 +22,10 @@ import io.swagger.annotations.ApiOperation;
 public class ProvidersRestController {
         
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    @ApiOperation(value="Get configured issue service providers",notes="Returns all configured issue service providers. " +
-    		"issue service providers are encouraged to also include documentation about their specific configuration requirements " +
-    		"in the response to this API. Note:Due to some swagger limitations, such as the inability to handle formatting characters, you'll find that the response " + 
-    		"is somewhat oddly formattted, but it should still be helpful")
+    @ApiOperation(value="Get configured issue service providers",notes="This API returns all configured issue service providers. " +
+    		"Issue service providers are encouraged to include documentation about their specific configuration requirements " +
+    		"in the response to this API. Note:Due to some swagger limitations, such as the inability to handle formatting characters, it is observed that the response " + 
+    		"is oddly formattted to some extent,it may be still helpful")
 	Collection<IProvider> readProviders() {
 		return ProvidersRepository.getProviders(new ArrayList<String>()).values();
 	}

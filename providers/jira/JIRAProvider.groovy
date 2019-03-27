@@ -96,9 +96,6 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		def API_ADDATTACHMENT = "/rest/api/latest/issue/{issueKey}/attachments"
 		
 		try {
-			//TODO : need to put the validation out of it and find a more appropriate place to do it so that it wont be called multiple times .
-			//Currently this is to support the processing of issues one by one in ASE.
-			validate(config,errors);
 			def authorization = getAuthString(config)
 			
 			//Submit issue
