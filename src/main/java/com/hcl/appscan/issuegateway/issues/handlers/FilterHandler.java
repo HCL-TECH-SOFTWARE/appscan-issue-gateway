@@ -97,8 +97,8 @@ public class FilterHandler {
 		
 		//Pre-compile the patterns so we don't have to do it each issue iteration
 		Map<String, List<Pattern>> patterns = new HashMap<String, List<Pattern>>();
-		for (String field: jobData.getAppscanData().getIncludeIssuefilters().keySet()) {
-			String [] values=jobData.getAppscanData().getIncludeIssuefilters().get(field).split(",");
+		for (String field: jobData.getAppscanData().getExcludeIssuefilters().keySet()) {
+			String [] values=jobData.getAppscanData().getExcludeIssuefilters().get(field).split(",");
 			List<Pattern> list=new ArrayList<>();
 			for (String value:values) {
 				list.add(Pattern.compile(value));
