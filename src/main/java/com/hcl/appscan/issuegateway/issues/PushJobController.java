@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018. 
+ * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues;
@@ -62,7 +62,7 @@ public class PushJobController {
     
     @RequestMapping(value="/issues/pushjobs",method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value="Get an issue push job",notes="A PushJob will have a Status of \"Running - Current Operation\" until the job has either finished successfully or failed. "
-    		+ "The errors field holds problems that were encountred during the operation. "
+    		+ "The errors field holds problems that were encountered during the operation. "
     		+ "The results field will (if successful) hold a Map of AppScan Issue Ids and their associated Issues in the other issue management system.")
 	PushJobResult getStatus(String id) throws EntityNotFoundException{
 		return JobManager.getInstance().getJobResult(id);
@@ -83,7 +83,7 @@ public class PushJobController {
     
     @RequestMapping(value="/v2/issues/pushjobs",method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value="Get an issue push job",notes="A PushJob will have a Status of \"Running - Current Operation\" until the job has either finished successfully or failed. "
-    		+ "The errors field holds problems that were encountred during the operation. "
+    		+ "The errors field holds problems that were encountered during the operation. "
     		+ "The results field will (if successful) hold a Map of AppScan Issue Ids and their associated Issues in the other issue management system.")
 	PushJobResult getStatusV2(String id) throws EntityNotFoundException{
 		return JobManager.getInstance().getJobResult(id);

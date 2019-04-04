@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018. 
+ * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.providers;
@@ -18,15 +18,24 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @Api(tags = "providers")
-@RequestMapping("/providers")
 public class ProvidersRestController {
         
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
+    @RequestMapping(value="/providers",method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value="Get configured issue service providers",notes="This API returns all configured issue service providers. " +
     		"Issue service providers are encouraged to include documentation about their specific configuration requirements " +
     		"in the response to this API. Note:Due to some swagger limitations, such as the inability to handle formatting characters, it is observed that the response " + 
     		"is oddly formattted to some extent,it may be still helpful")
 	Collection<IProvider> readProviders() {
+		return ProvidersRepository.getProviders(new ArrayList<String>()).values();
+	}
+    
+    // this is to create a place holder for v2 version .TODO : update the function to get the description related to ASE request json
+    @RequestMapping(value="/v2/providers",method = RequestMethod.GET, produces = "application/json")
+    @ApiOperation(value="Get configured issue service providers",notes="This API returns all configured issue service providers. " +
+    		"Issue service providers are encouraged to include documentation about their specific configuration requirements " +
+    		"in the response to this API. Note:Due to some swagger limitations, such as the inability to handle formatting characters, it is observed that the response " + 
+    		"is oddly formatted to some extent,it may be still helpful")
+	Collection<IProvider> readProvidersV2() {
 		return ProvidersRepository.getProviders(new ArrayList<String>()).values();
 	}
      

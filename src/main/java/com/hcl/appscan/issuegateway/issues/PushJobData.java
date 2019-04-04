@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018. 
+ * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues;
@@ -53,7 +53,7 @@ public class PushJobData {
 		@ApiModelProperty(position = 5, required = true, value = "The Id of the ASoC or ASE application to be processed")
 		@NotBlank
 		private String appid;
-		@ApiModelProperty(position = 6, required = false, example = "25", value = "Maximum number of issues to process. The default is 25. Pass in a value of -1 to have no limit")
+		@ApiModelProperty(position = 6, required = false, example = "25", value = "Maximum number of issues to process. The default is 25.")
 		private Integer maxissues = 25;
 		@ApiModelProperty(position = 7, required = false, value = "Issue States to process.The default will process issues that are in 'Open' state. For multiple states, use comma separated vlaues, as for e.g. 'New, Open'")
 		private String issuestates = "Open";

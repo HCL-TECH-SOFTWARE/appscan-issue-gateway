@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @Api(tags="applications")
-@RequestMapping("/applications")
+@RequestMapping("/v2/applications")
 public class GetApplicationsController {
 	private final Logger logger =LoggerFactory.getLogger(this.getClass());
 	List<String> errors = new ArrayList<String>();
