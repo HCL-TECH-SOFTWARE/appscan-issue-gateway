@@ -61,7 +61,7 @@ curl command:
 
 	curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json
 
-This command uses a JSON file.Refer the following example:
+This command uses a JSON file.Refer the following example:(Also a sample json file for ASE request named sample_request_ase.json can be found in this repository)
 
 test.json:	
 
