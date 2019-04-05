@@ -48,6 +48,7 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 				restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 			else 
 				restTemplate=new RestTemplate();
+			
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 	    	HttpHeaders headers = new HttpHeaders();
 	 	    headers.add(getAuthorizationHeaderName(productId), AuthHandler.getInstance().getBearerToken(jobData, errors));
@@ -56,21 +57,20 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 	 		headers.add("Accept-Language", "en-US,en;q=0.9");
 	 		
 	 		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl());
-	        	if (productId.equalsIgnoreCase(AppscanProvider.ASE.name())) {
-	        		urlBuilder.path(ASE_API_ISSUES)
-  				  	.queryParam("query", "Application Name="+getApplicationName(jobData,errors)+","+getIssueFilters(jobData))
-  				  	.queryParam("compactResponse", "false");
-	        		headers.add("Range", "items=0-10000");
-	        	}
-	        	else {
-	        		urlBuilder.path(ASOC_API_ISSUES.replaceAll("APPID", jobData.getAppscanData().getAppid()))
-	        		.queryParam("$filter", getStateFilters(jobData.getAppscanData().getIssuestates()))
-		        	.queryParam("$orderby", "SeverityValue");
+	        if (productId.equalsIgnoreCase(AppscanProvider.ASE.name())) {
+	        	urlBuilder.path(ASE_API_ISSUES)
+  			  	.queryParam("query", "Application Name="+getApplicationName(jobData,errors)+","+getIssueFilters(jobData))
+  			  	.queryParam("compactResponse", "false");
+	        	headers.add("Range", "items=0-10000");
+	        }
+	        else {
+	        	urlBuilder.path(ASOC_API_ISSUES.replaceAll("APPID", jobData.getAppscanData().getAppid()))
+	        	.queryParam("$filter", getStateFilters(jobData.getAppscanData().getIssuestates()))
+		       	.queryParam("$orderby", "SeverityValue");
 		        for (String policyId : getPolicyIds(jobData,errors)) {
 		        	urlBuilder.queryParam("policyId", policyId);
 		       		}
-	        	}
-	        	
+	        }
 	        HttpEntity<Object> entity = new HttpEntity<Object>(headers);
 	        URI theURI = urlBuilder.build().encode().toUri();
 	        ResponseEntity<AppScanIssue[]> response = restTemplate.exchange(theURI, HttpMethod.GET, entity, AppScanIssue[].class);
@@ -99,27 +99,27 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 		ResponseEntity<ApplicationName> response=null;
 		try {
 			RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
-			   restTemplate.setErrorHandler(new ResponseErrorHandler());
-			   HttpHeaders headers=new HttpHeaders();
-			   headers.add("asc_xsrf_token", AuthHandler.getInstance().getBearerToken(jobData,errors));
-			   final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
-		 	   if (cookies != null) {
-		            StringBuilder sb = new StringBuilder();
-		            for (HttpCookie cookie : cookies) {
-		                sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
-		            }
-		            headers.add("Cookie", sb.toString());
-		        }
-		 	   headers.add("Content-Type", "application/json");
-		 	   headers.add("Accept", "application/json");
-		 	   headers.add("Accept-Language", "en-US,en;q=0.9");
+			restTemplate.setErrorHandler(new ResponseErrorHandler());
+			HttpHeaders headers=new HttpHeaders();
+			headers.add("asc_xsrf_token", AuthHandler.getInstance().getBearerToken(jobData,errors));
+			final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
+		 	if (cookies != null) {
+		       StringBuilder sb = new StringBuilder();
+		       for (HttpCookie cookie : cookies) {
+		           sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
+		       }
+		       headers.add("Cookie", sb.toString());
+		    }
+		 	headers.add("Content-Type", "application/json");
+		 	headers.add("Accept", "application/json");
+		 	headers.add("Accept-Language", "en-US,en;q=0.9");
 		 	   
-		 	   HttpEntity<Object> entity=new HttpEntity<>(headers);
-		 	   String url=jobData.getAppscanData().getUrl()+ASE_API_APPLICATION_DETAILS.replaceAll("APPLICATIONID",jobData.getAppscanData().getAppid() );
-		 	   response=restTemplate.exchange(url, HttpMethod.GET, entity, ApplicationName.class);
-		 	   if (response.getStatusCode()==HttpStatus.NOT_FOUND) {
-		 		   throw new EntityNotFoundException(PushJobData.class, jobData.getAppscanData().getAppid(),"application not found");
-		 	   }
+		 	HttpEntity<Object> entity=new HttpEntity<>(headers);
+		 	String url=jobData.getAppscanData().getUrl()+ASE_API_APPLICATION_DETAILS.replaceAll("APPLICATIONID",jobData.getAppscanData().getAppid() );
+		 	response=restTemplate.exchange(url, HttpMethod.GET, entity, ApplicationName.class);
+		 	if (response.getStatusCode()==HttpStatus.NOT_FOUND) {
+		 	   throw new EntityNotFoundException(PushJobData.class, jobData.getAppscanData().getAppid(),"application not found");
+		 	}
 		}
 		
 		catch (RestClientException e) {
