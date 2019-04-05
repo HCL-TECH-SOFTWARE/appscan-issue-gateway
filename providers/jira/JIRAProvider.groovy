@@ -1,6 +1,6 @@
 /**
  * � Copyright IBM Corporation 2018.
- * � Copyright HCL Technologies Ltd. 2018.
+ * � Copyright HCL Technologies Ltd. 2018,2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package jira
@@ -119,6 +119,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			}
 			
 			def jiraIssue = config.getAt(SERVER_URL) + "/browse/" + createdIssue.key
+			// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
 			if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
 				results.put(appscanIssue.get("id"), jiraIssue);
 			}
@@ -142,7 +143,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		def issueType = config.get(ISSUETYPE)
 		def issueTypeString = "Issue Type"
 		def scanNameString ="Scan Name";
-		
+		//"Issue Type" for ASE and "IssueType" for ASOC
 		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueType)=="" ){
 			issueTypeString="IssueType";
 			scanNameString ="ScanName";

@@ -21,22 +21,21 @@ public class CustomRestTemplateProvider extends RestTemplate{
 	private static RestTemplate customRestTemplate;
 	
 	private CustomRestTemplateProvider() {
-		
 	}
+	
 	public static synchronized RestTemplate getCustomizedrestTemplate()  {
 		if (customRestTemplate == null) {
-			
 			try {
 				customRestTemplate = getRestTemplate();
 			}  
 			catch(Exception e) {
 				e.printStackTrace();
 			}
-			
 		}
 		return customRestTemplate;
 	}
 	
+	// this is to bypass the host certificate validation in the current release.Only used in case of ASE
 	private static RestTemplate getRestTemplate() throws Exception {
 	    TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
 	        @Override

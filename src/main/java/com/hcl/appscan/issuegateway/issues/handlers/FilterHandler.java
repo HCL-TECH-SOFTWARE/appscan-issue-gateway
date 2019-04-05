@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2018,2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues.handlers;
@@ -73,14 +73,12 @@ public class FilterHandler {
 						break second;
 					}
 				}
-				
 			}
 			if (foundMatch) {
 				filteredIssues.add(issue);
 			}
 		}
- 	   
-		return filteredIssues;	
+ 	   return filteredIssues;	
 	}
 	
 	private List<AppScanIssue> excludeFilterWithRegex(List<AppScanIssue> issues, PushJobData jobData) {
@@ -110,14 +108,12 @@ public class FilterHandler {
 						break second;
 					}
 				}
-				
 			}
 			if (!foundMatch) {
 				filteredIssues.add(issue);
 			}
 		}
- 	   
-		return filteredIssues;	
+ 	   return filteredIssues;	
 	}
 	
 	private AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) throws Exception {
@@ -154,7 +150,6 @@ public class FilterHandler {
 				}
 			}
 		}
-		
 		return filteredIssues.toArray(new AppScanIssue[filteredIssues.size()]);
 	}
 	
@@ -174,7 +169,6 @@ public class FilterHandler {
 				}
 			}
 		}
-		
 		return filteredIssues.toArray(new AppScanIssue[filteredIssues.size()]);
 	}
 	

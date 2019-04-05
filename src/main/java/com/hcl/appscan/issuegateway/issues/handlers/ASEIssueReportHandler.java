@@ -41,15 +41,15 @@ public class ASEIssueReportHandler {
 	
 		for (AppScanIssue issue : issues) {
 		    try {
-			    	File reportFile = downloadReport(jobData, issue.get("id"), errors);
-		    		if (reportFile != null) {
-		    				issue.setIssueDetails(reportFile);
-		    			}
-		    		 else {
-		    			errors.add("Error: Timed out waiting for issue report job to finish");
-		    		}
-		    	
-		    }  catch (Exception e) {
+			    File reportFile = downloadReport(jobData, issue.get("id"), errors);
+		    	if (reportFile != null) {
+		    		issue.setIssueDetails(reportFile);
+		    	}
+		    	else {
+		    		errors.add("Error: Timed out waiting for issue report job to finish");
+		    	}
+		    }  
+		    catch (Exception e) {
 					errors.add("Internal Server Error while retrieving issue reports: " + e.getMessage());
 					logger.error("Internal Server Error while retrieving reports", e);
 	        }
@@ -63,20 +63,21 @@ public class ASEIssueReportHandler {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("asc_xsrf_token", AuthHandler.getInstance().getBearerToken(jobData,errors));
 		final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
-	 	   if (cookies != null) {
-	            StringBuilder sb = new StringBuilder();
-	            for (HttpCookie cookie : cookies) {
-	                sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
-	            }
-	            headers.add("Cookie", sb.toString());
-	        }
+		
+	 	if (cookies != null) {
+	       StringBuilder sb = new StringBuilder();
+	       for (HttpCookie cookie : cookies) {
+	           sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
+	       }
+	       headers.add("Cookie", sb.toString());
+	    }
         HttpEntity<String> entity = new HttpEntity<>(headers);
         UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
         		.path(REST_ISSUE_DETAILS_FILE)
         		.queryParam("appId", jobData.getAppscanData().getAppid())
         		.queryParam("ids","[\""+issueId+"\"]");
 	        
-	        URI theURI = urlBuilder.build().encode().toUri();
+	    URI theURI = urlBuilder.build().encode().toUri();
 		ResponseEntity<byte[]> responseEntity = restTemplate.exchange(theURI, HttpMethod.GET, entity, byte[].class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
 			File tempFile = File.createTempFile("response", ".zip");

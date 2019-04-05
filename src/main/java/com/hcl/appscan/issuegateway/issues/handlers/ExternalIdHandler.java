@@ -27,19 +27,17 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 	public boolean isExternalIdPresent(AppScanIssue issue, PushJobData jobData, List<String> errors)throws Exception {
 		ResponseEntity<ASEIssueDetail> details= getIssueDetail(issue.get("id"), jobData, errors);
 		ASEIssueDetail.AttributeCollection.Attributes [] attributesArray=details.getBody().getAttributeCollection().getAttributeArray();
-		
+		// this is to directly check the externalId which is present as the 40th element in the attribute array
 		if (attributesArray[39].getLookup().equals("externalid")) {
-			if (attributesArray[39].getValue().length>0) {
+			if (attributesArray[39].getValue().length>0) 
 				return true;
-			}
 			return false;
 		}
-		
+		//fallback if the 40th element is not externalId
 		for (ASEIssueDetail.AttributeCollection.Attributes attribute :attributesArray) {
 			if (attribute.getLookup().equals("externalid")) {
-				if (attribute.getValue().length>0) {
+				if (attribute.getValue().length>0) 
 					return true;
-				}
 				break;
 			}
 		}
@@ -59,7 +57,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		}
 		ResponseEntity<ASEIssueDetail> response=getIssueDetail(issueId, jobData, errors);
 		ASEIssueDetail issueDetail=response.getBody();
-		IssueUpdateRequest requestEntity=new IssueUpdateRequest();
 		ASEIssueDetail.AttributeCollection.Attributes externalIdAttribute=null;
 		ASEIssueDetail.AttributeCollection.Attributes [] attributesArray=issueDetail.getAttributeCollection().getAttributeArray();
 		
@@ -74,7 +71,8 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 				}
 			}
 		}
-		
+		//create a request Entity
+		IssueUpdateRequest requestEntity=new IssueUpdateRequest();
 		requestEntity.appReleaseId=issueDetail.getAppReleaseId();
 		requestEntity.issueId=issueDetail.getIssueId();
 		IssueUpdateRequest.IssueAttributeCollection attributeCollection=new IssueUpdateRequest.IssueAttributeCollection();
@@ -95,13 +93,13 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HEADER_ASC_XSRF_TOKEN, AuthHandler.getInstance().getBearerToken(jobData,errors));
 		final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
-	 	   if (cookies != null) {
-	            StringBuilder sb = new StringBuilder();
-	            for (HttpCookie cookie : cookies) {
-	                sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
-	            }
-	            headers.add("Cookie", sb.toString());
-	        }
+	 	if (cookies != null) {
+	       StringBuilder sb = new StringBuilder();
+	       for (HttpCookie cookie : cookies) {
+	           sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
+	       }
+	       headers.add("Cookie", sb.toString());
+	    }
 		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		headers.add("If-Match", response.getHeaders().getETag());
@@ -121,13 +119,13 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(HEADER_ASC_XSRF_TOKEN, AuthHandler.getInstance().getBearerToken(jobData,errors));
 		final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
-	 	   if (cookies != null) {
-	            StringBuilder sb = new StringBuilder();
-	            for (HttpCookie cookie : cookies) {
-	                sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
-	            }
-	            headers.add("Cookie", sb.toString());
+	 	if (cookies != null) {
+	        StringBuilder sb = new StringBuilder();
+	        for (HttpCookie cookie : cookies) {
+	           sb.append(cookie.getName()).append("=").append(cookie.getValue()).append(";");
 	        }
+	        headers.add("Cookie", sb.toString());
+	    }
 		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<String> entity =new HttpEntity<>(headers);

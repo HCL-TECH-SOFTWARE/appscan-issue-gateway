@@ -39,8 +39,8 @@ public class GetApplicationsController {
 		{
 			logger.error("Error parsing JSON", e);
 		}
-		ApplicationsRetrievalHandler obj=new ApplicationsRetrievalHandler();
-		return obj.retrieveApplicationList(applicationData, errors);
+		ApplicationsRetrievalHandler handler=new ApplicationsRetrievalHandler();
+		return handler.retrieveApplicationList(applicationData, errors);
 	}
 }
 

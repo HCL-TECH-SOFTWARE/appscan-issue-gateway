@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2018,2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues.handlers;
@@ -49,12 +49,11 @@ public class AuthHandler implements IssueGatewayConstants {
 		String apikeysecret = jobData.getAppscanData().getApikeysecret();
 		
 		String key = url + apikeyid; //keys are the url + the apikeyid since we want to support multiple servers and users
-		
 		String bearerToken = bearerTokens.get(key);
 		
-		if ( (bearerToken != null) && isStillValid(url, bearerToken,productID)) {
-				return bearerToken;
-		}
+		if ((bearerToken != null) && isStillValid(url, bearerToken,productID))
+			return bearerToken;
+		
 		String newBearerToken = authenticate(url, apikeyid, apikeysecret,productID); 
 		bearerTokens.put(key, newBearerToken);
 		return newBearerToken;
@@ -69,10 +68,9 @@ public class AuthHandler implements IssueGatewayConstants {
 		String key = url + apikeyid; //keys are the url + the apikeyid since we want to support multiple servers and users
 		
 		String bearerToken = bearerTokens.get(key);  
-		if ( (bearerToken != null) && isStillValid(url, bearerToken,jobData.getAppscanProvider())) {
-			return bearerToken;
+		if ((bearerToken != null) && isStillValid(url, bearerToken,jobData.getAppscanProvider())) 
+			return bearerToken;		
 		
-		}		
 		String newBearerToken = authenticate(url, apikeyid, apikeysecret,productId); 
 		bearerTokens.put(key, newBearerToken);
 		return newBearerToken;
@@ -98,8 +96,7 @@ public class AuthHandler implements IssueGatewayConstants {
 			return response.getBody().sessionId;
         }
 		throw new Exception("Error: Receieved a " + response.getStatusCodeValue() + " status code from " + url+" .Please verify the url, id and secret ");
-    	
-	}
+    }
 	
 	private void setCookies(HttpHeaders headers) {
 		final List<String> cooks = headers.get("Set-Cookie");
