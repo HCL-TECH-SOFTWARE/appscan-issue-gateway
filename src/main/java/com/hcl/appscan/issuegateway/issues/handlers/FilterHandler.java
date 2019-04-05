@@ -32,15 +32,8 @@ public class FilterHandler {
 	public AppScanIssue[] filterIssues(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
 		List<AppScanIssue> filteredIssues=null ;
 		try {
-			if (jobData.getAppscanData().getAppscanProvider().equals(AppscanProvider.ASE.name())) {
-				
-				filteredIssues= includeFilterWithRegex(issues, jobData);
-				filteredIssues= excludeFilterWithRegex(filteredIssues, jobData);
-			}
-			else {
-				filteredIssues= includeFilterWithRegex(issues, jobData);
-			}
-			
+			filteredIssues= includeFilterWithRegex(issues, jobData);
+			filteredIssues= excludeFilterWithRegex(filteredIssues, jobData);
 			AppScanIssue[] finalizedIssues = filterOutPreviouslyHandledIssues(filteredIssues, jobData, errors);
 			return finalizedIssues;
 		} catch (Exception e) {
