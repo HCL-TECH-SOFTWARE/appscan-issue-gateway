@@ -87,7 +87,7 @@ test.json:
 				"password":   "xxxxxxxxxxxxxx",
 				"projectkey": "SEC",
 				"issuetype":  "Security",
-				"summary":    "Security issue: %IssueType% found by %Scanner%",
+				"summary":    "Security issue: %Issue Type% found by %Scanner%",
 				"severitymap": {
 					"High":   "High",
 					"Medium": "High",
@@ -100,7 +100,10 @@ test.json:
 			}
 		}
 	}
-	
+
+Please use the file ASE_issue_details_response.txt to know about the different attributes of issue details in ASE which can be used in the request json .E.g if you wish to use Discovery Method in the summary, you could do something like  :
+"summary":    "Security issue: %Issue Type% found by %Discovery Method%",
+
 Few JSON are self-explanatory, but for the purpose of understanding, refer the following summary:
 
 __appscanData__: configuration required to connect to IBM Application Security on Cloud or HCL AppScan On Cloud and extract issues
