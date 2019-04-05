@@ -48,8 +48,6 @@ public class PushJob extends Job {
 			updateResult(new PushJobResult(getId(), "Running - Filtering AppScan issues", errors, results));
 			FilterHandler filterHandler=new FilterHandler();
 			AppScanIssue[] filteredIssues = filterHandler.filterIssues(issues, jobData, errors);
-			//CreateIssueAndSyncHandler createIssueAndSyncHandler= new CreateIssueAndSyncHandler();
-			//createIssueAndSyncHandler.setExternalIdHandler(filterHandler.getExternalIdHandler());
 		
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issue reports", errors, results));
 			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
@@ -66,7 +64,6 @@ public class PushJob extends Job {
 			}
 			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
 				updateResult(new PushJobResult(getId(), "Running - Submitting issues and updating Appscan Issues", errors, results));
-				//createIssueAndSyncHandler.createDefectAndUpdateId(filteredIssues, jobData, jobData.getImData().getConfig(), errors, results, provider);
 				new CreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, errors, results, provider);
 			}
 			else {

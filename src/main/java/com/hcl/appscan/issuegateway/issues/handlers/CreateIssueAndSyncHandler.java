@@ -15,9 +15,7 @@ import common.IAppScanIssue;
 import common.IProvider;
 
 public class CreateIssueAndSyncHandler {
-	//Provider name
-	//private static String  PROVIDER_NAME = "jira";
-
+	
 	//Required fields
 	static String SERVER_URL  = "url";
 	static String USERNAME    = "username";
@@ -29,14 +27,8 @@ public class CreateIssueAndSyncHandler {
 	private static String SEVERITYFIELD = "severityfield";
 	private static String SEVERITYMAP   = "severitymap";
 	private static String SUMMARY       = "summary";
-	//private static String OTHERFIELDS   = "otherfields";
 	ExternalIdHandler externalIdHandler = new ExternalIdHandler();
 	
-	
-	/*public void setExternalIdHandler(ExternalIdHandler externalIdHandler) {
-		this.externalIdHandler = externalIdHandler;
-	}*/
-
 
 	public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
 		if (validate(jobData.getImData().getConfig())) {
@@ -90,7 +82,7 @@ public class CreateIssueAndSyncHandler {
 					config.put(SUMMARY, "AppScan: %IssueType% found at %Location%");
 				}
 				
-				//Set a Stringault issuetype if one doesn't exist
+				//Set a String default issuetype if one doesn't exist
 				if (config.get(ISSUETYPE) == null) {
 					config.put(ISSUETYPE, "Bug");
 				}

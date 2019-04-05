@@ -5,8 +5,6 @@
 package com.hcl.appscan.issuegateway.issues.handlers;
 
 import java.net.HttpCookie;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,25 +23,6 @@ import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public class ExternalIdHandler implements IssueGatewayConstants{
-	//private Map<String,ASEIssueDetail> issueDetailsMap=new HashMap<>();
-	//private Map<String,String> eTagMap=new HashMap<>();
-	
-	
-	/*public Map<String, ASEIssueDetail> getIssueDetailsMap() {
-		return issueDetailsMap;
-	}
-
-	public void setIssueDetailsMap(Map<String, ASEIssueDetail> issueDetailsMap) {
-		this.issueDetailsMap = issueDetailsMap;
-	}
-
-	public Map<String, String> geteTagMap() {
-		return eTagMap;
-	}
-
-	public void seteTagMap(Map<String, String> eTagMap) {
-		this.eTagMap = eTagMap;
-	}*/
 
 	public boolean isExternalIdPresent(AppScanIssue issue, PushJobData jobData, List<String> errors)throws Exception {
 		ResponseEntity<ASEIssueDetail> details= getIssueDetail(issue.get("id"), jobData, errors);
@@ -53,8 +32,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 			if (attributesArray[39].getValue().length>0) {
 				return true;
 			}
-			//issueDetailsMap.put(issue.get("id"), details.getBody());
-			//eTagMap.put(issue.get("id"), details.getHeaders().getETag());
 			return false;
 		}
 		
@@ -66,8 +43,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 				break;
 			}
 		}
-		//issueDetailsMap.put(issue.get("id"), details.getBody());
-		//eTagMap.put(issue.get("id"), details.getHeaders().getETag());
 		return false;
 		
 	}
@@ -84,12 +59,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		}
 		ResponseEntity<ASEIssueDetail> response=getIssueDetail(issueId, jobData, errors);
 		ASEIssueDetail issueDetail=response.getBody();
-		//if (issueDetailsMap.containsKey(issueId)) {
-		//	issueDetail=issueDetailsMap.get(issueId);
-		//}
-		//else {
-		//	issueDetail=getIssueDetail(issueId, jobData, errors).getBody();
-		//}
 		IssueUpdateRequest requestEntity=new IssueUpdateRequest();
 		ASEIssueDetail.AttributeCollection.Attributes externalIdAttribute=null;
 		ASEIssueDetail.AttributeCollection.Attributes [] attributesArray=issueDetail.getAttributeCollection().getAttributeArray();
@@ -106,9 +75,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 			}
 		}
 		
-		if (externalIdAttribute==null)
-			return ;//TODO handle this case properly
-		
 		requestEntity.appReleaseId=issueDetail.getAppReleaseId();
 		requestEntity.issueId=issueDetail.getIssueId();
 		IssueUpdateRequest.IssueAttributeCollection attributeCollection=new IssueUpdateRequest.IssueAttributeCollection();
@@ -122,7 +88,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		IssueUpdateRequest.IssueAttributeCollection.IssueAttribute [] attributeArray= {requestExternalIdAttribute};
 		attributeCollection.attributeArray=attributeArray;
 		requestEntity.attributeCollection=attributeCollection;
-		
 		
 		String url=jobData.getAppscanData().getUrl()+ASE_API_ISSUE_UPDATE.replaceAll("ISSUEID", issueId);
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
@@ -139,7 +104,6 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 	        }
 		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-		//headers.add("If-Match", eTagMap.get(issueId));
 		headers.add("If-Match", response.getHeaders().getETag());
 		HttpEntity<IssueUpdateRequest> entity =new HttpEntity<>(requestEntity,headers);
 		ResponseEntity<ASEIssueDetail> responseEntity=restTemplate.exchange(url,  HttpMethod.PUT, entity, ASEIssueDetail.class);

@@ -141,18 +141,6 @@ public class IssueRetrievalHandler implements IssueGatewayConstants{
 		return stateFilter;
 	}
 	
-	/*private String getStatusFilters(String userInput) {
-		String[] states = userInput.split(",");
-		String statusFilter = "";
-		for (String state : states) {
-			statusFilter +="Status=" +state+",";
-		}
-		if (statusFilter.length() > 1) {
-			statusFilter = statusFilter.substring(0, statusFilter.length()- ",".length());
-		}
-		return statusFilter;
-	}*/
-	
 	private String getIssueFilters(PushJobData jobData) {
 		Map<String, String> filters=jobData.getAppscanData().getIncludeIssuefilters();
 		String issueFilters="";
