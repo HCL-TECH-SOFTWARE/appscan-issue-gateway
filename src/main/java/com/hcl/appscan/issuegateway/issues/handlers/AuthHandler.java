@@ -73,7 +73,6 @@ public class AuthHandler implements IssueGatewayConstants {
 			return bearerToken;
 		
 		}		
-		//TODO: Handle error
 		String newBearerToken = authenticate(url, apikeyid, apikeysecret,productId); 
 		bearerTokens.put(key, newBearerToken);
 		return newBearerToken;
@@ -86,7 +85,6 @@ public class AuthHandler implements IssueGatewayConstants {
 			return getAuthToken(url, apikeyid, apikeysecret);
 	}
 	
-	//TODO try to make this logic simple and align it with the correct use of rest template
 	private String getSessionId(String url, String apikeyid, String apikeysecret) throws Exception {
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 		ASEApiKeyLoginRequest apiKeyLoginRequest1 = new ASEApiKeyLoginRequest();
@@ -162,7 +160,7 @@ public class AuthHandler implements IssueGatewayConstants {
 	
 	@SuppressWarnings("unused")
 	private static class AppsCountResponse {
-		public String Total;//TODO check if this applicable to ASE as well.
+		public String Total;
 	}
 	
 	@SuppressWarnings("unused")

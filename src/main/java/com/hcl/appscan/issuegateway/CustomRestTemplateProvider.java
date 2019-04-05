@@ -31,16 +31,8 @@ public class CustomRestTemplateProvider extends RestTemplate{
 			
 			try {
 				customRestTemplate = getRestTemplate();
-			} catch (KeyManagementException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (KeyStoreException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NoSuchAlgorithmException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch(Exception e) {
+			}  
+			catch(Exception e) {
 				e.printStackTrace();
 			}
 			

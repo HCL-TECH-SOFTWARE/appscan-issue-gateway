@@ -29,7 +29,7 @@ public class ProvidersRestController {
 		return ProvidersRepository.getProviders(new ArrayList<String>()).values();
 	}
     
-    // this is to create a place holder for v2 version .TODO : update the function to get the description related to ASE request json
+    // this is to create a place holder for v2 version.
     @RequestMapping(value="/v2/providers",method = RequestMethod.GET, produces = "application/json")
     @ApiOperation(value="Get configured issue service providers",notes="This API returns all configured issue service providers. " +
     		"Issue service providers are encouraged to include documentation about their specific configuration requirements " +
