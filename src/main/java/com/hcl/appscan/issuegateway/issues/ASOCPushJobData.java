@@ -9,36 +9,148 @@ import java.util.Map;
 import io.swagger.annotations.ApiModelProperty;
 
 public class ASOCPushJobData {
-	public AppScanDataV1 appscanData;
-	public IMDataV1 imData;
-	
-	static public class AppScanDataV1 {
+	private AppScanDataV1 appscanData;
+	private IMDataV1 imData;
+
+	public AppScanDataV1 getAppscanData() {
+		return appscanData;
+	}
+
+	public IMDataV1 getImData() {
+		return imData;
+	}
+
+	public class AppScanDataV1 {
 		@ApiModelProperty(position = 1, required = false, value = "The root URL if connecting to any version of ASoC other than public cloud", example = "https://appscan.ibmcloud.com")
-		public String url = "https://appscan.ibmcloud.com";
+		private String url = "https://appscan.ibmcloud.com";
 		@ApiModelProperty(position = 2, required = true, value = "Your API Key Id generated from Application Security on Cloud")
-		public String apikeyid;
+		private String apikeyid;
 		@ApiModelProperty(position = 3, required = true, value = "Your API Key Secret generated from Application Security on Cloud")
-		public String apikeysecret;
+		private String apikeysecret;
 		@ApiModelProperty(position = 4, required = true, value = "The Id of the ASoC application to be processed")
-		public String appid;
+		private String appid;
 		@ApiModelProperty(position = 5, required = false, example = "25", value = "Maximum number of issues to process. The default is 25. Pass in a value of -1 to have no limit")
-		public Integer maxissues = 25;
+		private Integer maxissues = 25;
 		@ApiModelProperty(position = 6, required = false, value = "Issue States to process.  The default is to only process issues that are 'Open'. To also process new issues use 'New, Open'")
-		public String issuestates = "Open";
+		private String issuestates = "Open";
 		@ApiModelProperty(position = 7, required = false, value = "Comma separated list of ASoC policy ids used to filter the results. If not specified, the application's registered policies will be used")
-		public String policyids;	
+		private String policyids;
 		@ApiModelProperty(position = 8, required = false, value = "List of regex experessions to run on Issue fields, to further filter the results")
-		public Map<String, String> issuefilters;
+		private Map<String, String> issuefilters;
 		@ApiModelProperty(position = 9, required = false, value = "Other internal debug or demo settings")
-		public Map<String, String> other;
+		private Map<String, String> other;
 
+		public String getUrl() {
+			return url;
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
+		}
+
+		public String getApikeyid() {
+			return apikeyid;
+		}
+
+		public void setApikeyid(String apikeyid) {
+			this.apikeyid = apikeyid;
+		}
+
+		public String getApikeysecret() {
+			return apikeysecret;
+		}
+
+		public void setApikeysecret(String apikeysecret) {
+			this.apikeysecret = apikeysecret;
+		}
+
+		public String getAppid() {
+			return appid;
+		}
+
+		public void setAppid(String appid) {
+			this.appid = appid;
+		}
+
+		public Integer getMaxissues() {
+			return maxissues;
+		}
+
+		public void setMaxissues(Integer maxissues) {
+			this.maxissues = maxissues;
+		}
+
+		public String getIssuestates() {
+			return issuestates;
+		}
+
+		public void setIssuestates(String issuestates) {
+			this.issuestates = issuestates;
+		}
+
+		public String getPolicyids() {
+			return policyids;
+		}
+
+		public void setPolicyids(String policyids) {
+			this.policyids = policyids;
+		}
+
+		public Map<String, String> getIssuefilters() {
+			return issuefilters;
+		}
+
+		public void setIssuefilters(Map<String, String> issuefilters) {
+			this.issuefilters = issuefilters;
+		}
+
+		public Map<String, String> getOther() {
+			return other;
+		}
+
+		public void setOther(Map<String, String> other) {
+			this.other = other;
+		}
+
+		@Override
+		public String toString() {
+			return "AppScanDataV1 [url=" + url + ", apikeyid=" + apikeyid + ", apikeysecret=" + apikeysecret
+					+ ", appid=" + appid + ", maxissues=" + maxissues + ", issuestates=" + issuestates + ", policyids="
+					+ policyids + ", issuefilters=" + issuefilters + ", other=" + other + "]";
+		}
 	}
-	
-	static public class IMDataV1 {
+
+	public class IMDataV1 {
 		@ApiModelProperty(position = 1, required = true, value = "The Issue Management provider to use (e.g. 'jira')")
-		public String provider;
+		private String provider;
 		@ApiModelProperty(position = 2, required = true, value = "List of configuration settings to be used while processing the issues. See the help of the appropriate Issue Management provider for specifics")
-		public Map<String,Object> config;
-	}
-}
+		private Map<String, Object> config;
 
+		public String getProvider() {
+			return provider;
+		}
+
+		public void setProvider(String provider) {
+			this.provider = provider;
+		}
+
+		public Map<String, Object> getConfig() {
+			return config;
+		}
+
+		public void setConfig(Map<String, Object> config) {
+			this.config = config;
+		}
+
+		@Override
+		public String toString() {
+			return "IMDataV1 [provider=" + provider + ", config=" + config + "]";
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "ASOCPushJobData [appscanData=" + appscanData + ", imData=" + imData + "]";
+	}
+
+}

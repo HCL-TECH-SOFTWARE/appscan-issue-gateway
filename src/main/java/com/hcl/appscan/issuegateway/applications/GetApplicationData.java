@@ -17,7 +17,7 @@ public class GetApplicationData {
 	@ApiModelProperty(position = 4, required = true, value = "API Key Secret generated from ASE or ASoC account")
 	private String apikeysecret;
 	@ApiModelProperty(position = 5, required = false, value = "This is an optional field applicable only for ASE.If provided, this API returns the applications containing this tag.")
-	public String tag="";
+	private String tag="";
 	
 	public String getAppscanProvider() {
 		return appscanProvider;

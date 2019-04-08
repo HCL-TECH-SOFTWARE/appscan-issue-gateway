@@ -59,8 +59,8 @@ public class ApplicationsRetrievalHandler implements IssueGatewayConstants {
         	.path(getApplicationsAPI(productId));
 	    if (isASE(productId)) {
 	    	urlBuilder.queryParam("columns", "name");
-	    	if (jobData.tag!=null && !jobData.tag.isEmpty())
-		       urlBuilder.queryParam("query", "tags="+jobData.tag);
+	    	if (jobData.getTag()!=null && !jobData.getTag().isEmpty())
+		       urlBuilder.queryParam("query", "tags="+jobData.getTag());
 	    }
         if (isASOC(productId))
         	urlBuilder.queryParam("$select", "Id,Name");
