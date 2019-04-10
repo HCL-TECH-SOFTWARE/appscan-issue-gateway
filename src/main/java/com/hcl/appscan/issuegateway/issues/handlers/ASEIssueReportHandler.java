@@ -28,7 +28,8 @@ import com.google.common.io.Files;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-
+import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.auth.AuthHandler;
 import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
 
 public class ASEIssueReportHandler {
@@ -61,8 +62,8 @@ public class ASEIssueReportHandler {
 		RestTemplate restTemplate =CustomRestTemplateProvider.getCustomizedrestTemplate();
 	    restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("asc_xsrf_token", AuthHandler.getInstance().getBearerToken(jobData,errors));
-		final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
+		headers.add("asc_xsrf_token", ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+		final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 		
 	 	if (cookies != null) {
 	       StringBuilder sb = new StringBuilder();

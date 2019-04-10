@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
+import com.hcl.appscan.issuegateway.issues.handlers.auth.ASOCAuthHandler;
 
 public class ReportHandler {
 	
@@ -65,7 +66,7 @@ public class ReportHandler {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData,errors));
 		headers.add("Content-Type", "application/json");
 		headers.add("Accept", "application/json");	
 		CreateReportRequest createReportRequest = new CreateReportRequest();
@@ -88,7 +89,7 @@ public class ReportHandler {
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData,errors));
+			headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData,errors));
 			headers.add("Content-Type", "application/json");
 			headers.add("Accept", "application/json");	
 			HttpEntity<Object> entity = new HttpEntity<Object>(headers);
@@ -113,7 +114,7 @@ public class ReportHandler {
 		RestTemplate restTemplate = new RestTemplate(messageConverters);
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", AuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData,errors));
         HttpEntity<String> entity = new HttpEntity<>(headers);
 		ResponseEntity<byte[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class, "1");
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {

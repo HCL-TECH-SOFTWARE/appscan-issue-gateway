@@ -41,44 +41,19 @@ public class PushJob extends Job {
 
 			// getIssues
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issues", errors, results));
-//			AppScanIssue[] issues = new IssueRetrievalHandler().retrieveIssues(jobData, errors);
 			AppScanIssue[] issues = appscanProvider.getIssues(errors);
 
 			// getFilteredIssues TODO handle this in appscan Provider?
 			updateResult(new PushJobResult(getId(), "Running - Filtering AppScan issues", errors, results));
-//			FilterHandler filterHandler = new FilterHandler();
-//			AppScanIssue[] filteredIssues = filterHandler.filterIssues(issues, jobData, errors);
 			AppScanIssue[] filteredIssues = appscanProvider.getFilteredIssues(issues, errors);
 
 			// retrieveReports
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issue reports", errors, results));
-//			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
-//				new ASEIssueReportHandler().retrieveReports(filteredIssues, jobData, errors);
-//			} else {
-//				new ReportHandler().retrieveReports(filteredIssues, jobData, errors);
-//			}
 			appscanProvider.retrieveReports(filteredIssues, errors);
 			
-			//updateAppScanProvider
-//			if (jobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(AppscanProvider.ASE.name())) {
-//				updateResult(new PushJobResult(getId(), "Running - Submitting issues and updating Appscan Issues",
-//						errors, results));
-//				new CreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, errors, results,
-//						provider);
-//			} else {
-//				updateResult(new PushJobResult(getId(), "Running - Submitting issues", errors, results));
-//				provider.submitIssues(filteredIssues, jobData.getImData().getConfig(), errors, results);
-//
-//				updateResult(new PushJobResult(getId(), "Running - Updating AppScan issues", errors, results));
-//				new CommentHandler().submitComments(jobData, errors, results);
-//			}
-
-			updateResult(new PushJobResult(getId(), "Running - Submitting issues", errors, results));
-			provider.submitIssues(filteredIssues, jobData.getImData().getConfig(), errors, results);
-
-			updateResult(new PushJobResult(getId(), "Running - Updating AppScan issues", errors, results));
-//			new CommentHandler().submitComments(jobData, errors, results);
-			appscanProvider.updateAppScanProvider(errors, results);
+			// submit issues and update the AppScan provider
+			updateResult(new PushJobResult(getId(), "Running - Submitting issues to DTS and updating AppScan Issues", errors, results));
+			appscanProvider.submitIssuesAndUpdateAppScanProvider(filteredIssues,errors,results,provider);
 
 			updateResult(new PushJobResult(getId(), "Completed", errors, results));
 			return true;

@@ -6,9 +6,11 @@ import java.util.Map;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 import com.hcl.appscan.issuegateway.issues.handlers.CommentHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.FilterHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.IssueRetrievalHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.ReportHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.filter.ASOCFilterHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.issueretrieval.ASOCIssueRetrievalHandler;
+
+import common.IProvider;
 
 public class ASOCProvider implements IAppScanProvider {
 
@@ -20,12 +22,12 @@ public class ASOCProvider implements IAppScanProvider {
 
 	@Override
 	public AppScanIssue[] getIssues(List<String> errors) throws Exception {
-		return new IssueRetrievalHandler().retrieveIssues(jobData, errors);
+		return new ASOCIssueRetrievalHandler().retrieveIssues(jobData, errors);
 	}
 
 	@Override
 	public AppScanIssue[] getFilteredIssues(AppScanIssue[] issues, List<String> errors) {
-		return new FilterHandler().filterIssues(issues, jobData, errors);
+		return new ASOCFilterHandler().filterIssues(issues, jobData, errors);
 	}
 
 	@Override
@@ -34,8 +36,8 @@ public class ASOCProvider implements IAppScanProvider {
 	}
 
 	@Override
-	public void updateAppScanProvider(List<String> errors, Map<String, String> results) throws Exception {
+	public void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues,List<String> errors, Map<String, String> results,IProvider provider) throws Exception {
+		provider.submitIssues(filteredIssues, jobData.getImData().getConfig(), errors, results);
 		new CommentHandler().submitComments(jobData, errors, results);
 	}
-
 }

@@ -21,6 +21,7 @@ import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.ASEIssueDetail;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
+import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
 
 public class ExternalIdHandler implements IssueGatewayConstants{
 
@@ -91,8 +92,8 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_ASC_XSRF_TOKEN, AuthHandler.getInstance().getBearerToken(jobData,errors));
-		final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
+		headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+		final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 	 	if (cookies != null) {
 	       StringBuilder sb = new StringBuilder();
 	       for (HttpCookie cookie : cookies) {
@@ -117,8 +118,8 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_ASC_XSRF_TOKEN, AuthHandler.getInstance().getBearerToken(jobData,errors));
-		final List<HttpCookie> cookies=AuthHandler.getInstance().getCookies();
+		headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+		final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 	 	if (cookies != null) {
 	        StringBuilder sb = new StringBuilder();
 	        for (HttpCookie cookie : cookies) {

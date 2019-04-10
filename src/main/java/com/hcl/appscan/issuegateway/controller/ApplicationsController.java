@@ -4,6 +4,9 @@
  */
 package com.hcl.appscan.issuegateway.controller;
 
+// this API will not be available in the current release .Will be redesigned and provided in phase 2
+
+/*
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,4 +46,4 @@ public class ApplicationsController {
 		ApplicationsRetrievalHandler handler = new ApplicationsRetrievalHandler();
 		return handler.retrieveApplicationList(applicationData, errors);
 	}
-}
+}*/

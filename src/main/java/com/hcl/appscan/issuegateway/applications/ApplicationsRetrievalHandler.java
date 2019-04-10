@@ -3,7 +3,7 @@
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.applications;
-
+/*
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
@@ -52,7 +52,7 @@ public class ApplicationsRetrievalHandler implements IssueGatewayConstants {
 	    }
 	 	headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 	 	headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-	 	headers.add("Accept-Language", "en-US,en;q=0.9");
+	 	headers.add(HEADER_ACCEPT_LANGUAGE, "en-US,en;q=0.9");
 	 		
 	    HttpEntity<Object> entity = new HttpEntity<Object>(headers);
 	    UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getUrl())
@@ -99,4 +99,4 @@ public class ApplicationsRetrievalHandler implements IssueGatewayConstants {
 			return true;
 		return false;
 	}
-}
+}*/

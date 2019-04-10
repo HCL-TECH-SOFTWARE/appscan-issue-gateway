@@ -33,8 +33,7 @@ public class SwaggerConfiguration {
         	.apiInfo(apiInfo())
         	.tags(
         			new Tag("providers",""),
-        			new Tag("issues",""),
-        			new Tag("applications","")
+        			new Tag("issues","")
         		 )
         	.select()                                  
         	.apis(RequestHandlerSelectors.basePackage("com.hcl.appscan.issuegateway"))             

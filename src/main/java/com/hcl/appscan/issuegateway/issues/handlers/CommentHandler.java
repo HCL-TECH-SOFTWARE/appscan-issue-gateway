@@ -19,6 +19,7 @@ import com.hcl.appscan.issuegateway.IssueGatewayConstants;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
+import com.hcl.appscan.issuegateway.issues.handlers.auth.ASOCAuthHandler;
 
 public class CommentHandler implements IssueGatewayConstants{
 	
@@ -30,7 +31,7 @@ public class CommentHandler implements IssueGatewayConstants{
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_AUTHORIZATION, AuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add(HEADER_AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData,errors));
 		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<String> entity = new HttpEntity<>(headers);
@@ -63,7 +64,7 @@ public class CommentHandler implements IssueGatewayConstants{
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 			HttpHeaders headers = new HttpHeaders();
-			headers.add(HEADER_AUTHORIZATION, AuthHandler.getInstance().getBearerToken(jobData,errors));
+			headers.add(HEADER_AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData,errors));
 			headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 			headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 			Comment comment = new Comment();

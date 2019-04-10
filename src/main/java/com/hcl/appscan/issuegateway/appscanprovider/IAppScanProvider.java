@@ -5,6 +5,8 @@ import java.util.Map;
 
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 
+import common.IProvider;
+
 public interface IAppScanProvider {
 
 	AppScanIssue[] getIssues(List<String> errors) throws Exception;
@@ -12,7 +14,9 @@ public interface IAppScanProvider {
 	AppScanIssue[] getFilteredIssues(AppScanIssue[] issues, List<String> errors);
 
 	void retrieveReports(AppScanIssue[] filteredIssues, List<String> errors) throws Exception;
+	
+	void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues,List<String> errors, Map<String, String> results,IProvider provider) throws Exception;
 
-	void updateAppScanProvider(List<String> errors, Map<String, String> results) throws Exception;
+	//void updateAppScanProvider(List<String> errors, Map<String, String> results) throws Exception;
 
 }
