@@ -15,46 +15,49 @@ import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public abstract class FilterHandler {
+
 	protected final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	public AppScanIssue[] filterIssues(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
-		List<AppScanIssue> filteredIssues=null ;
+		List<AppScanIssue> filteredIssues = null;
 		try {
-			filteredIssues= includeFilterWithRegex(issues, jobData);
-			filteredIssues= excludeFilterWithRegex(filteredIssues, jobData);
+			filteredIssues = includeFilterWithRegex(issues, jobData);
+			filteredIssues = excludeFilterWithRegex(filteredIssues, jobData);
 			AppScanIssue[] finalizedIssues = filterOutPreviouslyHandledIssues(filteredIssues, jobData, errors);
 			return finalizedIssues;
 		} catch (Exception e) {
 			errors.add("Internal Server Error while filtering issues: " + e.getMessage());
 			logger.error("Internal Server Error while filtering issues", e);
 		}
-		//If there were any failures at all, just return an empty list. We don't want to mistakenly create issues
+		// If there were any failures at all, just return an empty list. We don't want
+		// to mistakenly create issues
 		return new AppScanIssue[0];
 	}
-	
+
 	private List<AppScanIssue> includeFilterWithRegex(AppScanIssue[] issues, PushJobData jobData) {
-		
-		if ((jobData.getAppscanData().getIncludeIssuefilters()==null || jobData.getAppscanData().getIncludeIssuefilters().isEmpty())||jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
+
+		if ((jobData.getAppscanData().getIncludeIssuefilters() == null
+				|| jobData.getAppscanData().getIncludeIssuefilters().isEmpty())
+				|| jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
 			return Arrays.asList(issues);
-		
+
 		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
-		
-		//Pre-compile the patterns so we don't have to do it each issue iteration
+
+		// Pre-compile the patterns so we don't have to do it each issue iteration
 		Map<String, List<Pattern>> patterns = new HashMap<String, List<Pattern>>();
-		for (String field: jobData.getAppscanData().getIncludeIssuefilters().keySet()) {
-			String [] values=jobData.getAppscanData().getIncludeIssuefilters().get(field).split(",");
-			List<Pattern> list=new ArrayList<>();
-			for (String value:values) {
+		for (String field : jobData.getAppscanData().getIncludeIssuefilters().keySet()) {
+			String[] values = jobData.getAppscanData().getIncludeIssuefilters().get(field).split(",");
+			List<Pattern> list = new ArrayList<>();
+			for (String value : values) {
 				list.add(Pattern.compile(value));
 			}
 			patterns.put(field, list);
 		}
-		
+
 		for (AppScanIssue issue : issues) {
 			boolean foundMatch = false;
-			second:
-			for (String field: patterns.keySet()) {
-				for (Pattern p :patterns.get(field)) {
+			second: for (String field : patterns.keySet()) {
+				for (Pattern p : patterns.get(field)) {
 					Matcher m = p.matcher(issue.get(field));
 					if (m.matches()) {
 						foundMatch = true;
@@ -66,30 +69,31 @@ public abstract class FilterHandler {
 				filteredIssues.add(issue);
 			}
 		}
- 	   return filteredIssues;	
+		return filteredIssues;
 	}
-	
+
 	private List<AppScanIssue> excludeFilterWithRegex(List<AppScanIssue> issues, PushJobData jobData) {
-		if ((jobData.getAppscanData().getExcludeIssuefilters() == null||jobData.getAppscanData().getExcludeIssuefilters().isEmpty())||jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
+		if ((jobData.getAppscanData().getExcludeIssuefilters() == null
+				|| jobData.getAppscanData().getExcludeIssuefilters().isEmpty())
+				|| jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
 			return issues;
 		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
-		
-		//Pre-compile the patterns so we don't have to do it each issue iteration
+
+		// Pre-compile the patterns so we don't have to do it each issue iteration
 		Map<String, List<Pattern>> patterns = new HashMap<String, List<Pattern>>();
-		for (String field: jobData.getAppscanData().getExcludeIssuefilters().keySet()) {
-			String [] values=jobData.getAppscanData().getExcludeIssuefilters().get(field).split(",");
-			List<Pattern> list=new ArrayList<>();
-			for (String value:values) {
+		for (String field : jobData.getAppscanData().getExcludeIssuefilters().keySet()) {
+			String[] values = jobData.getAppscanData().getExcludeIssuefilters().get(field).split(",");
+			List<Pattern> list = new ArrayList<>();
+			for (String value : values) {
 				list.add(Pattern.compile(value));
 			}
 			patterns.put(field, list);
 		}
-		
+
 		for (AppScanIssue issue : issues) {
 			boolean foundMatch = false;
-			second:
-			for (String field: patterns.keySet()) {
-				for (Pattern p :patterns.get(field)) {
+			second: for (String field : patterns.keySet()) {
+				for (Pattern p : patterns.get(field)) {
 					Matcher m = p.matcher(issue.get(field));
 					if (m.matches()) {
 						foundMatch = true;
@@ -101,11 +105,12 @@ public abstract class FilterHandler {
 				filteredIssues.add(issue);
 			}
 		}
- 	   return filteredIssues;	
+		return filteredIssues;
 	}
-	
-	protected abstract AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) throws Exception ;
-	
+
+	protected abstract AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData,
+			List<String> errors) throws Exception;
+
 	protected boolean shouldCheckDuplicates(PushJobData jobData) {
 		if (jobData.getAppscanData().getOther() != null) {
 			if (jobData.getAppscanData().getOther().get("checkduplicates") != null) {

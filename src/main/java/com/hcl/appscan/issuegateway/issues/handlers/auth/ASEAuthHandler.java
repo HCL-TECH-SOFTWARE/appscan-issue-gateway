@@ -11,8 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
 import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
+import com.hcl.appscan.issuegateway.IssueGatewayConstants;
 
-public class ASEAuthHandler extends AuthHandler {
+public class ASEAuthHandler extends AuthHandler implements IssueGatewayConstants {
 	private static ASEAuthHandler authHandler;
 	private final List<HttpCookie> cookies = new ArrayList<>();
 	
@@ -77,8 +78,14 @@ public class ASEAuthHandler extends AuthHandler {
 
 
 	@Override
-	protected String authenticate(String url, String apikeyid, String apikeysecret) throws Exception {
-		return getSessionId(url, apikeyid, apikeysecret);
+	protected String authenticate(String url, String apikeyid, String apikeysecret) {
+		try {
+			return getSessionId(url, apikeyid, apikeysecret);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null; // TODO
 	}
 
 

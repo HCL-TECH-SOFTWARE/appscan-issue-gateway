@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
-import com.hcl.appscan.issuegateway.issues.ASOCPushJobData;
+import com.hcl.appscan.issuegateway.issues.V1PushJobData;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 import com.hcl.appscan.issuegateway.issues.PushJobResult;
 import com.hcl.appscan.issuegateway.issues.PushJobService;
@@ -40,7 +40,7 @@ public class PushJobController {
 			+ "The job is completely controlled by the JSON that is passed in. The details of the JSON will vary depending on your target issue management system."
 			+ "To view configuration details, invoke the GET /providers API below and the details will be in the response", value = "Create a job to push AppScan issues to an issue management system")
 	PushJobResult postIssuesPushJobs(
-			@Valid @RequestBody @ApiParam(name = "body", required = true) ASOCPushJobData submitJobData) {
+			@Valid @RequestBody @ApiParam(name = "body", required = true) V1PushJobData submitJobData) {
 		try {
 			logger.debug("New Request.  Payload:\n"
 					+ new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData));

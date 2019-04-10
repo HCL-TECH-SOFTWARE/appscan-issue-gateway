@@ -5,8 +5,8 @@ import java.util.Map;
 
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.CommentHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.ReportHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.ASOCCommentHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.ASOCReportHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.filter.ASOCFilterHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.issueretrieval.ASOCIssueRetrievalHandler;
 
@@ -32,12 +32,13 @@ public class ASOCProvider implements IAppScanProvider {
 
 	@Override
 	public void retrieveReports(AppScanIssue[] filteredIssues, List<String> errors) throws Exception {
-		new ReportHandler().retrieveReports(filteredIssues, jobData, errors);
+		new ASOCReportHandler().retrieveReports(filteredIssues, jobData, errors);
 	}
 
 	@Override
-	public void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues,List<String> errors, Map<String, String> results,IProvider provider) throws Exception {
+	public void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues, List<String> errors,
+			Map<String, String> results, IProvider provider) throws Exception {
 		provider.submitIssues(filteredIssues, jobData.getImData().getConfig(), errors, results);
-		new CommentHandler().submitComments(jobData, errors, results);
+		new ASOCCommentHandler().submitComments(jobData, errors, results);
 	}
 }

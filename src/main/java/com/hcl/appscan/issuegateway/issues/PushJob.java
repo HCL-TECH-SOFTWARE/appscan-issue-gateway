@@ -23,12 +23,10 @@ public class PushJob extends Job {
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	private PushJobData jobData;
 	private IAppScanProvider appscanProvider;
 	private IProvider provider;
 
-	public PushJob(PushJobData jobData, IAppScanProvider appscanProvider, IProvider provider) {
-		this.jobData = jobData;
+	public PushJob(IAppScanProvider appscanProvider, IProvider provider) {
 		this.appscanProvider = appscanProvider;
 		this.provider = provider;
 	}
@@ -43,17 +41,17 @@ public class PushJob extends Job {
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issues", errors, results));
 			AppScanIssue[] issues = appscanProvider.getIssues(errors);
 
-			// getFilteredIssues TODO handle this in appscan Provider?
 			updateResult(new PushJobResult(getId(), "Running - Filtering AppScan issues", errors, results));
 			AppScanIssue[] filteredIssues = appscanProvider.getFilteredIssues(issues, errors);
 
 			// retrieveReports
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issue reports", errors, results));
 			appscanProvider.retrieveReports(filteredIssues, errors);
-			
+
 			// submit issues and update the AppScan provider
-			updateResult(new PushJobResult(getId(), "Running - Submitting issues to DTS and updating AppScan Issues", errors, results));
-			appscanProvider.submitIssuesAndUpdateAppScanProvider(filteredIssues,errors,results,provider);
+			updateResult(new PushJobResult(getId(), "Running - Submitting issues to DTS and updating AppScan Issues",
+					errors, results));
+			appscanProvider.submitIssuesAndUpdateAppScanProvider(filteredIssues, errors, results, provider);
 
 			updateResult(new PushJobResult(getId(), "Completed", errors, results));
 			return true;

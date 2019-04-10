@@ -15,6 +15,7 @@ import org.apache.commons.collections4.map.PassiveExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.issues.PushJobResult;
@@ -25,36 +26,39 @@ public class JobManager {
 	private Map<String, PushJobResult> jobResults;
 	private ExecutorService executor;
 	private static final Logger logger = LoggerFactory.getLogger(JobManager.class);
-		
+
 	public static synchronized JobManager getInstance() {
 		if (jobManager == null) {
 			jobManager = new JobManager();
 		}
 		return jobManager;
 	}
-	
-	private JobManager () {
+
+	private JobManager() {
 		executor = Executors.newCachedThreadPool();
-		jobResults = Collections.synchronizedMap(new PassiveExpiringMap<String,PushJobResult>(1000 * 60 * 60 * 3)); // Expiration time of 3 hours
-	}	
-	
-	public PushJobResult submitJob(Job job){
+		// Expiration time of 3 hours
+		jobResults = Collections.synchronizedMap(new PassiveExpiringMap<String, PushJobResult>(1000 * 60 * 60 * 3));
+	}
+
+	public PushJobResult submitJob(Job job) {
 		executor.submit(new FutureTask<Boolean>(job));
 		jobResults.put(job.getId(), new PushJobResult(job.getId(), "Created", null, null));
 		return jobResults.get(job.getId());
 	}
-	
-	public PushJobResult getJobResult(String id) throws EntityNotFoundException{
+
+	public PushJobResult getJobResult(String id) throws EntityNotFoundException {
 		if (!jobResults.containsKey(id)) {
-			throw new EntityNotFoundException(PushJobResult.class,"id" ,id);
+			throw new EntityNotFoundException(PushJobResult.class, "id", id);
 		}
 		return jobResults.get(id);
 	}
-	
+
 	public void updateJobResult(PushJobResult jobResult) {
-    	try {
-    		logger.debug(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(jobResult));
-    	} catch (Exception e) {e.printStackTrace();}
+		try {
+			logger.debug(new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(jobResult));
+		} catch (JsonProcessingException e) {
+			logger.error(e.getMessage());
+		}
 		jobResults.put(jobResult.getId(), jobResult);
 	}
 }

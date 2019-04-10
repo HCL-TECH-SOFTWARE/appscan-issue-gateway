@@ -17,18 +17,20 @@ class SampleProvider implements IProvider {
 	String getId() {
 		"sample"
 	}
-	
+
 	List<String> getDescription() {
 		Arrays.asList("A trivial provider to show the basics of adding a provider")
 	}
-	
+
+	@Override
 	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results) {
 		//Just extract the Id and Severity out of each issue and return them back as a result Map (which the caller of the Service REST API could do something with);
 		for (IAppScanIssue issue : issues) {
 			results.put(issue.get("Id"), issue.get("Severity"));
 		}
 	}
-	//If issues to be processed one by one .Only for ASE.
+
+	@Override
 	public void submitIssue(IAppScanIssue issues, Map<String, Object> config, List<String> errors, Map<String, String> results) {
 		results.put(issue.get("Id"), issue.get("Severity"));
 	}

@@ -1,5 +1,7 @@
 package com.hcl.appscan.issuegateway.issues.handlers.issueretrieval;
 
+import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_ASC_XSRF_TOKEN;
+
 import java.net.HttpCookie;
 import java.net.URI;
 import java.util.List;
@@ -23,18 +25,22 @@ import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
 
-public class ASEIssueRetrievalHandler extends IssueRetrievalHandler{
+public class ASEIssueRetrievalHandler implements IIssueRetrievalHandler {
+	
 	private final String ASE_API_ISSUES = "/api/issues";
 	private final String ASE_API_APPLICATION_DETAILS="/api/applications/APPLICATIONID";
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
+	@Override
 	public AppScanIssue[] retrieveIssues(PushJobData jobData, List<String> errors)  throws Exception{
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 		try {
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 	    	HttpHeaders headers = new HttpHeaders();
-	 	    headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData, errors));
-	 	    setHeaders(headers);
+	 	    headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData));
+			headers.add("Content-Type", "application/json");
+			headers.add("Accept", "application/json");
+			headers.add("Accept-Language", "en-US,en;q=0.9");
 	 		
 	 		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl());
 	        urlBuilder.path(ASE_API_ISSUES)
@@ -51,7 +57,7 @@ public class ASEIssueRetrievalHandler extends IssueRetrievalHandler{
 	        }
 	        return response.getBody();
 	    }
-	    catch ( RestClientException e) {
+	    catch (RestClientException e) {
 			errors.add("Internal Server Error while retrieving AppScan Issues: " + e.getMessage());
 			logger.error("Internal Server Error while retrieving AppScan Issues", e);
 	    }
@@ -66,7 +72,7 @@ public class ASEIssueRetrievalHandler extends IssueRetrievalHandler{
 			RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 			HttpHeaders headers=new HttpHeaders();
-			headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+			headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData));
 			final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 		 	if (cookies != null) {
 		       StringBuilder sb = new StringBuilder();
@@ -75,7 +81,9 @@ public class ASEIssueRetrievalHandler extends IssueRetrievalHandler{
 		       }
 		       headers.add("Cookie", sb.toString());
 		    }
-		 	setHeaders(headers);
+			headers.add("Content-Type", "application/json");
+			headers.add("Accept", "application/json");
+			headers.add("Accept-Language", "en-US,en;q=0.9");
 		 	HttpEntity<Object> entity=new HttpEntity<>(headers);
 		 	String url=jobData.getAppscanData().getUrl()+ASE_API_APPLICATION_DETAILS.replaceAll("APPLICATIONID",jobData.getAppscanData().getAppid() );
 		 	response=restTemplate.exchange(url, HttpMethod.GET, entity, ApplicationName.class);

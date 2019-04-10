@@ -33,6 +33,5 @@ interface IProvider {
 	String       getId()
 	List<String> getDescription()
 	void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results)
-	//this is to process the issues one by one .Only for ASE.
 	void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results)	
 }

@@ -9,9 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface IProvider {
-	public String       getId();
+
+	public String getId();
+
 	public List<String> getDescription();
-	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results);
-	//this is to process the issues one by one.Only for ASE.
-	public void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results);
+
+	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors,
+			Map<String, String> results);
+
+	public void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors,
+			Map<String, String> results);
 }

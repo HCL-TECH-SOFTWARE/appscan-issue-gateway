@@ -6,7 +6,7 @@ import java.util.Map;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 import com.hcl.appscan.issuegateway.issues.handlers.ASEIssueReportHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.CreateIssueAndSyncHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.ASECreateIssueAndSyncHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.filter.ASEFilterHandler;
 import com.hcl.appscan.issuegateway.issues.handlers.issueretrieval.ASEIssueRetrievalHandler;
 
@@ -21,13 +21,13 @@ public class ASEProvider implements IAppScanProvider {
 	}
 
 	@Override
-	public AppScanIssue[] getIssues(List<String> errors) throws Exception{
+	public AppScanIssue[] getIssues(List<String> errors) throws Exception {
 		return new ASEIssueRetrievalHandler().retrieveIssues(jobData, errors);
 	}
 
 	@Override
 	public AppScanIssue[] getFilteredIssues(AppScanIssue[] issues, List<String> errors) {
-		return new ASEFilterHandler().filterIssues(issues, jobData, errors); 
+		return new ASEFilterHandler().filterIssues(issues, jobData, errors);
 	}
 
 	@Override
@@ -35,10 +35,10 @@ public class ASEProvider implements IAppScanProvider {
 		new ASEIssueReportHandler().retrieveReports(filteredIssues, jobData, errors);
 
 	}
-	
-	@Override
-	public void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues,List<String> errors, Map<String, String> results,IProvider provider) throws Exception {
-		new CreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, errors, results,provider);
 
+	@Override
+	public void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues, List<String> errors,
+			Map<String, String> results, IProvider provider) throws Exception {
+		new ASECreateIssueAndSyncHandler().createDefectAndUpdateId(filteredIssues, jobData, errors, results, provider);
 	}
 }

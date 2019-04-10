@@ -18,12 +18,11 @@ import org.springframework.web.client.RestTemplate;
 import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
 import com.hcl.appscan.issuegateway.IssueGatewayConstants;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
-import com.hcl.appscan.issuegateway.issues.ASEIssueDetail;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
 
-public class ExternalIdHandler implements IssueGatewayConstants{
+public class ASEExternalIdHandler implements IssueGatewayConstants {
 
 	public boolean isExternalIdPresent(AppScanIssue issue, PushJobData jobData, List<String> errors)throws Exception {
 		ResponseEntity<ASEIssueDetail> details= getIssueDetail(issue.get("id"), jobData, errors);
@@ -92,7 +91,7 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData));
 		final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 	 	if (cookies != null) {
 	       StringBuilder sb = new StringBuilder();
@@ -118,7 +117,7 @@ public class ExternalIdHandler implements IssueGatewayConstants{
 		RestTemplate restTemplate = CustomRestTemplateProvider.getCustomizedrestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add(HEADER_ASC_XSRF_TOKEN, ASEAuthHandler.getInstance().getBearerToken(jobData));
 		final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 	 	if (cookies != null) {
 	        StringBuilder sb = new StringBuilder();

@@ -91,7 +91,8 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		return valid;
 	}
 	
-	void submitIssue(IAppScanIssue appscanIssue, Map<String, String> config, List<String> errors, Map<String, String> results) {
+	@Override
+	public void submitIssue(IAppScanIssue appscanIssue, Map<String, String> config, List<String> errors, Map<String, String> results) {
 		def API_CREATEISSUE   = "/rest/api/latest/issue"
 		def API_ADDATTACHMENT = "/rest/api/latest/issue/{issueKey}/attachments"
 		

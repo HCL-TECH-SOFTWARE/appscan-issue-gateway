@@ -5,24 +5,26 @@ import java.util.List;
 
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.ExternalIdHandler;
+import com.hcl.appscan.issuegateway.issues.handlers.ASEExternalIdHandler;
 
 public class ASEFilterHandler extends FilterHandler {
-	
-	private ExternalIdHandler externalIdHandler=new ExternalIdHandler();
 
-	public ExternalIdHandler getExternalIdHandler() {
+	private ASEExternalIdHandler externalIdHandler = new ASEExternalIdHandler();
+
+	public ASEExternalIdHandler getExternalIdHandler() {
 		return externalIdHandler;
 	}
-	
+
 	@Override
-	protected AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData,List<String> errors) throws Exception {
+	protected AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData,
+			List<String> errors) throws Exception {
 		return filterBasedOnExternalId(issues, jobData, errors);
 	}
-	
-	private AppScanIssue[] filterBasedOnExternalId(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) throws Exception{
-        List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
-        final int maxIssueCount=jobData.getAppscanData().getMaxissues();
+
+	private AppScanIssue[] filterBasedOnExternalId(List<AppScanIssue> issues, PushJobData jobData, List<String> errors)
+			throws Exception {
+		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
+		final int maxIssueCount = jobData.getAppscanData().getMaxissues();
 		int issueCount = 0;
 		for (AppScanIssue issue : issues) {
 			if (shouldCheckDuplicates(jobData)) {
@@ -30,7 +32,7 @@ public class ASEFilterHandler extends FilterHandler {
 					filteredIssues.add(issue);
 					issueCount++;
 				}
-					
+
 				if (issueCount >= maxIssueCount) {
 					break;
 				}

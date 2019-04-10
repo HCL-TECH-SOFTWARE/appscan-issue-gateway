@@ -1,36 +1,21 @@
 package com.hcl.appscan.issuegateway.issues.handlers.auth;
 
+import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_AUTHORIZATION;
+
 import org.springframework.web.client.RestTemplate;
 
-public class ASOCAuthHandler extends AuthHandler{
+public class ASOCAuthHandler extends AuthHandler {
+
+	private static final String REST_APIKEYLOGIN = "/api/v2/Account/ApiKeyLogin";
+	private static final String REST_APPSCOUNT = "/api/v2/Apps/Count";
+
 	private static ASOCAuthHandler authHandler;
-	
+
 	public static synchronized ASOCAuthHandler getInstance() {
 		if (authHandler == null) {
 			authHandler = new ASOCAuthHandler();
 		}
 		return authHandler;
-	}
-	
-	private String getAuthToken(String url, String apikeyid, String apikeysecret) {
-		RestTemplate restTemplate = new RestTemplate();
-		ASOCApiKeyLoginRequest apiKeyLoginRequest = new ASOCApiKeyLoginRequest();
-		apiKeyLoginRequest.KeyId=apikeyid;
-		apiKeyLoginRequest.KeySecret=apikeysecret;
-		ASOCApiKeyLoginResponse response = restTemplate.postForObject(url + ASOC_API__APIKEYLOGIN, apiKeyLoginRequest, ASOCApiKeyLoginResponse.class);
-		return "Bearer " + response.Token;
-	}
-	
-	@SuppressWarnings("unused")
-	private static class ASOCApiKeyLoginRequest {
-		public String KeyId;
-		public String KeySecret;
-	}
-	
-	@SuppressWarnings("unused")
-	private static class ASOCApiKeyLoginResponse {
-		public String Token;
-		public String Expire;
 	}
 
 	@Override
@@ -39,8 +24,14 @@ public class ASOCAuthHandler extends AuthHandler{
 	}
 
 	@Override
-	protected String authenticate(String url, String apikeyid, String apikeysecret) throws Exception {
-		return getAuthToken(url, apikeyid, apikeysecret);
+	protected String authenticate(String url, String apikeyid, String apikeysecret) {
+		RestTemplate restTemplate = new RestTemplate();
+		ApiKeyLoginRequest apiKeyLoginRequest = new ApiKeyLoginRequest();
+		apiKeyLoginRequest.KeyId = apikeyid;
+		apiKeyLoginRequest.KeySecret = apikeysecret;
+		ApiKeyLoginResponse response = restTemplate.postForObject(url + REST_APIKEYLOGIN, apiKeyLoginRequest,
+				ApiKeyLoginResponse.class);
+		return "Bearer " + response.Token;
 	}
 
 	@Override
@@ -50,6 +41,18 @@ public class ASOCAuthHandler extends AuthHandler{
 
 	@Override
 	protected String getValidationAPI() {
-		return ASOC_API_APPSCOUNT;
+		return REST_APPSCOUNT;
+	}
+
+	@SuppressWarnings("unused")
+	private static class ApiKeyLoginRequest {
+		public String KeyId;
+		public String KeySecret;
+	}
+
+	@SuppressWarnings("unused")
+	private static class ApiKeyLoginResponse {
+		public String Token;
+		public String Expire;
 	}
 }

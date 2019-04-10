@@ -25,12 +25,11 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.common.io.Files;
+import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.auth.AuthHandler;
-import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
 
 public class ASEIssueReportHandler {
 	
@@ -62,7 +61,7 @@ public class ASEIssueReportHandler {
 		RestTemplate restTemplate =CustomRestTemplateProvider.getCustomizedrestTemplate();
 	    restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("asc_xsrf_token", ASEAuthHandler.getInstance().getBearerToken(jobData,errors));
+		headers.add("asc_xsrf_token", ASEAuthHandler.getInstance().getBearerToken(jobData));
 		final List<HttpCookie> cookies=ASEAuthHandler.getInstance().getCookies();
 		
 	 	if (cookies != null) {

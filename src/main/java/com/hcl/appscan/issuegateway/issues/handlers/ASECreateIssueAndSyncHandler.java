@@ -14,20 +14,20 @@ import com.hcl.appscan.issuegateway.issues.PushJobData;
 import common.IAppScanIssue;
 import common.IProvider;
 
-public class CreateIssueAndSyncHandler {
+public class ASECreateIssueAndSyncHandler {
 	
 	//Required fields
-	static String SERVER_URL  = "url";
-	static String USERNAME    = "username";
-	static String PASSWORD    = "password";
-	static String PROJECTKEY  = "projectkey";
+	private static String SERVER_URL  = "url";
+	private static String USERNAME    = "username";
+	private static String PASSWORD    = "password";
+	private static String PROJECTKEY  = "projectkey";
 		
 	//Optional fields
 	private static String ISSUETYPE     = "issuetype";
 	private static String SEVERITYFIELD = "severityfield";
 	private static String SEVERITYMAP   = "severitymap";
 	private static String SUMMARY       = "summary";
-	ExternalIdHandler externalIdHandler = new ExternalIdHandler();
+	private ASEExternalIdHandler externalIdHandler = new ASEExternalIdHandler();
 	
     public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
 		if (validate(jobData.getImData().getConfig())) {
