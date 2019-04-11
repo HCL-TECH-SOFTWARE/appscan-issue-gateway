@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 import common.IAppScanIssue;

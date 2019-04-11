@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import com.hcl.appscan.issuegateway.appscanprovider.IAppScanProvider;
 import com.hcl.appscan.issuegateway.appscanprovider.ase.ASEProvider;
 import com.hcl.appscan.issuegateway.appscanprovider.asoc.ASOCProvider;
-import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.jobs.JobManager;
 import com.hcl.appscan.issuegateway.providers.ProvidersRepository;
 
@@ -17,7 +16,7 @@ public class PushJobService {
 	private static final String ASOC = "ASOC";
 	private static final String ASE = "ASE";
 
-	public PushJobResult getStatus(String id) throws EntityNotFoundException {
+	public PushJobResult getStatus(String id) {
 		return JobManager.getInstance().getJobResult(id);
 	}
 
