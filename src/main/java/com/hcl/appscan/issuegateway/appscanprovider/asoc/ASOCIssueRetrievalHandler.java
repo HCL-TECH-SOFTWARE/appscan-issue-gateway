@@ -1,4 +1,4 @@
-package com.hcl.appscan.issuegateway.issues.handlers.issueretrieval;
+package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -14,10 +14,10 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.hcl.appscan.issuegateway.appscanprovider.IIssueRetrievalHandler;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.auth.ASOCAuthHandler;
 
 public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 

@@ -2,9 +2,9 @@ package com.hcl.appscan.issuegateway.issues;
 
 import org.springframework.stereotype.Service;
 
-import com.hcl.appscan.issuegateway.appscanprovider.ASEProvider;
-import com.hcl.appscan.issuegateway.appscanprovider.ASOCProvider;
 import com.hcl.appscan.issuegateway.appscanprovider.IAppScanProvider;
+import com.hcl.appscan.issuegateway.appscanprovider.ase.ASEProvider;
+import com.hcl.appscan.issuegateway.appscanprovider.asoc.ASOCProvider;
 import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.jobs.JobManager;
 import com.hcl.appscan.issuegateway.providers.ProvidersRepository;

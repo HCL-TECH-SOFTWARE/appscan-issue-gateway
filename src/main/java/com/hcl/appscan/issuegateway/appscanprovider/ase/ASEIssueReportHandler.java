@@ -2,7 +2,7 @@
  * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
-package com.hcl.appscan.issuegateway.issues.handlers;
+package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -25,11 +25,9 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.common.io.Files;
-import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
 
 public class ASEIssueReportHandler {
 	

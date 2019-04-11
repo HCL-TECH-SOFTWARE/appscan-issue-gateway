@@ -1,11 +1,11 @@
-package com.hcl.appscan.issuegateway.issues.handlers.filter;
+package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.hcl.appscan.issuegateway.appscanprovider.FilterHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.ASOCCommentHandler;
 
 public class ASOCFilterHandler extends FilterHandler {
 

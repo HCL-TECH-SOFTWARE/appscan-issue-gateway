@@ -1,4 +1,4 @@
-package com.hcl.appscan.issuegateway.issues.handlers.auth;
+package com.hcl.appscan.issuegateway.appscanprovider;
 
 import java.util.Collections;
 import java.util.Map;
@@ -60,8 +60,7 @@ public abstract class AuthHandler {
 
 	protected abstract String getValidationAPI();
 
-	private static class AppsCountResponse {
-		@SuppressWarnings("unused")
+	static class AppsCountResponse {
 		public String Total;
 	}
 }

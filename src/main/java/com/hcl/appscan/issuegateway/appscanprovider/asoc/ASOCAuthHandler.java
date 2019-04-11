@@ -1,8 +1,9 @@
-package com.hcl.appscan.issuegateway.issues.handlers.auth;
+package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
-import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_AUTHORIZATION;
-
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.client.RestTemplate;
+
+import com.hcl.appscan.issuegateway.appscanprovider.AuthHandler;
 
 public class ASOCAuthHandler extends AuthHandler {
 
@@ -36,7 +37,7 @@ public class ASOCAuthHandler extends AuthHandler {
 
 	@Override
 	protected String getAuthorizationHeaderName() {
-		return HEADER_AUTHORIZATION;
+		return HttpHeaders.AUTHORIZATION;
 	}
 
 	@Override

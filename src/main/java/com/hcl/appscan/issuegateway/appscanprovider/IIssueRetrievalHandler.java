@@ -1,4 +1,4 @@
-package com.hcl.appscan.issuegateway.issues.handlers.issueretrieval;
+package com.hcl.appscan.issuegateway.appscanprovider;
 
 import java.util.List;
 

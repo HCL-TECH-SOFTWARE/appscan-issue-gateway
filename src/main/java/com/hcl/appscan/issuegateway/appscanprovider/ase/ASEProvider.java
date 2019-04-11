@@ -1,14 +1,11 @@
-package com.hcl.appscan.issuegateway.appscanprovider;
+package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
 import java.util.List;
 import java.util.Map;
 
+import com.hcl.appscan.issuegateway.appscanprovider.IAppScanProvider;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.ASEIssueReportHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.ASECreateIssueAndSyncHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.filter.ASEFilterHandler;
-import com.hcl.appscan.issuegateway.issues.handlers.issueretrieval.ASEIssueRetrievalHandler;
 
 import common.IProvider;
 

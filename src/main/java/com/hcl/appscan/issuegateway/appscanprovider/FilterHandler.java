@@ -1,4 +1,4 @@
-package com.hcl.appscan.issuegateway.issues.handlers.filter;
+package com.hcl.appscan.issuegateway.appscanprovider;
 
 import java.util.ArrayList;
 import java.util.Arrays;

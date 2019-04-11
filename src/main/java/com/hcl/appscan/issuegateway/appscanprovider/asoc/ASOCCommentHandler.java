@@ -3,11 +3,7 @@
  * © Copyright HCL Technologies Ltd. 2018,2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
-package com.hcl.appscan.issuegateway.issues.handlers;
-
-import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_ACCEPT;
-import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_AUTHORIZATION;
-import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_CONTENT_TYPE;
+package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
 import java.util.List;
 import java.util.Map;
@@ -22,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.auth.ASOCAuthHandler;
 
 public class ASOCCommentHandler {
 
@@ -35,9 +30,9 @@ public class ASOCCommentHandler {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
 		HttpHeaders headers = new HttpHeaders();
-		headers.add(HEADER_AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
-		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HttpHeaders.AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
+		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 		ResponseEntity<Comment[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Comment[].class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -69,9 +64,9 @@ public class ASOCCommentHandler {
 			RestTemplate restTemplate = new RestTemplate();
 			restTemplate.setErrorHandler(new ResponseErrorHandler());
 			HttpHeaders headers = new HttpHeaders();
-			headers.add(HEADER_AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
-			headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-			headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+			headers.add(HttpHeaders.AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
+			headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+			headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 			Comment comment = new Comment();
 			comment.Comment = getCommentToken() + " created the following issue:\n" + results.get(issueId);
 			HttpEntity<Comment> entity = new HttpEntity<Comment>(comment, headers);

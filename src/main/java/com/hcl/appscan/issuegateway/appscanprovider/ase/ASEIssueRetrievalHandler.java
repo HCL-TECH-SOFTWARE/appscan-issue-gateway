@@ -1,6 +1,6 @@
-package com.hcl.appscan.issuegateway.issues.handlers.issueretrieval;
+package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
-import static com.hcl.appscan.issuegateway.IssueGatewayConstants.HEADER_ASC_XSRF_TOKEN;
+import static com.hcl.appscan.issuegateway.appscanprovider.ase.ASEConstants.HEADER_ASC_XSRF_TOKEN;
 
 import java.net.HttpCookie;
 import java.net.URI;
@@ -18,12 +18,11 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
+import com.hcl.appscan.issuegateway.appscanprovider.IIssueRetrievalHandler;
 import com.hcl.appscan.issuegateway.errors.EntityNotFoundException;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
 
 public class ASEIssueRetrievalHandler implements IIssueRetrievalHandler {
 	

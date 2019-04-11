@@ -1,4 +1,4 @@
-package com.hcl.appscan.issuegateway.issues.handlers.auth;
+package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
 import java.net.HttpCookie;
 import java.util.ArrayList;
@@ -14,11 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
-import com.hcl.appscan.issuegateway.IssueGatewayConstants;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
 
-public class ASEAuthHandler implements IssueGatewayConstants {
+public class ASEAuthHandler implements ASEConstants {
 	private static ASEAuthHandler authHandler;
 	private final List<HttpCookie> cookies = new ArrayList<>();
 	

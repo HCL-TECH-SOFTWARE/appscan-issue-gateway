@@ -2,7 +2,7 @@
  * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
-package com.hcl.appscan.issuegateway.issues.handlers;
+package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
 import java.net.HttpCookie;
 import java.util.List;
@@ -15,14 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.hcl.appscan.issuegateway.CustomRestTemplateProvider;
-import com.hcl.appscan.issuegateway.IssueGatewayConstants;
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
-import com.hcl.appscan.issuegateway.issues.handlers.auth.ASEAuthHandler;
 
-public class ASEExternalIdHandler implements IssueGatewayConstants {
+public class ASEExternalIdHandler implements ASEConstants {
 
 	public boolean isExternalIdPresent(AppScanIssue issue, PushJobData jobData, List<String> errors)throws Exception {
 		ResponseEntity<ASEIssueDetail> details= getIssueDetail(issue.get("id"), jobData, errors);
@@ -100,8 +97,8 @@ public class ASEExternalIdHandler implements IssueGatewayConstants {
 	       }
 	       headers.add("Cookie", sb.toString());
 	    }
-		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		headers.add("If-Match", response.getHeaders().getETag());
 		HttpEntity<IssueUpdateRequest> entity =new HttpEntity<>(requestEntity,headers);
 		ResponseEntity<ASEIssueDetail> responseEntity=restTemplate.exchange(url,  HttpMethod.PUT, entity, ASEIssueDetail.class);
@@ -126,8 +123,8 @@ public class ASEExternalIdHandler implements IssueGatewayConstants {
 	        }
 	        headers.add("Cookie", sb.toString());
 	    }
-		headers.add(HEADER_CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		headers.add(HEADER_ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+		headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
 		HttpEntity<String> entity =new HttpEntity<>(headers);
 		ResponseEntity<ASEIssueDetail> responseEntity=restTemplate.exchange(url,  HttpMethod.GET, entity, ASEIssueDetail.class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {

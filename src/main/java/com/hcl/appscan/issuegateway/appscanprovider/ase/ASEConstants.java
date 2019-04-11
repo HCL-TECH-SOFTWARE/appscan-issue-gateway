@@ -2,17 +2,12 @@
  * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
-package com.hcl.appscan.issuegateway;
+package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
-public interface IssueGatewayConstants {
+public interface ASEConstants {
 	
 	//Header Parameters Constants 
 	String  HEADER_ASC_XSRF_TOKEN 	 = "asc_xsrf_token";
-	String  HEADER_COOKIE 			 = "cookie";
-	String  HEADER_CONTENT_TYPE		 = "Content-Type";
-	String  HEADER_ACCEPT			 = "Accept";
-	String  HEADER_ACCEPT_LANGUAGE	 = "Accept-Language";
-	String  HEADER_AUTHORIZATION	 = "Authorization";
 	
 	//REST API for ASE
 	String  ASE_API_APPLICATIONS     = "/api/applications";
