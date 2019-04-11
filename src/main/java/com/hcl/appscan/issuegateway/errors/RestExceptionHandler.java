@@ -57,12 +57,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 	 * @return the ApiError object
 	 */
 	@ExceptionHandler(ApiException.class)
-	protected ResponseEntity<Object> handleDataIntegrityViolation(ApiException ex, WebRequest request) {
+	private ResponseEntity<Object> handleDataIntegrityViolation(ApiException ex, WebRequest request) {
 		return buildResponseEntity(new ApiError(INTERNAL_SERVER_ERROR, "Server Configuration Error", ex));
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
-	protected ResponseEntity<Object> handleInvalidArgument(IllegalArgumentException ex) {
+	private ResponseEntity<Object> handleInvalidArgument(IllegalArgumentException ex) {
 		ApiError apiError = new ApiError(UNPROCESSABLE_ENTITY, ex.getMessage(), ex);
 		return buildResponseEntity(apiError);
 	}
