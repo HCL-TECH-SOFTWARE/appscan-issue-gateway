@@ -34,13 +34,14 @@ public class PushJobController {
 
 	@Autowired
 	private PushJobService pushJobService;
-
+	
+	@Deprecated
 	@RequestMapping(value = "/issues/pushjobs", method = RequestMethod.POST, produces = "application/json")
 	@ApiOperation(notes = "This API creates a Job that will process AppScan issues and push them into other issue management systems. "
 			+ "The job is completely controlled by the JSON that is passed in. The details of the JSON will vary depending on your target issue management system."
 			+ "To view configuration details, invoke the GET /providers API below and the details will be in the response", value = "Create a job to push AppScan issues to an issue management system")
 	PushJobResult postIssuesPushJobs(
-			@Valid @RequestBody @ApiParam(name = "body", required = true) V1PushJobData submitJobData) {
+			@Valid @RequestBody @ApiParam(name = "body", required = true) V1PushJobData submitJobData) throws Exception {
 		try {
 			logger.debug("New Request.  Payload:\n"
 					+ new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData));
@@ -49,13 +50,13 @@ public class PushJobController {
 		}
 		return pushJobService.createPushJob(submitJobData);
 	}
-
+	
 	@RequestMapping(value = "/v2/issues/pushjobs", method = RequestMethod.POST, produces = "application/json")
 	@ApiOperation(notes = "This API creates a Job that will process AppScan issues and push them into other issue management systems. "
 			+ "The job is completely controlled by the JSON that is passed in. The details of the JSON will vary depending on your target issue management system."
 			+ "To view configuration details, invoke the GET /providers API below and the details will be in the response", value = "Create a job to push AppScan issues to an issue management system")
 	PushJobResult postIssuesPushJobsV2(
-			@Valid @RequestBody @ApiParam(name = "body", required = true) PushJobData submitJobData) {
+			@Valid @RequestBody @ApiParam(name = "body", required = true) PushJobData submitJobData) throws Exception {
 		try {
 			logger.debug("New Request. Payload:\n"
 					+ new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData));
@@ -64,7 +65,8 @@ public class PushJobController {
 		}
 		return pushJobService.createPushJob(submitJobData);
 	}
-
+	
+	@Deprecated
 	@RequestMapping(value = "/issues/pushjobs", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get an issue push job", notes = "A PushJob will have a Status of \"Running - Current Operation\" until the job has either finished successfully or failed. "
 			+ "The errors field holds problems that were encountered during the operation. "

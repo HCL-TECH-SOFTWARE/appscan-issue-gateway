@@ -41,7 +41,7 @@ public class ASEIssueReportHandler {
 	
 		for (AppScanIssue issue : issues) {
 		    try {
-			    File reportFile = downloadReport(jobData, issue.get("id"), errors);
+			    File reportFile = getFile(jobData, issue.get("id"), errors);
 		    	if (reportFile != null) {
 		    		issue.setIssueDetails(reportFile);
 		    	}
@@ -56,7 +56,13 @@ public class ASEIssueReportHandler {
 	    }
     }
 	
-	private File downloadReport(PushJobData jobData, String issueId, List<String> errors) throws IOException,Exception { 
+	private File getFile(PushJobData jobData, String issueId, List<String> errors) throws Exception {
+		ResponseEntity<byte[]> responseEntity=downloadReport(jobData,issueId,errors);
+		
+		return extractFile(responseEntity);
+	}
+	
+	private ResponseEntity<byte[]> downloadReport(PushJobData jobData, String issueId, List<String> errors) throws Exception{ 
 		String url= jobData.getAppscanData().getUrl() + REST_ISSUE_DETAILS_FILE;
 		RestTemplate restTemplate =CustomRestTemplateProvider.getCustomizedrestTemplate();
 	    restTemplate.setErrorHandler(new ResponseErrorHandler());
@@ -80,30 +86,34 @@ public class ASEIssueReportHandler {
 	    URI theURI = urlBuilder.build().encode().toUri();
 		ResponseEntity<byte[]> responseEntity = restTemplate.exchange(theURI, HttpMethod.GET, entity, byte[].class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
-			File tempFile = File.createTempFile("response", ".zip");
-			File tempDir=Files.createTempDir();
-			FileOutputStream stream = new FileOutputStream(tempFile);
-			try {
-			    stream.write(responseEntity.getBody());
-			} finally {
-			    stream.close();
-			}
-			ZipInputStream zipIn= new ZipInputStream(new FileInputStream(tempFile));
-			ZipEntry entry=zipIn.getNextEntry();
-			String filePath=tempDir.getPath()+File.separator+entry.getName();
-			
-			BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(filePath));
-			byte[] bytesIn = new byte[4096];
-	        int read = 0;
-	        while ((read = zipIn.read(bytesIn)) != -1) {
-	            bos.write(bytesIn, 0, read);
-	        }
-	        bos.close();
-	        zipIn.closeEntry();
-	        zipIn.close();
-			return (new File(filePath));
+			return responseEntity;
 		} 
 		errors.add("An error occurred downloading a report. Receieved " + responseEntity.getStatusCodeValue() + " from " + url);
 		return null;
+	}
+	
+	private File extractFile(ResponseEntity<byte[]> responseEntity) throws IOException{
+		File tempFile = File.createTempFile("response", ".zip");
+		File tempDir=Files.createTempDir();
+		FileOutputStream stream = new FileOutputStream(tempFile);
+		try {
+		    stream.write(responseEntity.getBody());
+		} finally {
+		    stream.close();
+		}
+		ZipInputStream zipIn= new ZipInputStream(new FileInputStream(tempFile));
+		ZipEntry entry=zipIn.getNextEntry();
+		String filePath=tempDir.getPath()+File.separator+entry.getName();
+		
+		BufferedOutputStream bos=new BufferedOutputStream(new FileOutputStream(filePath));
+		byte[] bytesIn = new byte[4096];
+        int read = 0;
+        while ((read = zipIn.read(bytesIn)) != -1) {
+            bos.write(bytesIn, 0, read);
+        }
+        bos.close();
+        zipIn.closeEntry();
+        zipIn.close();
+		return (new File(filePath));
 	}
 }
