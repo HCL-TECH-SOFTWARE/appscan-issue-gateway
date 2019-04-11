@@ -9,6 +9,7 @@ import java.util.Map;
 import io.swagger.annotations.ApiModelProperty;
 
 public class V1PushJobData {
+
 	private AppScanDataV1 appscanData;
 	private IMDataV1 imData;
 

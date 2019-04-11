@@ -21,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 @Api(tags = "providers")
 public class ProvidersController {
 
+	@Deprecated
 	@RequestMapping(value = "/providers", method = RequestMethod.GET, produces = "application/json")
 	@ApiOperation(value = "Get configured issue service providers", notes = "This API returns all configured issue service providers. "
 			+ "Issue service providers are encouraged to include documentation about their specific configuration requirements "

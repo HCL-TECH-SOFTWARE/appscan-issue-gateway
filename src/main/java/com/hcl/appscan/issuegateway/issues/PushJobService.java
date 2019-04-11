@@ -21,7 +21,7 @@ public class PushJobService {
 		return JobManager.getInstance().getJobResult(id);
 	}
 
-	public PushJobResult createPushJob(V1PushJobData submitJobData) throws Exception{
+	public PushJobResult createPushJob(V1PushJobData submitJobData) {
 		PushJobData jobData = new PushJobData();
 		PushJobData.AppScanData appscanData = new PushJobData.AppScanData();
 		PushJobData.IMData imData = new PushJobData.IMData();
@@ -41,19 +41,21 @@ public class PushJobService {
 		return createPushJob(jobData);
 	}
 
-	public PushJobResult createPushJob(PushJobData submitJobData) throws Exception{
+	public PushJobResult createPushJob(PushJobData submitJobData) {
 		IAppScanProvider appscanProvider;
 		if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASE)) {
 			appscanProvider = new ASEProvider(submitJobData);
 		} else if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASOC)) {
 			appscanProvider = new ASOCProvider(submitJobData);
 		} else {
-			throw new EntityNotFoundException(PushJobData.class,submitJobData.getAppscanData().getAppscanProvider(),"appscanProvider is invalid");
+			throw new IllegalArgumentException(
+					"appscanProvider is invalid: " + submitJobData.getAppscanData().getAppscanProvider());
 		}
 
 		IProvider provider = ProvidersRepository.getProviders().get(submitJobData.getImData().getProvider());
 		if (provider == null) {
-			throw new IllegalArgumentException(); // TODO error handling
+			throw new IllegalArgumentException(
+					"Error loading the issue management provider: " + submitJobData.getImData().getProvider());
 		}
 		PushJob submitJob = new PushJob(appscanProvider, provider);
 		PushJobResult jobResult = JobManager.getInstance().submitJob(submitJob);
