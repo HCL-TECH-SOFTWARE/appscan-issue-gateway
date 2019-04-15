@@ -75,7 +75,7 @@ public abstract class FilterHandler {
 	private List<AppScanIssue> excludeFilterWithRegex(List<AppScanIssue> issues, PushJobData jobData) {
 		if ((jobData.getAppscanData().getExcludeIssuefilters() == null
 				|| jobData.getAppscanData().getExcludeIssuefilters().isEmpty())
-				|| jobData.getAppscanData().getIncludeIssuefilters().containsKey("id"))
+				|| (jobData.getAppscanData().getIncludeIssuefilters()!=null && jobData.getAppscanData().getIncludeIssuefilters().containsKey("id")))
 			return issues;
 		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
 
