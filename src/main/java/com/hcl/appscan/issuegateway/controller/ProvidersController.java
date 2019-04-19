@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcl.appscan.issuegateway.providers.ProvidersRepository;
+import com.hcl.appscan.issuegateway.providers.ProvidersRepositoryV2;
 
 import common.IProvider;
 import io.swagger.annotations.Api;
@@ -37,6 +38,6 @@ public class ProvidersController {
 			+ "in the response to this API. Note:Due to some swagger limitations, such as the inability to handle formatting characters, it is observed that the response "
 			+ "is oddly formatted to some extent,it may be still helpful")
 	Collection<IProvider> readProvidersV2() {
-		return ProvidersRepository.getProviders().values();
+		return ProvidersRepositoryV2.getProviders().values();
 	}
 }
