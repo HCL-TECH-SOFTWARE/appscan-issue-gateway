@@ -36,7 +36,7 @@ The service provides two resources:
 1. GET /providers - Query the currently registered providers
 2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA.
 
-Pleae Note : The deprecated APIs POST and GET /issues/pushjobs supports only ASOC issues .New new version of APIs i.e /v2/issues/pushjobs supports both ASE and ASOC.
+Pleae Note : The deprecated APIs POST and GET /issues/pushjobs supports only ASOC issues.New version of APIs i.e POST and GET /v2/issues/pushjobs supports both ASE and ASOC.
 
 To confirm the service request status, expand the "GET /providers" API and click the "Try It out!" button.
 ![](images/tryitout.png?raw=true)
