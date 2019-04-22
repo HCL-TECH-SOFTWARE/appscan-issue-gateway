@@ -32,7 +32,7 @@ public class SwaggerConfiguration {
         return new Docket(DocumentationType.SWAGGER_2)  
         	.apiInfo(apiInfo())
         	.tags(
-        			new Tag("providers",""), 
+        			new Tag("providers",""),
         			new Tag("issues","")
         		 )
         	.select()                                  

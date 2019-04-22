@@ -32,5 +32,6 @@ import java.util.Map
 interface IProvider {
 	String       getId()
 	List<String> getDescription()
-	void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results)	
+	void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results)
+	void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results)	
 }

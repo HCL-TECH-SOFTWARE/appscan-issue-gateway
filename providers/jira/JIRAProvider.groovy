@@ -1,6 +1,6 @@
 /**
  * � Copyright IBM Corporation 2018.
- * � Copyright HCL Technologies Ltd. 2018.
+ * � Copyright HCL Technologies Ltd. 2018,2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package jira
@@ -91,7 +91,8 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		return valid;
 	}
 	
-	void submitIssue(IAppScanIssue appscanIssue, Map<String, String> config, List<String> errors, Map<String, String> results) {
+	@Override
+	public void submitIssue(IAppScanIssue appscanIssue, Map<String, String> config, List<String> errors, Map<String, String> results) {
 		def API_CREATEISSUE   = "/rest/api/latest/issue"
 		def API_ADDATTACHMENT = "/rest/api/latest/issue/{issueKey}/attachments"
 		
@@ -119,7 +120,14 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			}
 			
 			def jiraIssue = config.getAt(SERVER_URL) + "/browse/" + createdIssue.key
-			results.put(appscanIssue.get("Id"), jiraIssue);
+			// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
+			if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
+				results.put(appscanIssue.get("id"), jiraIssue);
+			}
+			else {
+				results.put(appscanIssue.get("Id"), jiraIssue);
+			}
+			
 		} catch (Exception e) {
 			errors.add("Internal Server Error while creating JIRA issues: " + e.getMessage())
 		}
@@ -134,16 +142,22 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def projectKey = config.get(PROJECTKEY)
 		def issueType = config.get(ISSUETYPE)
-
+		def issueTypeString = "Issue Type"
+		def scanNameString ="Scan Name";
+		//"Issue Type" for ASE and "IssueType" for ASOC
+		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueTypeString)=="" ){
+			issueTypeString="IssueType";
+			scanNameString ="ScanName";
+		}
 		def severity = escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
 		def severityField = escape(config.get(SEVERITYFIELD))
 			
 		//Must use \\n instead of \n for newlines when submitting to JIRA's REST API
 		String description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue"
         description += "\\n{quote}"
-		description += "\\n*Issue Type*: " + escape(appscanIssue.get("IssueType"))
+		description += "\\n*Issue Type*: " + escape(appscanIssue.get(issueTypeString))
 		description += "\\n*Location*: "   + escape(appscanIssue.get("Location"))
-		description += "\\n*Scan Name*: "  + escape(appscanIssue.get("ScanName"))
+		description += "\\n*Scan Name*: "  + escape(appscanIssue.get(scanNameString))
 		description += "\\n{quote}"
 		description += "\\nSee the attached report for more information"
 	

@@ -1,0 +1,39 @@
+{
+	"appscanData": {
+		"appscanProvider": "ASE",
+		"url": "https://hostname:9443/ase",
+		"apikeyid": "T********************************L",
+		"apikeysecret": "2*****************************O",
+		"appid": "3",
+		"issuestates": "New,Open",
+		"maxissues": 25,
+		"includeIssuefilters": {
+			"Severity": "High"
+		},
+		"excludeIssuefilters": {},
+		"other": {}
+	},
+	"imData": {
+		"provider": "jira",
+		"config": {
+			"url": "https://jira.domain.com",
+			"username": "user@org.com",
+			"password": "********",
+			"projectkey": "ASE",
+			"issuetype": "Defect",
+			"summary": "Security issue: %Issue Type% found by %Scanner%",
+			"severitymap": {
+				"High": "Highest",
+				"Medium": "Highest",
+				"Low": "Low",
+				"Information": "Low"
+			},
+			"otherfields": {
+				"labels": [
+					"appscan",
+					"security"
+				]
+			}
+		}
+	}
+}

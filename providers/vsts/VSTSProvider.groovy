@@ -81,6 +81,7 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 		return valid;
 	}
 	
+	@Override
 	public void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
 		def API_CREATEISSUE   = "/_apis/wit/workitems/\$Bug?api-version=1.0"
 		def API_UPLOADATTACHMENT = "/_apis/wit/attachments?fileName=issueDetails-{issueKey}.html&api-version=1.0"
