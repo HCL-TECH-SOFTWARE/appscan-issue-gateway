@@ -145,7 +145,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		def issueTypeString = "Issue Type"
 		def scanNameString ="Scan Name";
 		//"Issue Type" for ASE and "IssueType" for ASOC
-		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueType)=="" ){
+		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueTypeString)=="" ){
 			issueTypeString="IssueType";
 			scanNameString ="ScanName";
 		}

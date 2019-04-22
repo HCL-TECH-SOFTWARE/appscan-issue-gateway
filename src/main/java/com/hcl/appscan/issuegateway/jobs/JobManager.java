@@ -47,7 +47,7 @@ public class JobManager {
 
 	public PushJobResult getJobResult(String id) {
 		if (!jobResults.containsKey(id)) {
-			throw new IllegalArgumentException("Job id not found: " + id);
+			throw new IllegalArgumentException("Job id not found: " + id +".Please check the logs before proceeding further.");
 		}
 		return jobResults.get(id);
 	}

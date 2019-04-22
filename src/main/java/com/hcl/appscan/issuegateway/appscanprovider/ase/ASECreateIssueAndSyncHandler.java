@@ -40,16 +40,16 @@ public class ASECreateIssueAndSyncHandler {
 	private boolean validate (Map<String, Object> config) throws EntityNotFoundException {
 		//Check for required fields
 		if (!config.containsKey(SERVER_URL) || (config.get(SERVER_URL)==null || config.get(SERVER_URL)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,SERVER_URL,"URL of Defect Tracking System is not found ");
+			throw new EntityNotFoundException(PushJobData.class,SERVER_URL,"URL of Defect Tracking System is not provided or invalid");
 		}
 		if (!config.containsKey(USERNAME)|| (config.get(USERNAME)==null || config.get(USERNAME)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,USERNAME,"username of Defect Tracking System is not found ");
+			throw new EntityNotFoundException(PushJobData.class,USERNAME,"username of Defect Tracking System is not provided or invalid");
 		}
 		if (!config.containsKey(PASSWORD)|| (config.get(PASSWORD)==null || config.get(PASSWORD)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,PASSWORD,"password of Defect tracking system is not found ");
+			throw new EntityNotFoundException(PushJobData.class,PASSWORD,"password of Defect tracking system is not provided or invalid");
 		}
 		if (!config.containsKey(PROJECTKEY)|| (config.get(PROJECTKEY)==null || config.get(PROJECTKEY)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,PROJECTKEY,"project key is not found ");
+			throw new EntityNotFoundException(PushJobData.class,PROJECTKEY,"project key is not provided or invalid");
 		}
 				
 		//If there is a trailing / on the passed in JIRA URL remove it
@@ -74,12 +74,12 @@ public class ASECreateIssueAndSyncHandler {
 		}
 				
 		//Set a String default summary if one doesn't exist
-		if (config.get(SUMMARY) == null) {
-			config.put(SUMMARY, "AppScan: %IssueType% found at %Location%");
+		if (config.get(SUMMARY) == null || config.get(SUMMARY) == "") {
+			config.put(SUMMARY, "AppScan: %Issue Type% found at %Location%");
 		}
 				
 		//Set a String default issuetype if one doesn't exist
-		if (config.get(ISSUETYPE) == null) {
+		if (config.get(ISSUETYPE) == null || config.get(ISSUETYPE) == "") {
 			config.put(ISSUETYPE, "Bug");
 		}
 		return true;

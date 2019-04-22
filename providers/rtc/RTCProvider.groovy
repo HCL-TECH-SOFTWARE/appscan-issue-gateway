@@ -104,7 +104,8 @@ class RTCProvider implements IProvider {
 	 * @param errors response map errors
 	 * @param results response map results
 	 */
-	private void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
+	@Override
+	public void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
 		try {
 			//populates attributes from json
 			Attributes attr = new Attributes(config, appscanIssue, connection)				
