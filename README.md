@@ -104,6 +104,7 @@ test.json:
 Please use the file ASE_issue_details_response.txt to know about the different attributes of issue details in ASE which can be used in the request json.
 
 Few JSON are self-explanatory, but for the purpose of understanding, refer the following summary:
+
 Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs .For Deprecated APIs, please refer the Model and Example Value on the swagger page.
 
 __appscanData__: configuration required to connect to IBM Application Security on Cloud or HCL AppScan On Cloud and extract issues
