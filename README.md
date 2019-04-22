@@ -36,7 +36,7 @@ The service provides two resources:
 1. GET /providers - Query the currently registered providers
 2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA.
 
-Pleae Note : The deprecated APIs POST and GET /issues/pushjobs supports only ASoC issues.New version of APIs i.e POST and GET /v2/issues/pushjobs supports both ASE and ASoC.
+Pleae Note : The deprecated APIs POST and GET /issues/pushjobs support only ASoC issues.New version of APIs i.e POST and GET /v2/issues/pushjobs support both ASE and ASoC.
 
 To confirm the service request status, expand the "GET /providers" API and click the "Try It out!" button.
 ![](images/tryitout.png?raw=true)
@@ -104,6 +104,7 @@ test.json:
 Please use the file ASE_issue_details_response.txt to know about the different attributes of issue details in ASE which can be used in the request json.
 
 Few JSON are self-explanatory, but for the purpose of understanding, refer the following summary:
+Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs .For Deprecated APIs, please refer the Model and Example Value on the swagger page.
 
 __appscanData__: configuration required to connect to IBM Application Security on Cloud or HCL AppScan On Cloud and extract issues
 * appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE and for AppScan on Cloud it is ASOC.
