@@ -65,8 +65,8 @@ test.json:
 
 	{
 		"appscanData": {
-			"appscanProvider": "<The provider of Appscan product>", 
-			"url":          "<The root URL of the provider of Appscan Product>",
+			"appscanProvider": "<The provider of AppScan product>", 
+			"url":          "<The root URL of the provider of AppScan Product>",
 			"apikeyid":     "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
 			"apikeysecret": "kkV0jB/bClfdgjd4dfgmkjftfgo0Dfj/YNkMPp6w=",
 			"appid":        "75c285f9-1995-e711-80ba-002324b5f40c",
@@ -104,7 +104,7 @@ Please use the file ASE_issue_details_response.txt to know about the different a
 Few JSON are self-explanatory, but for the purpose of understanding, refer the following summary:
 
 __appscanData__: configuration required to connect to IBM Application Security on Cloud or HCL AppScan On Cloud and extract issues
-* appscanProvider: The provider of Appscan product.For Appscan Enterprise it is ASE and for Appscan on Cloud it is ASOC.
+* appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE and for AppScan on Cloud it is ASOC.
 * url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
 * appid: The id of the application that will be used when querying for issues
 * policyids: (Optional) Specific Policy Ids to be used when pulling the results from AppScan. If speciying multiple Policy Ids then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application's registered polices will be pulled. This is applicable only for ASoC and not for ASE.
