@@ -42,7 +42,7 @@ To confirm the service request status, expand the "GET /providers" API and click
 Following providers are registered: 
 1. Jira Provider
 2. RTC PRovider 
-3. VSTS Provider 
+3. VSTS Provider
 A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
 ![](images/providers.png?raw=true)
 
