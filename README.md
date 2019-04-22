@@ -32,21 +32,19 @@ The server starts in a few seconds and the Spring Boot logo appears. Open a brow
 
 ![](images/swagger.png?raw=true)
 
-The service provides three resources: 
+The service provides two resources:  
 1. GET /providers - Query the currently registered providers
-2. GET /applications - Get the list of applications of ASoC or ASE using the service. 
-3. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA.
+2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA.
 
 To confirm the service request status, expand the "GET /providers" API and click the "Try It out!" button.
 ![](images/tryitout.png?raw=true)
 
-There are two providers registered: The JIRA Provider and a Sample Provider that is present to demonstrate the ease with which other providers can be added to the system.
+Following providers are registered: 
+1. Jira Provider
+2. RTC PRovider 
+3. VSTS Provider 
+A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
 ![](images/providers.png?raw=true)
-
-Input the details of the following fields and invoke GET /applications API.
- - appscanProvider: The provider of Appscan product. For Appscan Enterprise it is ASE and for Appscan on Cloud it is ASOC. If this field is left blank, ASOC is considered by default.
-- url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs.
-- tag: optional field and applicable only for ASE. If provided, this API will fetch the applications containing this tag.
 
 Before we start submitting jobs, let's take a look at the end goal: An automatically submitted JIRA issue with fields filled in from AppScan:
 ![](images/jirabug.png?raw=true)
@@ -101,13 +99,12 @@ test.json:
 		}
 	}
 
-Please use the file ASE_issue_details_response.txt to know about the different attributes of issue details in ASE which can be used in the request json .E.g if you wish to use Discovery Method in the summary, you could do something like  :
-"summary":    "Security issue: %Issue Type% found by %Discovery Method%",
+Please use the file ASE_issue_details_response.txt to know about the different attributes of issue details in ASE which can be used in the request json.
 
 Few JSON are self-explanatory, but for the purpose of understanding, refer the following summary:
 
 __appscanData__: configuration required to connect to IBM Application Security on Cloud or HCL AppScan On Cloud and extract issues
-* appscanProvider: The provider of Appscan product.For Appscan Enterprise it is ASE and for Appscan on Cloud it is ASOC. If this parameter is absent, ASOC is considered by default.
+* appscanProvider: The provider of Appscan product.For Appscan Enterprise it is ASE and for Appscan on Cloud it is ASOC.
 * url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
 * appid: The id of the application that will be used when querying for issues
 * policyids: (Optional) Specific Policy Ids to be used when pulling the results from AppScan. If speciying multiple Policy Ids then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application's registered polices will be pulled. This is applicable only for ASoC and not for ASE.
