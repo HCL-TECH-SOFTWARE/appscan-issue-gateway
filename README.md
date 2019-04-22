@@ -43,7 +43,7 @@ Following providers are registered:
 1. Jira Provider
 2. RTC PRovider 
 3. VSTS Provider
-A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
+4. A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
 ![](images/providers.png?raw=true)
 
 Before we start submitting jobs, let's take a look at the end goal: An automatically submitted JIRA issue with fields filled in from AppScan:
