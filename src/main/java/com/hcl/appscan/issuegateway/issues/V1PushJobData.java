@@ -22,8 +22,8 @@ public class V1PushJobData {
 	}
 
 	public class AppScanDataV1 {
-		@ApiModelProperty(position = 1, required = false, value = "The root URL if connecting to any version of ASoC other than public cloud", example = "https://appscan.ibmcloud.com")
-		private String url = "https://appscan.ibmcloud.com";
+		@ApiModelProperty(position = 1, required = false, value = "The root URL if connecting to any version of ASoC other than public cloud", example = "https://cloud.appscan.com")
+		private String url = "https://cloud.appscan.com";
 		@ApiModelProperty(position = 2, required = true, value = "Your API Key Id generated from Application Security on Cloud")
 		private String apikeyid;
 		@ApiModelProperty(position = 3, required = true, value = "Your API Key Secret generated from Application Security on Cloud")
@@ -115,9 +115,9 @@ public class V1PushJobData {
 
 		@Override
 		public String toString() {
-			return "AppScanDataV1 [url=" + url + ", apikeyid=" + apikeyid + ", apikeysecret=" + apikeysecret
-					+ ", appid=" + appid + ", maxissues=" + maxissues + ", issuestates=" + issuestates + ", policyids="
-					+ policyids + ", issuefilters=" + issuefilters + ", other=" + other + "]";
+			return "AppScanDataV1 [url=" + url + ", apikeyid=" + apikeyid + ", apikeysecret=" + apikeysecret + ", appid="
+					+ appid + ", maxissues=" + maxissues + ", issuestates=" + issuestates + ", policyids=" + policyids
+					+ ", issuefilters=" + issuefilters + ", other=" + other + "]";
 		}
 	}
 

@@ -53,7 +53,7 @@ class JIRAProviderV2 implements IProvider{
 		'     {                                                                                                    ',                                                                 
 	    '       \'appscanData\': {                                                                                   ',                                     
 		'           \'appscanProvider\': \'ASE or ASOC\',                                                         ',
-		'           \'url\': \'https://appscan.ibmcloud.com\',                                                         ',
+		'           \'url\': \'https://cloud.appscan.com\',                                                         ',
 		'           \'apikeyid\': \'00000000-0000-000000000-000000000000\',                                            ',
 		'           \'apikeysecret\': \'111111111-11-1111111-111111111111-1111-11111\',                                ',
 		'           \'issuestates\': \'New,Open\',                                                                     ',
