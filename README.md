@@ -35,7 +35,7 @@ java -Dserver.port=4444 -jar appscan-issue-gateway.jar
 
 The server starts in a few seconds and the Spring Boot logo appears. Open a browser, and access REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) :
 
-![](images/swagger.png?raw=true)
+![swagger screenshot](images/swagger.png?raw=true)
 
 The service provides two resources:
 
@@ -45,7 +45,7 @@ The service provides two resources:
 Please Note: The deprecated APIs POST and GET /issues/pushjobs support only ASoC issues. New version of APIs i.e POST and GET /v2/issues/pushjobs support both ASE and ASoC.
 
 To confirm the service request status, expand the "GET /providers" API and click the "Try It out!" button.
-![](images/tryitout.png?raw=true)
+![get providers screenshot](images/tryitout.png?raw=true)
 
 Following providers are registered:
 
@@ -53,10 +53,11 @@ Following providers are registered:
 2. RTC PRovider
 3. VSTS Provider
 4. A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
-   ![](images/providers.png?raw=true)
+
+![sample provider screenshot](images/providers.png?raw=true)
 
 Before we start submitting jobs, let's take a look at the end goal: An automatically submitted JIRA issue with fields filled in from AppScan:
-![](images/jirabug.png?raw=true)
+![example jira issue screenshot](images/jirabug.png?raw=true)
 
 Notes:
 
