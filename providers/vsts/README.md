@@ -1,4 +1,6 @@
-# Sample JSON model to start using the VSTS integration
+# VSTS Provider
+
+## Sample JSON model to start using the VSTS integration
 
 ```json
 {
