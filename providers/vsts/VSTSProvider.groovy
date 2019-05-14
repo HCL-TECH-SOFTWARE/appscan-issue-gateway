@@ -77,15 +77,21 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 			severityMap.put("Informational", "4 - Low");
 			config.put(SEVERITYMAP, severityMap);
 		}
+		
+		//Set a default issuetype if one doesn't exist
+		if (config.get(ISSUETYPE) == null) {
+			config.put(ISSUETYPE, "Bug");
+		}
 
 		return valid;
 	}
 	
 	@Override
 	public void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
-		def API_CREATEISSUE   = "/_apis/wit/workitems/\$Bug?api-version=1.0"
+		def API_CREATEISSUE   = "/_apis/wit/workitems/\$${config.get(ISSUETYPE)}?api-version=1.0"
 		def API_UPLOADATTACHMENT = "/_apis/wit/attachments?fileName=issueDetails-{issueKey}.html&api-version=1.0"
 		def API_ADDATTACHMENT = "/_apis/wit/workitems/{issueKey}?api-version=1.0" 
+		def WORKITEMS = "/_workitems/edit/"
 		
 		try{
 			def authorization = getAuthString(config)
@@ -102,6 +108,7 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 			
 			//Upload the html description 
 			def vstsIssueId = createdIssue.id.toString()
+			def vstsIssueUrl = config.get(SERVER_URL) + WORKITEMS + vstsIssueId
 			def uploadUrl = config.get(SERVER_URL) + API_UPLOADATTACHMENT.replace("{issueKey}",vstsIssueId)
 			def issueDetails = appscanIssue.issueDetails
 			def uploadResultText = RESTUtils.postOctetStreamFileUpload(uploadUrl,authorization,issueDetails,null,errors)
@@ -120,7 +127,8 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 				errors.add("Error while attaching issue detail for VSTS at "+ attachUrl + ". " +createdIssue.errors.toString());
 				return ;
 			}
-			
+
+			results.put(appscanIssue.get("Id"), vstsIssueUrl)
 		}		
 		catch (Exception e) {
 			errors.add("Internal Server Error while submitting VSTS issue:" + e.getMessage())

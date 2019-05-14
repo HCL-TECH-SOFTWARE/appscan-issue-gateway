@@ -13,10 +13,11 @@ public class VSTSConstants {
 
 	//Required fields
 	static def SERVER_URL  = "url"
-	static def API_KEY    = "apiKey"
+	static def API_KEY     = "apiKey"
 	
 	//Optional fields
 	static def SEVERITYMAP = "severitymap"
+	static def ISSUETYPE   = "issuetype"
 	
 	//Description
 	static def PROVIDER_DESCRIPTION =
