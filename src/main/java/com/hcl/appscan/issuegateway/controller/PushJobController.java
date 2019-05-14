@@ -42,8 +42,7 @@ public class PushJobController {
 	PushJobResult postIssuesPushJobs(
 			@Valid @RequestBody @ApiParam(name = "body", required = true) V1PushJobData submitJobData) {
 		try {
-			logger.debug("New Request.  Payload:\n"
-					+ new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData));
+			new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData);
 		} catch (Exception e) {
 			logger.error("Error parsing JSON", e);
 		}
@@ -57,8 +56,7 @@ public class PushJobController {
 	PushJobResult postIssuesPushJobsV2(
 			@Valid @RequestBody @ApiParam(name = "body", required = true) PushJobData submitJobData) {
 		try {
-			logger.debug("New Request. Payload:\n"
-					+ new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData));
+			new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData);
 		} catch (Exception e) {
 			logger.error("Error parsing JSON", e);
 		}
