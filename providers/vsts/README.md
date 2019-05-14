@@ -1,4 +1,4 @@
-# VSTS Provider
+# VSTS Provider (now Azure Devops)
 
 ## Sample JSON model to start using the VSTS integration
 
