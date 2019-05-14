@@ -50,7 +50,7 @@ To confirm the service request status, expand the "GET /providers" API and click
 Following providers are registered:
 
 1. Jira Provider
-2. RTC PRovider
+2. RTC Provider
 3. VSTS Provider
 4. A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
 
