@@ -121,7 +121,13 @@ class RTCProvider implements IProvider {
 
 			if(createWorkItemConnection.responseCode == 201) {
 				String workItemURL = createWorkItemConnection.getHeaderField("location")
-				results.put(appscanIssue.get("Id"), workItemURL)
+				// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
+				if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
+					results.put(appscanIssue.get("id"), workItemURL);
+				}
+				else {
+					results.put(appscanIssue.get("Id"), workItemURL);
+				}
 
 				changeRequest = getChangeRequest(workItemURL, createWorkItemConnection.getInputStream(), errors)				
 
