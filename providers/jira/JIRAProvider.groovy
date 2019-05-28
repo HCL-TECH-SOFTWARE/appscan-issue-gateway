@@ -8,6 +8,7 @@ package jira
 import common.IAppScanIssue
 import common.IProvider
 import common.RESTUtils
+import common.Utils
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
@@ -50,8 +51,8 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			valid = false;
 		}
 		if (!config.containsKey(PASSWORD)) {
-			 errors.add("JIRA Configuration: Password must be set");
-			 valid = false;
+			errors.add("JIRA Configuration: Password must be set");
+			valid = false;
 		}
 		if (!config.containsKey(PROJECTKEY)) {
 			errors.add("JIRA Configuration: Project Key must be set");
@@ -149,15 +150,15 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			issueTypeString="IssueType";
 			scanNameString ="ScanName";
 		}
-		def severity = escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
-		def severityField = escape(config.get(SEVERITYFIELD))
+		def severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+		def severityField = Utils.escape(config.get(SEVERITYFIELD))
 			
 		//Must use \\n instead of \n for newlines when submitting to JIRA's REST API
 		String description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue"
         description += "\\n{quote}"
-		description += "\\n*Issue Type*: " + escape(appscanIssue.get(issueTypeString))
-		description += "\\n*Location*: "   + escape(appscanIssue.get("Location"))
-		description += "\\n*Scan Name*: "  + escape(appscanIssue.get(scanNameString))
+		description += "\\n*Issue Type*: " + Utils.escape(appscanIssue.get(issueTypeString))
+		description += "\\n*Location*: "   + Utils.escape(appscanIssue.get("Location"))
+		description += "\\n*Scan Name*: "  + Utils.escape(appscanIssue.get(scanNameString))
 		description += "\\n{quote}"
 		description += "\\nSee the attached report for more information"
 	
@@ -182,17 +183,6 @@ class JIRAProvider extends JIRAConstants implements IProvider {
         """
 	}
 	
-	//For now just remove any double quotes.  Causes problems
-	//Replace all backslashes with double backslashes to handle windows paths in Location
-	private String escape(String theString) {
-		if (theString != null) {
-			theString.replaceAll("\"", "'")
-			theString.replaceAll("\\\\", "\\\\\\\\") 
-		} else {
-			theString = ""
-		}
-	}
-	
 	private String computeSummary(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def summary = config.get(SUMMARY)
 		def elements = summary.split("%")
@@ -200,7 +190,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		for (int i = 0; i < elements.size(); i += 2) {
 			computedSummary += elements[i]
 			if (i + 1 < elements.size()) {
-				computedSummary += escape(appscanIssue.get(elements[i+1]))
+				computedSummary += Utils.escape(appscanIssue.get(elements[i+1]))
 			}
 		}
 		computedSummary
