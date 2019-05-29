@@ -25,7 +25,6 @@ public class ASECreateIssueAndSyncHandler {
 	private static String PROJECTKEY    = "projectkey";
 	private static String APIKEY       = "apiKey";
 	private static String OTHERFIELDS  = "otherfields";
-	private static String FILEDAGAINST = "filedAgainst";
 	private static String PROJECTAREA  = "projectarea";
 	private static String ISSUETYPE     = "issuetype";
 	private static String SEVERITYFIELD = "severityfield";
@@ -36,13 +35,8 @@ public class ASECreateIssueAndSyncHandler {
     public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
 		if (validate(jobData.getImData().getProvider(),jobData.getImData().getConfig())) {
 			for (IAppScanIssue issue:issues) {
-//				AppScanIssue issue1= (AppScanIssue) issue;
-//				String issueType=issue1.get("Issue Type");
-//				issueType=HtmlUtils.htmlUnescape(issueType);
-//				issueType=issueType.replaceAll("\"", "'");
-//				issue1.set("Issue Type", issueType);
 				((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
-				((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Location")).replaceAll("\"", "'").replace("\\", "/"));
+				((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
 				provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
 				externalIdHandler.updateExternalId(issue.get("id"), jobData, errors, results);
 			}

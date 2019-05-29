@@ -11,6 +11,7 @@ import java.util.Map
 import common.IAppScanIssue
 import common.IProvider
 import common.RESTUtils
+import common.Utils
 import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
@@ -128,12 +129,7 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 				return ;
 			}
 
-			if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
-				results.put(appscanIssue.get("id"), vstsIssueUrl);
-			}
-			else {
-				results.put(appscanIssue.get("Id"), vstsIssueUrl);
-			}
+			results.put(appscanIssue.get("Id"), vstsIssueUrl)
 		}		
 		catch (Exception e) {
 			errors.add("Internal Server Error while submitting VSTS issue:" + e.getMessage())
@@ -165,23 +161,14 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 
 	
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
-		def issueTypeString = "Issue Type"
-		def scanNameString ="Scan Name";
-		
-		//"Issue Type" for ASE and "IssueType" for ASOC
-		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueTypeString)=="" ){
-			issueTypeString="IssueType";
-			scanNameString ="ScanName";
-		}
-		def issueType = escape(config.get("issuetype"))
+		def issueType = Utils.escape(config.get("issuetype"))
 		def severity = config.get("severitymap").get(appscanIssue.get("Severity"))
-		def title = escape(appscanIssue.get(issueTypeString)) + " found at: " + escape(appscanIssue.get("Location"))
+		def title = Utils.escape(appscanIssue.get("IssueType")) + " found at: " + Utils.escape(appscanIssue.get("Location"))
 		
 		//Write description
-		
-		String description = "\n*Issue Type*: " + escape(appscanIssue.get(issueTypeString))
-		description += "\n*Location*: "   + escape(appscanIssue.get("Location"))
-		description += "\n*Scan Name*: "  + escape(appscanIssue.get(scanNameString))
+		String description = "\n*Issue Type*: " + Utils.escape(appscanIssue.get("IssueType"))
+		description += "\n*Location*: "   + Utils.escape(appscanIssue.get("Location"))
+		description += "\n*Scan Name*: "  + Utils.escape(appscanIssue.get("ScanName"))
 		description += "\nSee the attached report for more information"
 		
 		"""[
@@ -203,16 +190,9 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 			}
 		  ]"""
 	}
-		
-	//For now just remove any double quotes.  Causes problems
-	private String escape(String theString) {
-		//theString.replaceAll("\"", "'")
-		theString
-	}
-		
-	private getAuthString(Map<String, Object> config){
+	
+	private getAuthString(Map<String, Object> config) {
 			def apiKey = config.get (API_KEY)
 			"Basic " + (apiKey + ":").bytes.encodeBase64().toString()
-		}
-	
+	}
 }
