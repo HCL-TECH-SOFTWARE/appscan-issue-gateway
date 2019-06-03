@@ -8,8 +8,7 @@ package com.hcl.appscan.issuegateway.issues;
 import java.util.Map;
 
 import javax.validation.Valid;
-
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -40,6 +39,7 @@ public class PushJobData {
 	}
 
 	static public class AppScanData {
+
 		@NotBlank
 		@ApiModelProperty(position = 1, required = true, value = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.")
 		private String appscanProvider;
