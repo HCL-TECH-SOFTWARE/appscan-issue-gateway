@@ -4,6 +4,7 @@
  */
 package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,10 +95,14 @@ public class ASECreateIssueAndSyncHandler {
 	}
 	
 	private void validateMandatoryFields(String [] fields,Map<String, Object> config) throws EntityNotFoundException {
+		List<String> emptyFields = new ArrayList<>();
 		for (String field:fields) {
 			if (!config.containsKey(field) || (config.get(field)==null || config.get(field)=="")) {
-				throw new EntityNotFoundException(PushJobData.class,field,"mandatory field" +field+" of Defect Tracking System is not provided or invalid");
+				emptyFields.add(field);
 			}
+		}
+		if (!emptyFields.isEmpty()) {
+			throw new EntityNotFoundException(PushJobData.class,emptyFields.toString(),"mandatory fields" +emptyFields+" of Defect Tracking System is/are not provided or invalid");
 		}
 	}
 }
