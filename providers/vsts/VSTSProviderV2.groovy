@@ -47,7 +47,7 @@ class VSTSProviderV2 implements IProvider {
 		'        \'imData\': {                                                                                       ',
 		'          \'provider\': \'vsts\',                                                                             ',
 		'          \'config\': {                                                                                     ',		 
-		'            \'url\': \'http://localhost:8080\',                                                               ',
+		'            \'url\': \'https://dev.azure.com/<VSTS_userid>/<VSTS_projectName>\',                                                               ',
 		'            \'apiKey\': \'apikey\',                                                                            ',
 		'            \'issuetype\': \'Bug\',                                                                         ',
 		'            \'severitymap\':  {                                                                             ',
