@@ -78,8 +78,11 @@ public class ASEExternalIdHandler implements ASEConstants {
 		requestExternalIdAttribute.name=externalIdAttribute.name;
 		requestExternalIdAttribute.attributeType=externalIdAttribute.attributeType;
 		requestExternalIdAttribute.issueAttributeDefinitionId=externalIdAttribute.issueAttributeDefinitionId;
-		String[] values= {results.get(issueId).replaceAll("_workitems.*", "_workitems")};
+		// commenting below because it may not be required after the fix from ASE.
+		//String[] values= {results.get(issueId).replaceAll("_workitems.*", "_workitems")};
+		String[] values= {results.get(issueId)};
 		requestExternalIdAttribute.value=values;
+		
 		IssueUpdateRequest.IssueAttributeCollection.IssueAttribute [] attributeArray= {requestExternalIdAttribute};
 		attributeCollection.attributeArray=attributeArray;
 		requestEntity.attributeCollection=attributeCollection;
