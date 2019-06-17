@@ -73,6 +73,7 @@ public class ASECreateIssueAndSyncHandler {
 		//Fill in a severity map if one wasn't specified		
 		if (config.get(SEVERITYMAP) == null || config.get(SEVERITYMAP)=="")  {
 			Map<String, String> severityMap = new HashMap<String, String>();
+			severityMap.put("Critical", "Highest");
 			severityMap.put("High", "Highest");
 			severityMap.put("Medium", "High");
 			severityMap.put("Low", "Low");
