@@ -23,7 +23,8 @@
 			"issuetype": "Defect",
 			"summary": "Security issue: %Issue Type% found by %Scanner%",
 			"severitymap": {
-				"High": "Highest",
+				"Critical": "Highest",
+				"High": "Highest"
 				"Medium": "Highest",
 				"Low": "Low",
 				"Information": "Low"
