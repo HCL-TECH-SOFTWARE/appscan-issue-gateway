@@ -48,7 +48,7 @@ class JIRAProviderV2 implements IProvider{
 		'(Required)' + PROJECTKEY    + ': Project Key',
 		'(Optional)' + SUMMARY       + ': Override default issue summary. Issue attributes can be included with %% substitution variables.  For example the default is \'AppScan: %IssueType% found at %Location%\'',
 		'(Optional)' + SEVERITYFIELD + ': Field Id that corresponds to \'priority\' or \'severity\'. This field will be populated with the AppScan Issue Severity.  Default value = \'priority\'',
-		'(Optional)' + SEVERITYMAP   + ': Map of AppScan Severities to JIRA Priorities.  If set, a mapping must be provided for High, Medium, Low, Informational'.In case of ASE it should be provided for Critical, High, Medium, Low, Information,
+		'(Optional)' + SEVERITYMAP   + ': Map of AppScan Severities to JIRA Priorities.  If set, a mapping must be provided for High, Medium, Low, Informational.In case of ASE it should be provided for Critical, High, Medium, Low, Information',
 		'(Optional)' + OTHERFIELDS   + ': Additional JSON that should be sent when creating JIRA issues.  For example:  { labels: [\'appscan\',\'security\'] }',
 		'Complete JSON Example: (replace single quotes with double quotes and ignore leading and trailing double quotes on each line)                                                       ',
 		'     {                                                                                                    ',                                                                 
