@@ -13,6 +13,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
+import com.hcl.appscan.issuegateway.providers.ProvidersRepository;
 
 import common.IAppScanIssue;
 import common.IProvider;
@@ -34,8 +35,14 @@ public class ASECreateIssueAndSyncHandler {
 	private ASEExternalIdHandler externalIdHandler = new ASEExternalIdHandler();
 	
     public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
-		if (validate(jobData.getImData().getProvider(),jobData.getImData().getConfig())) {
+		if (validate(jobData)) {
 			for (IAppScanIssue issue:issues) {
+				if (jobData.getImData().getProvider().equalsIgnoreCase("rtc")) {
+					IProvider rtcInstance=ProvidersRepository.getProviders().get("rtc");
+					Class<? extends IProvider> rtcProviderClass=rtcInstance.getClass();
+					rtcProviderClass.getDeclaredMethod( "setupConnection", new Class[] {} ).invoke( rtcInstance, new Object[] {} ) ;
+				}
+				
 				((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
 				((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
 				provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
@@ -44,8 +51,9 @@ public class ASECreateIssueAndSyncHandler {
 		}
 	}
 	
-	private boolean validate (String DTSProvider,Map<String, Object> config) throws EntityNotFoundException {
-		
+	private boolean validate (PushJobData jobData) throws EntityNotFoundException {
+		String DTSProvider=jobData.getImData().getProvider();
+		Map<String, Object> config=jobData.getImData().getConfig();
 		switch (DTSProvider.toLowerCase()) {
 		case "jira":
 			validateMandatoryFields(new String[]{SERVER_URL,USERNAME,PASSWORD,PROJECTKEY},config);

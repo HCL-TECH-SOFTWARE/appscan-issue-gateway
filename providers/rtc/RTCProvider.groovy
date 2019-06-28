@@ -36,10 +36,7 @@ class RTCProvider implements IProvider {
 
 	@Override
 	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results) {
-
-		connection = new ServerCommunication();
-		connection.setUpConnection()		
-
+		setupConnection();
 		try {
 			if (validate(config, errors)) {
 				for (IAppScanIssue issue : issues) {
@@ -49,6 +46,11 @@ class RTCProvider implements IProvider {
 		} catch (Exception e) {
 			errors.add("Internal Server Error while submitting RTC issues: " + e.getMessage())
 		}
+	}
+	
+	void setupConnection(){
+		connection = new ServerCommunication();
+		connection.setUpConnection()
 	}
 
 	/**
