@@ -24,7 +24,8 @@ public class VSTSConstants {
 	[
 		'VSTS provider. Configuration fields are below',
 		'(Required)' + SERVER_URL  + ': the VSTS URL to connect to',
-		'(Required)' + API_KEY    + ': API Key',
+		'(Required)' + API_KEY     + ': API Key',
+		'(Optional)' + ISSUETYPE   + ': Issue Type.Default value is bug',
 		'(Optional)' + SEVERITYMAP + ': Map of AppScan Severities to VSTS Priorities.  If set, a mapping must be provided for High, Medium, Low, Informational',
 		'Complete JSON Example: (replace single quotes with double quotes)                                                       ',
 		'     {                                                                                                    ',

@@ -81,13 +81,7 @@ public class ASECreateIssueAndSyncHandler {
 				
 		//Fill in a severity map if one wasn't specified		
 		if (config.get(SEVERITYMAP) == null || config.get(SEVERITYMAP)=="")  {
-			Map<String, String> severityMap = new HashMap<String, String>();
-			severityMap.put("Critical", "Highest");
-			severityMap.put("High", "Highest");
-			severityMap.put("Medium", "High");
-			severityMap.put("Low", "Low");
-			severityMap.put("Information", "Lowest");
-			config.put(SEVERITYMAP, severityMap);
+			config.put(SEVERITYMAP, setSeverityMap(DTSProvider));
 		}
 				
 		//Set a String default summary if one doesn't exist
@@ -100,6 +94,24 @@ public class ASECreateIssueAndSyncHandler {
 			config.put(ISSUETYPE, "Bug");
 		}
 		return true;
+	}
+	private Map<String, String> setSeverityMap(String DTSProvider) {
+		Map<String, String> severityMap = new HashMap<String, String>();
+		if (DTSProvider.equalsIgnoreCase("vsts")) {
+			severityMap.put("Critical", "1 - Critical");
+			severityMap.put("High", "1 - Critical");
+			severityMap.put("Medium", "2 - High");
+			severityMap.put("Low", "3 - Medium");
+			severityMap.put("Informational", "4 - Low");
+		}
+		else {
+			severityMap.put("Critical", "Highest");
+			severityMap.put("High", "Highest");
+			severityMap.put("Medium", "High");
+			severityMap.put("Low", "Low");
+			severityMap.put("Information", "Lowest");
+		}
+		return severityMap;
 	}
 	
 	private void validateMandatoryFields(String [] fields,Map<String, Object> config) throws EntityNotFoundException {

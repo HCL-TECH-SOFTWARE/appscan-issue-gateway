@@ -29,6 +29,7 @@ class VSTSProviderV2 implements IProvider {
 		'VSTS provider. Configuration fields are below',
 		'(Required)' + SERVER_URL  + ': the VSTS URL to connect to',
 		'(Required)' + API_KEY    + ': API Key',
+		'(Optional)' + ISSUETYPE   + ': Issue Type.Default value is bug',
 		'(Optional)' + SEVERITYMAP + ': Map of AppScan Severities to VSTS Priorities.If set, a mapping must be provided for High, Medium, Low, Informational.In case of ASE it should be provided for Critical, High, Medium, Low, Information',
 		'Complete JSON Example: (replace single quotes with double quotes)                                                       ',
 		'     {                                                                                                    ',

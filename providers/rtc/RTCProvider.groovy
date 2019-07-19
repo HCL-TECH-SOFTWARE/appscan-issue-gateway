@@ -124,17 +124,16 @@ class RTCProvider implements IProvider {
 			if(createWorkItemConnection.responseCode == 201) {
 				String workItemURL = createWorkItemConnection.getHeaderField("location")
 				// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
+				String idKey="Id";
 				if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
-					results.put(appscanIssue.get("id"), workItemURL);
+					idKey="id";
 				}
-				else {
-					results.put(appscanIssue.get("Id"), workItemURL);
-				}
-
+				results.put(appscanIssue.get(idKey), workItemURL);
+				
 				changeRequest = getChangeRequest(workItemURL, createWorkItemConnection.getInputStream(), errors)				
 
 				File issueDetails = appscanIssue.issueDetails
-				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, String.format(Constants.FILE_NAME, appscanIssue.get("Id")), null, errors)
+				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, String.format(Constants.FILE_NAME, appscanIssue.get(idKey)), null, errors)
 
 				changeRequest.dcDescription = attr.description				
 				changeRequest.attachmentURL = attachmentURL
