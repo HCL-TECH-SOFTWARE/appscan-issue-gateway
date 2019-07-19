@@ -80,7 +80,6 @@ public class ASEExternalIdHandler implements ASEConstants {
 		requestExternalIdAttribute.issueAttributeDefinitionId=externalIdAttribute.issueAttributeDefinitionId;
 		String[] values= {results.get(issueId)};
 		requestExternalIdAttribute.value=values;
-		
 		IssueUpdateRequest.IssueAttributeCollection.IssueAttribute [] attributeArray= {requestExternalIdAttribute};
 		attributeCollection.attributeArray=attributeArray;
 		requestEntity.attributeCollection=attributeCollection;
