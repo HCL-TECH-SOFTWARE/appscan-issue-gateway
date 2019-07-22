@@ -37,6 +37,7 @@ public class ASECreateIssueAndSyncHandler {
     public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
 		if (validate(jobData)) {
 			for (IAppScanIssue issue:issues) {
+				// Calling setup connection for RTC since this is available in the RTC provide groovy inside the submitIssues() method which we are not using in case of ASE.
 				if (jobData.getImData().getProvider().equalsIgnoreCase("rtc")) {
 					IProvider rtcInstance=ProvidersRepository.getProviders().get("rtc");
 					Class<? extends IProvider> rtcProviderClass=rtcInstance.getClass();

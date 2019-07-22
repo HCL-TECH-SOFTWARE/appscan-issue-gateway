@@ -2,6 +2,7 @@ package rtc
 /**
  * © Copyright IBM Corporation 2018.
  * © Copyright PrimeUP Solucoes em TI LTDA 2018.
+ * © Copyright HCL Technologies Ltd. 2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
  
@@ -121,11 +122,11 @@ class RTCProvider implements IProvider {
 			//prepares connection and submit issue
 			HttpURLConnection createWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, attr.workItemCreation, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_POST)
 
-			if(createWorkItemConnection.responseCode == 201) {
+			if (createWorkItemConnection.responseCode == 201) {
 				String workItemURL = createWorkItemConnection.getHeaderField("location")
 				// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
 				String idKey="Id";
-				if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
+				if (appscanIssue.get("Id") == null || appscanIssue.get("Id") == ""){
 					idKey="id";
 				}
 				results.put(appscanIssue.get(idKey), workItemURL);

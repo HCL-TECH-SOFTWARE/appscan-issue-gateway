@@ -1,6 +1,6 @@
 /**
  * � Copyright IBM Corporation 2018.
- * � Copyright HCL Technologies Ltd. 2018.
+ * � Copyright HCL Technologies Ltd. 2018,2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package vsts
@@ -129,7 +129,7 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 				return ;
 			}
 
-			if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
+			if (appscanIssue.get("Id") == null || appscanIssue.get("Id") == ""){
 				results.put(appscanIssue.get("id"), vstsIssueUrl);
 			}
 			else {
@@ -166,13 +166,13 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 
 	
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
-		def issueTypeString = "Issue Type"
-		def scanNameString ="Scan Name";
+		def issueTypeString = "IssueType"
+		def scanNameString ="ScanName";
 		
-		//"Issue Type" for ASE and "IssueType" for ASOC
-		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueTypeString)=="" ){
-			issueTypeString="IssueType";
-			scanNameString ="ScanName";
+		//"Issue Type" and "Scan Name" for ASE and "IssueType" for ASOC
+		if (appscanIssue.get(issueTypeString) == null || appscanIssue.get(issueTypeString) == "" ){
+			issueTypeString="Issue Type";
+			scanNameString ="Scan Name";
 		}
 		def issueType = Utils.escape(config.get("issuetype"))
 		def severity = config.get("severitymap").get(appscanIssue.get("Severity"))
