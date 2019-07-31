@@ -37,3 +37,6 @@
 	```
 	
 - The resultant build can be found under the appscan-issue-gateway\target folder.
+
+
+Once done, refer the “Getting Started” section in README.md to use AppScan Issue Management Gateway service with SSL enabled
