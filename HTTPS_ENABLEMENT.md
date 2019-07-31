@@ -9,7 +9,9 @@
 - Get an SSL certificate. In this document generation of self-signed certificate is explained but you can also get a certificate from an authority .
 	1. Open the command prompt
 	2. Following is an example of command that can be used to create a set of cryptographic keys and store it in a keystore using keytool (a utility bundled with JRE):
-	keytool -genkeypair -alias issuegateway -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore issuegateway.p12 -validity 3650
+		```sh
+        keytool -genkeypair -alias issuegateway -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore issuegateway.p12 -validity 3650
+        ```
 	3. The above command will be an interative execution so please provide the values as appropriate.Please note the password provided and location of keystore generated.
 	3. The above will generate the keystore in PKCS12 format.
 - Download the issue gateway source code from the repository: https://github.com/hclproducts/appscan-issue-gateway.git .
