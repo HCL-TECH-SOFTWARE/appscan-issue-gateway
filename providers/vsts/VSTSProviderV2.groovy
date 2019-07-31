@@ -22,6 +22,7 @@ class VSTSProviderV2 implements IProvider {
 	
 	//Optional fields
 	static def SEVERITYMAP = "severitymap"
+	static def ISSUETYPE = "issuetype"
 	
 	//Description
 	static def PROVIDER_DESCRIPTION =

@@ -97,7 +97,7 @@ test.json:
       "password": "xxxxxxxxxxxxxx",
       "projectkey": "SEC",
       "issuetype": "Security",
-      "summary": "Security issue: %Issue Type% found by %Scanner%",
+      "summary": "Security issue: %IssueType% found by %Scanner%",
       "severitymap": {
         "High": "High",
         "Medium": "High",
@@ -145,7 +145,6 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 - Some basic logging is available for the service, but work on handling few limitations, is in progress.
 - A robust automated test suite is required.
 - The service is English only and need to go through a String externalization exercise.
-- Jira APIs do not unescape the html entities in the summary so in case special character like double quotes, braces etc are present in the issue type , the html entities will be rendered as plain text. Same will work fine in the description. This issue will not be seen when it is fixed by the Jira developers. Hence, as a workaround, you can use the Issue Type value mentioned in the description and update the summary with same value.
 
 ## License
 
