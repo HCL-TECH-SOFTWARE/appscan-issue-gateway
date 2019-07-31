@@ -30,5 +30,10 @@
 
         server.ssl.key-alias=issuegateway
 
-- Build issue gateway using the following command: mvn package
+- Build issue gateway using the following command: 
+	
+	```sh
+	mvn package
+	```
+	
 - The resultant build can be found under the appscan-issue-gateway\target folder.
