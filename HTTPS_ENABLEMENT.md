@@ -15,21 +15,22 @@
         ```
 		
 	3. The above command will be an interative execution so please provide the values as appropriate.Please note the password provided and location of keystore generated.
-	3. The above will generate the keystore in PKCS12 format.
+	4. The above will generate the keystore in PKCS12 format.
 - Download the issue gateway source code from the repository: https://github.com/hclproducts/appscan-issue-gateway.git .
 - Copy the issuegateway.p12 file under /src/main/resources/keystore folder.
 - Create application.properties file
 	1. Create application.properties file (if not already present ) under /src/main/resources/ folder.
 	2. Add the following parameter to the application.properties file.
+	
+	```sh
+        server.ssl.key-store-type=PKCS12
 
-		server.ssl.key-store-type=PKCS12
-
-		server.ssl.key-store=classpath:keystore/issuegateway.p12
+        server.ssl.key-store=classpath:keystore/issuegateway.p12
 
         server.ssl.key-store-password=password
-
+	
         server.ssl.key-alias=issuegateway
-
+        
 - Build issue gateway using the following command: 
 	
 	```sh
