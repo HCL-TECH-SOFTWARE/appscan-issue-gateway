@@ -2,6 +2,7 @@ package rtc
 /**
  * © Copyright IBM Corporation 2018.
  * © Copyright PrimeUP Solucoes em TI LTDA 2018.
+ * © Copyright HCL Technologies Ltd. 2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 
@@ -54,8 +55,8 @@ public class RTCConstants {
 		'(Required)' + ISSUETYPE    + ': issue type',
 		'(Required)' + OTHERFIELDS  + ': other fields',
 		'(Required)' + FILEDAGAINST + ': filed against',
-		'(Optional)' + SUMMARY      + ': Override default issue summary. Issue attributes can be included with %% subsitution varibles.  For example the default is \'AppScan: %IssueType% found at %Location%\'',
-		'(Optional)' + DESCRIPTION  + ': Override default issue description. Issue attributes can be included with %% subsitution varibles For example the default is \'<b>Security issue:</b> %IssueType%<br></br> <b>Scanner:</b> %Scanner%.\'',
+		'(Optional)' + SUMMARY      + ': Issue attributes can be included with %% substitution variables. For example : \'AppScan: %IssueType% found at %Location%\'',
+		'(Optional)' + DESCRIPTION  + ': Issue attributes can be included with %% substitution variables. For example : \'<b>Security issue:</b> %IssueType%<br></br> <b>Scanner:</b> %Scanner%.\'',
 		'Complete JSON Example: (replace single quotes with double quotes)                                         ',
 		'     {                                                                                                    ',
 		'       \'appscanData\': {                                                                                 ',

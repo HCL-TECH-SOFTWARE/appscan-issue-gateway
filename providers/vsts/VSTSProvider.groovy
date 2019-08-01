@@ -1,6 +1,6 @@
 /**
  * � Copyright IBM Corporation 2018.
- * � Copyright HCL Technologies Ltd. 2018.
+ * � Copyright HCL Technologies Ltd. 2018,2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package vsts
@@ -129,7 +129,12 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 				return ;
 			}
 
-			results.put(appscanIssue.get("Id"), vstsIssueUrl)
+			if (appscanIssue.get("Id") == null || appscanIssue.get("Id") == ""){
+				results.put(appscanIssue.get("id"), vstsIssueUrl);
+			}
+			else {
+				results.put(appscanIssue.get("Id"), vstsIssueUrl);
+			}
 		}		
 		catch (Exception e) {
 			errors.add("Internal Server Error while submitting VSTS issue:" + e.getMessage())
@@ -161,14 +166,22 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 
 	
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
+		def issueTypeString = "IssueType"
+		def scanNameString ="ScanName";
+		
+		//"Issue Type" and "Scan Name" for ASE and "IssueType" for ASOC
+		if (appscanIssue.get(issueTypeString) == null || appscanIssue.get(issueTypeString) == "" ){
+			issueTypeString="Issue Type";
+			scanNameString ="Scan Name";
+		}
 		def issueType = Utils.escape(config.get("issuetype"))
 		def severity = config.get("severitymap").get(appscanIssue.get("Severity"))
-		def title = Utils.escape(appscanIssue.get("IssueType")) + " found at: " + Utils.escape(appscanIssue.get("Location"))
+		def title = Utils.escape(appscanIssue.get(issueTypeString)) + " found at: " + Utils.escape(appscanIssue.get("Location"))
 		
 		//Write description
-		String description = "\n*Issue Type*: " + Utils.escape(appscanIssue.get("IssueType"))
+		String description = "\n*Issue Type*: " + Utils.escape(appscanIssue.get(issueTypeString))
 		description += "\n*Location*: "   + Utils.escape(appscanIssue.get("Location"))
-		description += "\n*Scan Name*: "  + Utils.escape(appscanIssue.get("ScanName"))
+		description += "\n*Scan Name*: "  + Utils.escape(appscanIssue.get(scanNameString))
 		description += "\nSee the attached report for more information"
 		
 		"""[

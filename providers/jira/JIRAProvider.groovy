@@ -122,7 +122,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			
 			def jiraIssue = config.getAt(SERVER_URL) + "/browse/" + createdIssue.key
 			// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
-			if (appscanIssue.get("Id")==null || appscanIssue.get("Id")==""){
+			if (appscanIssue.get("Id") == null || appscanIssue.get("Id") == ""){
 				results.put(appscanIssue.get("id"), jiraIssue);
 			}
 			else {
@@ -143,12 +143,12 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
 		def projectKey = config.get(PROJECTKEY)
 		def issueType = config.get(ISSUETYPE)
-		def issueTypeString = "Issue Type"
-		def scanNameString ="Scan Name";
+		def issueTypeString = "IssueType"
+		def scanNameString ="ScanName";
 		//"Issue Type" for ASE and "IssueType" for ASOC
 		if (appscanIssue.get(issueTypeString)==null || appscanIssue.get(issueTypeString)=="" ){
-			issueTypeString="IssueType";
-			scanNameString ="ScanName";
+			issueTypeString="Issue Type";
+			scanNameString ="Scan Name";
 		}
 		def severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
 		def severityField = Utils.escape(config.get(SEVERITYFIELD))

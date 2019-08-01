@@ -4,24 +4,30 @@
  */
 package com.hcl.appscan.issuegateway.appscanprovider.ase;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.util.HtmlUtils;
+
+import com.hcl.appscan.issuegateway.issues.AppScanIssue;
 import com.hcl.appscan.issuegateway.issues.PushJobData;
+import com.hcl.appscan.issuegateway.providers.ProvidersRepository;
 
 import common.IAppScanIssue;
 import common.IProvider;
 
 public class ASECreateIssueAndSyncHandler {
 	
-	//Required fields
-	private static String SERVER_URL  = "url";
-	private static String USERNAME    = "username";
-	private static String PASSWORD    = "password";
-	private static String PROJECTKEY  = "projectkey";
-		
-	//Optional fields
+	
+	private static String SERVER_URL    = "url";
+	private static String USERNAME      = "username";
+	private static String PASSWORD      = "password";
+	private static String PROJECTKEY    = "projectkey";
+	private static String APIKEY       = "apiKey";
+	private static String OTHERFIELDS  = "otherfields";
+	private static String PROJECTAREA  = "projectarea";
 	private static String ISSUETYPE     = "issuetype";
 	private static String SEVERITYFIELD = "severityfield";
 	private static String SEVERITYMAP   = "severitymap";
@@ -29,27 +35,38 @@ public class ASECreateIssueAndSyncHandler {
 	private ASEExternalIdHandler externalIdHandler = new ASEExternalIdHandler();
 	
     public void createDefectAndUpdateId(IAppScanIssue[] issues,PushJobData jobData, List<String> errors, Map<String, String> results,IProvider provider ) throws Exception{
-		if (validate(jobData.getImData().getConfig())) {
+		if (validate(jobData)) {
 			for (IAppScanIssue issue:issues) {
+				// Calling setup connection for RTC since this is available in the RTC provide groovy inside the submitIssues() method which we are not using in case of ASE.
+				if (jobData.getImData().getProvider().equalsIgnoreCase("rtc")) {
+					IProvider rtcInstance=ProvidersRepository.getProviders().get("rtc");
+					Class<? extends IProvider> rtcProviderClass=rtcInstance.getClass();
+					rtcProviderClass.getDeclaredMethod( "setupConnection", new Class[] {} ).invoke( rtcInstance, new Object[] {} ) ;
+				}
+				
+				((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
+				((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
 				provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
 				externalIdHandler.updateExternalId(issue.get("id"), jobData, errors, results);
 			}
 		}
 	}
 	
-	private boolean validate (Map<String, Object> config) throws EntityNotFoundException {
-		//Check for required fields
-		if (!config.containsKey(SERVER_URL) || (config.get(SERVER_URL)==null || config.get(SERVER_URL)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,SERVER_URL,"URL of Defect Tracking System is not provided or invalid");
-		}
-		if (!config.containsKey(USERNAME)|| (config.get(USERNAME)==null || config.get(USERNAME)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,USERNAME,"username of Defect Tracking System is not provided or invalid");
-		}
-		if (!config.containsKey(PASSWORD)|| (config.get(PASSWORD)==null || config.get(PASSWORD)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,PASSWORD,"password of Defect tracking system is not provided or invalid");
-		}
-		if (!config.containsKey(PROJECTKEY)|| (config.get(PROJECTKEY)==null || config.get(PROJECTKEY)=="")) {
-			throw new EntityNotFoundException(PushJobData.class,PROJECTKEY,"project key is not provided or invalid");
+	private boolean validate (PushJobData jobData) throws EntityNotFoundException {
+		String DTSProvider=jobData.getImData().getProvider();
+		Map<String, Object> config=jobData.getImData().getConfig();
+		switch (DTSProvider.toLowerCase()) {
+		case "jira":
+			validateMandatoryFields(new String[]{SERVER_URL,USERNAME,PASSWORD,PROJECTKEY},config);
+			break;
+		case "vsts":
+			validateMandatoryFields(new String[]{SERVER_URL,APIKEY},config);
+			break;
+		case "rtc":
+			validateMandatoryFields(new String[]{SERVER_URL,USERNAME,PASSWORD,ISSUETYPE,PROJECTAREA,OTHERFIELDS},config);
+			break;
+		default:
+			break;
 		}
 				
 		//If there is a trailing / on the passed in JIRA URL remove it
@@ -65,17 +82,12 @@ public class ASECreateIssueAndSyncHandler {
 				
 		//Fill in a severity map if one wasn't specified		
 		if (config.get(SEVERITYMAP) == null || config.get(SEVERITYMAP)=="")  {
-			Map<String, String> severityMap = new HashMap<String, String>();
-			severityMap.put("High", "Highest");
-			severityMap.put("Medium", "High");
-			severityMap.put("Low", "Low");
-			severityMap.put("Information", "Lowest");
-			config.put(SEVERITYMAP, severityMap);
+			config.put(SEVERITYMAP, setSeverityMap(DTSProvider));
 		}
 				
 		//Set a String default summary if one doesn't exist
 		if (config.get(SUMMARY) == null || config.get(SUMMARY) == "") {
-			config.put(SUMMARY, "AppScan: %Issue Type% found at %Location%");
+			config.put(SUMMARY, "Security issue: %Issue Type% found by %Scanner%");
 		}
 				
 		//Set a String default issuetype if one doesn't exist
@@ -83,5 +95,35 @@ public class ASECreateIssueAndSyncHandler {
 			config.put(ISSUETYPE, "Bug");
 		}
 		return true;
+	}
+	private Map<String, String> setSeverityMap(String DTSProvider) {
+		Map<String, String> severityMap = new HashMap<String, String>();
+		if (DTSProvider.equalsIgnoreCase("vsts")) {
+			severityMap.put("Critical", "1 - Critical");
+			severityMap.put("High", "1 - Critical");
+			severityMap.put("Medium", "2 - High");
+			severityMap.put("Low", "3 - Medium");
+			severityMap.put("Informational", "4 - Low");
+		}
+		else {
+			severityMap.put("Critical", "Highest");
+			severityMap.put("High", "Highest");
+			severityMap.put("Medium", "High");
+			severityMap.put("Low", "Low");
+			severityMap.put("Information", "Lowest");
+		}
+		return severityMap;
+	}
+	
+	private void validateMandatoryFields(String [] fields,Map<String, Object> config) throws EntityNotFoundException {
+		List<String> emptyFields = new ArrayList<>();
+		for (String field:fields) {
+			if (!config.containsKey(field) || (config.get(field)==null || config.get(field)=="")) {
+				emptyFields.add(field);
+			}
+		}
+		if (!emptyFields.isEmpty()) {
+			throw new EntityNotFoundException(PushJobData.class,emptyFields.toString(),"mandatory fields" +emptyFields+" of Defect Tracking System is/are not provided or invalid");
+		}
 	}
 }

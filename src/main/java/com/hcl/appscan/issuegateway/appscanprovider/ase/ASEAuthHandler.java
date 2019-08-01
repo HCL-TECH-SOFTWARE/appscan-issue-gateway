@@ -102,7 +102,7 @@ public class ASEAuthHandler implements ASEConstants {
 		if(response.getStatusCode().is2xxSuccessful()) {
 			return response.getBody().sessionId;
         }
-		throw new Exception("Error: Receieved a " + response.getStatusCodeValue() + " status code from " + url+" .Please verify the url, id and secret ");
+		throw new Exception("Error: Received a " + response.getStatusCodeValue() + " status code from " + url+" .Please verify the url, id and secret ");
 	}
 
 	protected String getAuthorizationHeaderName() {

@@ -2,6 +2,7 @@ package rtc
 /**
  * © Copyright IBM Corporation 2018.
  * © Copyright PrimeUP Solucoes em TI LTDA 2018.
+ * © Copyright HCL Technologies Ltd. 2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
  
@@ -36,10 +37,7 @@ class RTCProvider implements IProvider {
 
 	@Override
 	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results) {
-
-		connection = new ServerCommunication();
-		connection.setUpConnection()		
-
+		setupConnection();
 		try {
 			if (validate(config, errors)) {
 				for (IAppScanIssue issue : issues) {
@@ -49,6 +47,11 @@ class RTCProvider implements IProvider {
 		} catch (Exception e) {
 			errors.add("Internal Server Error while submitting RTC issues: " + e.getMessage())
 		}
+	}
+	
+	void setupConnection(){
+		connection = new ServerCommunication();
+		connection.setUpConnection()
 	}
 
 	/**
@@ -119,14 +122,19 @@ class RTCProvider implements IProvider {
 			//prepares connection and submit issue
 			HttpURLConnection createWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, attr.workItemCreation, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_POST)
 
-			if(createWorkItemConnection.responseCode == 201) {
+			if (createWorkItemConnection.responseCode == 201) {
 				String workItemURL = createWorkItemConnection.getHeaderField("location")
-				results.put(appscanIssue.get("Id"), workItemURL)
-
+				// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
+				String idKey="Id";
+				if (appscanIssue.get("Id") == null || appscanIssue.get("Id") == ""){
+					idKey="id";
+				}
+				results.put(appscanIssue.get(idKey), workItemURL);
+				
 				changeRequest = getChangeRequest(workItemURL, createWorkItemConnection.getInputStream(), errors)				
 
 				File issueDetails = appscanIssue.issueDetails
-				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, String.format(Constants.FILE_NAME, appscanIssue.get("Id")), null, errors)
+				String attachmentURL = uploadAttachment(attr.serverUrl, attr.username, attr.password, attr.projectAreaId, issueDetails, String.format(Constants.FILE_NAME, appscanIssue.get(idKey)), null, errors)
 
 				changeRequest.dcDescription = attr.description				
 				changeRequest.attachmentURL = attachmentURL
