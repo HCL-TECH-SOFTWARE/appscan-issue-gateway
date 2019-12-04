@@ -26,9 +26,9 @@ public class ProvidersRepository {
 
 	private static final Logger logger = LoggerFactory.getLogger(ProvidersRepository.class);
 
-	public synchronized static Map<String, IProvider> getProviders() {
+	public static synchronized Map<String, IProvider> getProviders() {
 		if (providers == null) {
-			providers = new HashMap<String, IProvider>();
+			providers = new HashMap<>();
 			File providersRoot = new File(System.getProperty("providers.path", "."));
 			for (File providerPath : getSubFolders(providersRoot)) {
 				File providerGroovy = getFirstProvider(providerPath);

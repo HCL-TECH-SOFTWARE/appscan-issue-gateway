@@ -32,10 +32,10 @@ public class PushJob extends Job {
 	}
 
 	@Override
-	public Boolean call() throws Exception {
+	public Boolean call() {
 		try {
-			List<String> errors = new ArrayList<String>();
-			Map<String, String> results = new HashMap<String, String>();
+			List<String> errors = new ArrayList<>();
+			Map<String, String> results = new HashMap<>();
 
 			// getIssues
 			updateResult(new PushJobResult(getId(), "Running - Retrieving AppScan issues", errors, results));

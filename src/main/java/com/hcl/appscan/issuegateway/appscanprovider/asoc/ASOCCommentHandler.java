@@ -5,19 +5,16 @@
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
-import java.util.List;
-import java.util.Map;
-
+import com.hcl.appscan.issuegateway.issues.AppScanIssue;
+import com.hcl.appscan.issuegateway.issues.PushJobData;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
-import com.hcl.appscan.issuegateway.issues.AppScanIssue;
-import com.hcl.appscan.issuegateway.issues.PushJobData;
+import java.util.List;
+import java.util.Map;
 
 public class ASOCCommentHandler {
 
@@ -27,13 +24,10 @@ public class ASOCCommentHandler {
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
 		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replaceAll("ISSUEID", issue.get("Id"));
 
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setErrorHandler(new ResponseErrorHandler());
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
-		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
+
 		ResponseEntity<Comment[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Comment[].class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
 			String[] comments = new String[responseEntity.getBody().length];
@@ -61,15 +55,11 @@ public class ASOCCommentHandler {
 
 			String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replaceAll("ISSUEID", issueId);
 
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.setErrorHandler(new ResponseErrorHandler());
-			HttpHeaders headers = new HttpHeaders();
-			headers.add(HttpHeaders.AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
-			headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-			headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 			Comment comment = new Comment();
 			comment.Comment = getCommentToken() + " created the following issue:\n" + results.get(issueId);
-			HttpEntity<Comment> entity = new HttpEntity<Comment>(comment, headers);
+			HttpEntity<Comment> entity = new HttpEntity<>(comment, headers);
 			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
 				errors.add("An error occured adding a comment to an AppScan issue. A status code of "
