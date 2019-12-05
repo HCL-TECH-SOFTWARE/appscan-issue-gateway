@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ASOCReportHandler {
 
-	private static final String NEW_REST_CREATE_REPORT = "/api/v2/Reports/Issues/Application/APPID";
-	private static final String NEW_REST_REPORT_STATUS = "/api/V2/Reports/REPORTID";
-	private static final String NEW_REST_REPORT_DOWNLOAD = "/api/v2/Reports/Download/REPORTID";
+	private static final String REST_CREATE_REPORT = "/api/v2/Reports/Security/Application/APPID";
+	private static final String REST_REPORT_STATUS = "/api/V2/Reports/REPORTID";
+	private static final String REST_REPORT_DOWNLOAD = "/api/v2/Reports/Download/REPORTID";
 
 	private static final Logger logger = LoggerFactory.getLogger(ASOCReportHandler.class);
 
@@ -60,7 +60,7 @@ public class ASOCReportHandler {
 
 	private String postReportJob(PushJobData jobData, String issueId, List<String> errors) {
 		String url = jobData.getAppscanData().getUrl()
-				+ NEW_REST_CREATE_REPORT.replaceAll("APPID", jobData.getAppscanData().getAppid());
+				+ REST_CREATE_REPORT.replace("APPID", jobData.getAppscanData().getAppid());
 
 		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
 		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
@@ -80,8 +80,8 @@ public class ASOCReportHandler {
 		return null;
 	}
 
-	private Boolean waitForReportJob(PushJobData jobData, String reportId) {
-		String url = jobData.getAppscanData().getUrl() + NEW_REST_REPORT_STATUS.replaceAll("REPORTID", reportId);
+	private boolean waitForReportJob(PushJobData jobData, String reportId) {
+		String url = jobData.getAppscanData().getUrl() + REST_REPORT_STATUS.replace("REPORTID", reportId);
 
 		for (long stop = System.nanoTime() + TimeUnit.MINUTES.toNanos(2); stop > System.nanoTime(); ) {
 			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
@@ -103,7 +103,7 @@ public class ASOCReportHandler {
 	}
 
 	private File downloadReport(PushJobData jobData, String reportId, List<String> errors) throws IOException {
-		String url = jobData.getAppscanData().getUrl() + NEW_REST_REPORT_DOWNLOAD.replaceAll("REPORTID", reportId);
+		String url = jobData.getAppscanData().getUrl() + REST_REPORT_DOWNLOAD.replace("REPORTID", reportId);
 
 		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 		messageConverters.add(new ByteArrayHttpMessageConverter());
