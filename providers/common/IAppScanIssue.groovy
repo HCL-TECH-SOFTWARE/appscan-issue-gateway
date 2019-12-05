@@ -15,7 +15,10 @@ package common
  * issues opened in other issue management systems.         
  */
 interface IAppScanIssue {
+
 	File getIssueDetails()
+
 	String get(String name)
+
 }
 

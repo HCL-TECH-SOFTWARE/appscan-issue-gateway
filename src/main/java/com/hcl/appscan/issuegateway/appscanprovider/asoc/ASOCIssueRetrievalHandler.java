@@ -37,7 +37,7 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 			HttpEntity<Object> entity = new HttpEntity<>(headers);
 
 			UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
-					.path(REST_ISSUES.replaceAll("APPID", jobData.getAppscanData().getAppid()))
+					.path(REST_ISSUES.replace("APPID", jobData.getAppscanData().getAppid()))
 					.queryParam("$filter", getStateFilters(jobData.getAppscanData().getIssuestates()))
 					.queryParam("$orderby", "SeverityValue");
 			for (String policyId : getPolicyIds(jobData)) {
@@ -63,10 +63,13 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
 	private String getStateFilters(String userInput) {
 		String[] states = userInput.split(",");
-		String stateFilter = "";
+		StringBuilder stateFilterBuilder = new StringBuilder();
 		for (String state : states) {
-			stateFilter += "Status eq '" + state + "' or ";
+			stateFilterBuilder.append("Status eq '")
+					.append(state)
+					.append("' or ");
 		}
+		String stateFilter = stateFilterBuilder.toString();
 		if (stateFilter.length() > 1) {
 			stateFilter = stateFilter.substring(0, stateFilter.length() - " or ".length());
 		}
@@ -83,9 +86,7 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 			}
 
 		} else {
-			for (String policyId : getApplicationPolicies(jobData)) {
-				policyIds.add(policyId);
-			}
+			policyIds.addAll(getApplicationPolicies(jobData));
 		}
 		return policyIds;
 	}
@@ -98,7 +99,7 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
 		HttpEntity<Object> entity = new HttpEntity<>(headers);
 		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
-				.path(REST_POLICY.replaceAll("APPID", jobData.getAppscanData().getAppid()));
+				.path(REST_POLICY.replace("APPID", jobData.getAppscanData().getAppid()));
 
 		ResponseEntity<Policy[]> response = restTemplate.exchange(urlBuilder.build().encode().toUri(), HttpMethod.GET,
 				entity, Policy[].class);

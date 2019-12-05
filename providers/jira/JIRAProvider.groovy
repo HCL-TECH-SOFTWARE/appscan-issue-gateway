@@ -37,7 +37,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 		}
 
 	}
-	
+
 	private Boolean validate(Map<String, String> config, List<String> errors) {
 		
 		//Check for required fields
@@ -93,7 +93,7 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	}
 	
 	@Override
-	public void submitIssue(IAppScanIssue appscanIssue, Map<String, String> config, List<String> errors, Map<String, String> results) {
+	public void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results) {
 		def API_CREATEISSUE   = "/rest/api/latest/issue"
 		def API_ADDATTACHMENT = "/rest/api/latest/issue/{issueKey}/attachments"
 		

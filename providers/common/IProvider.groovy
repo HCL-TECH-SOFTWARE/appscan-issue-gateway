@@ -4,16 +4,12 @@
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package common
-
-import java.util.List
-import java.util.Map
-
 /**
  * Interface that Providers must implement.  Very simple for now, but as more features are added this will likely grow
- * 
+ *
  * The getId() method is expecting a readable Id.  It's what the user will include in their JSON to direct their 
  * work to your provider.  So probably best to pick a short readable one (ie. "jira")
- * 
+ *
  * The getDescription() method is only used by the service to populate the response to the GET /providers call
  * which is only likely to be called when new users are trying things out.   Some explanation for why the Description is a 
  * String list: Swagger UI's rendering of response text is very limiting.  Most or all formatting characters are not respected, 
@@ -28,10 +24,14 @@ import java.util.Map
  *                                   to the created issue in the other system makes sense. In the case of JIRA,simple URIs to the generated JIRA work item suffice.
  *                                   This Map is then used to call back about to AppScan and update the issues with this metadata.  
  */
-
 interface IProvider {
-	String       getId()
+
+	String getId()
+
 	List<String> getDescription()
+
 	void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results)
-	void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results)	
+
+	void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results)
+
 }

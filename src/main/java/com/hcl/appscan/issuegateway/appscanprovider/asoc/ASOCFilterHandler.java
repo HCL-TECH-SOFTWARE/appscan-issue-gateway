@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
@@ -15,13 +15,12 @@ public class ASOCFilterHandler extends FilterHandler {
 
 	@Override
 	protected AppScanIssue[] filterOutPreviouslyHandledIssues(List<AppScanIssue> issues, PushJobData jobData,
-			List<String> errors) throws Exception {
+	                                                          List<String> errors) {
 		return filterBasedOnComment(issues, jobData, errors);
 	}
 
-	private AppScanIssue[] filterBasedOnComment(List<AppScanIssue> issues, PushJobData jobData, List<String> errors)
-			throws Exception {
-		List<AppScanIssue> filteredIssues = new ArrayList<AppScanIssue>();
+	private AppScanIssue[] filterBasedOnComment(List<AppScanIssue> issues, PushJobData jobData, List<String> errors) {
+		List<AppScanIssue> filteredIssues = new ArrayList<>();
 		final int maxIssueCount = jobData.getAppscanData().getMaxissues();
 		int issueCount = 0;
 		ASOCCommentHandler commentHandler = new ASOCCommentHandler();
@@ -43,6 +42,6 @@ public class ASOCFilterHandler extends FilterHandler {
 				}
 			}
 		}
-		return filteredIssues.toArray(new AppScanIssue[filteredIssues.size()]);
+		return filteredIssues.toArray(new AppScanIssue[0]);
 	}
 }

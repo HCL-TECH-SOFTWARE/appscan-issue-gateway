@@ -8,7 +8,10 @@ package common;
 import java.io.File;
 
 public interface IAppScanIssue {
-	public File getIssueDetails();
-	public String get(String name);
+
+	File getIssueDetails();
+
+	String get(String name);
+
 }
 

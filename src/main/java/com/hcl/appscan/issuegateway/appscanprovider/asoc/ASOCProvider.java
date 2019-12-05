@@ -32,7 +32,7 @@ public class ASOCProvider implements IAppScanProvider {
 	}
 
 	@Override
-	public void retrieveReports(AppScanIssue[] filteredIssues, List<String> errors) throws Exception {
+	public void retrieveReports(AppScanIssue[] filteredIssues, List<String> errors) {
 		new ASOCReportHandler().retrieveReports(filteredIssues, jobData, errors);
 	}
 
