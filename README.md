@@ -112,7 +112,7 @@ test.json:
 }
 ```
 
-Please use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue_details_response.txt) to know about the different attributes of issue details in ASE which can be used in the request json.
+Please use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue_details_response.json) to know about the different attributes of issue details in ASE which can be used in the request json.
 
 Most JSON examples are self-explanatory, but for the purpose of understanding refer to the following summary:
 
