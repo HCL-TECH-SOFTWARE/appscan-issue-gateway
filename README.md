@@ -12,8 +12,8 @@ YouTube links (HCL AppScan on Cloud only):
 
 - A Java 8 Runtime
 - A REST Client (such as "curl" or your language of choice) to submit requests to the service
-- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key)
-- ASE installation (<https://www.ibm.com/support/knowledgecenter/SSW2NF_9.0.3/com.ibm.ase.help.doc/helpindex_ase.html>) to synchronize issues between ASE and other issue management systems such as JIRA.
+- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [ASE installation](<https://www.ibm.com/support/knowledgecenter/SSW2NF_9.0.3/com.ibm.ase.help.doc/helpindex_ase.html>)
+- A supported Issue Management system: Jira, VSTS(Azure DevOps), or RTC
 
 ## Getting Started
 
