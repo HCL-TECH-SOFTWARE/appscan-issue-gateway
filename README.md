@@ -33,7 +33,7 @@ Choosing a different port is as follows:
 java -Dserver.port=4444 -jar appscan-issue-gateway.jar
 ```
 
-The server starts in a few seconds and the Spring Boot logo appears. Open a browser, and access REST API doc at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) :
+The server starts in a few seconds and the Spring Boot logo appears. Open a browser, and access the REST API documentation at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) :
 
 ![swagger screenshot](docs/images/swagger.png?raw=true)
 
@@ -70,7 +70,7 @@ The following curl helps you submit jobs to the service:
 curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json
 ```
 
-This command uses a JSON file.Refer the following example:(Also a sample json file for ASE request named sample_request_ase.json can be found in this repository)
+This command uses a JSON file. Refer the following example:(Also a sample json file for ASE request named sample_request_ase.json can be found in this repository)
 
 test.json:
 
@@ -112,9 +112,9 @@ test.json:
 }
 ```
 
-Please use the file ASE_issue_details_response.txt to know about the different attributes of issue details in ASE which can be used in the request json.
+Please use the file [ASE_issue_details_response.txt](docs/samples/ase/ASE_issue_details_response.txt) to know about the different attributes of issue details in ASE which can be used in the request json.
 
-Few JSON are self-explanatory, but for the purpose of understanding, refer the following summary:
+Most JSON examples are self-explanatory, but for the purpose of understanding refer to the following summary:
 
 Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. For Deprecated APIs, please refer the Model and Example Value on the swagger page.
 
@@ -142,7 +142,6 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 ## Known Issues & Limitations
 
 - The JIRA support only handles Basic Auth (username and password)
-- Some basic logging is available for the service, but work on handling few limitations, is in progress.
 - A robust automated test suite is required.
 - The service is English only and need to go through a String externalization exercise.
 
