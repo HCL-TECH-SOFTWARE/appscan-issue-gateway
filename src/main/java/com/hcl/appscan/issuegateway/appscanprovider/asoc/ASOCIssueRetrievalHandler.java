@@ -1,13 +1,12 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.hcl.appscan.issuegateway.appscanprovider.IIssueRetrievalHandler;
+import com.hcl.appscan.issuegateway.issues.AppScanIssue;
+import com.hcl.appscan.issuegateway.issues.PushJobData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -18,32 +17,27 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.hcl.appscan.issuegateway.appscanprovider.IIssueRetrievalHandler;
-import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
-import com.hcl.appscan.issuegateway.issues.AppScanIssue;
-import com.hcl.appscan.issuegateway.issues.PushJobData;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
-	private final String REST_ISSUES = "/api/v2/Apps/APPID/Issues";
-	private final String REST_POLICY = "/api/v2/Apps/APPID/Policy";
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final String REST_ISSUES = "/api/v2/Apps/APPID/Issues";
+	private static final String REST_POLICY = "/api/v2/Apps/APPID/Policy";
+	private static final Logger logger = LoggerFactory.getLogger(ASOCIssueRetrievalHandler.class);
 
 	@Override
 	public AppScanIssue[] retrieveIssues(PushJobData jobData, List<String> errors) {
 
 		try {
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.setErrorHandler(new ResponseErrorHandler());
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData));
-			headers.add("Content-Type", "application/json");
-			headers.add("Accept", "application/json");
+			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 			headers.add("Accept-Language", "en-US,en;q=0.9");
+			HttpEntity<Object> entity = new HttpEntity<>(headers);
 
-			HttpEntity<Object> entity = new HttpEntity<Object>(headers);
 			UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
-					.path(REST_ISSUES.replaceAll("APPID", jobData.getAppscanData().getAppid()))
+					.path(REST_ISSUES.replace("APPID", jobData.getAppscanData().getAppid()))
 					.queryParam("$filter", getStateFilters(jobData.getAppscanData().getIssuestates()))
 					.queryParam("$orderby", "SeverityValue");
 			for (String policyId : getPolicyIds(jobData)) {
@@ -69,10 +63,13 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
 	private String getStateFilters(String userInput) {
 		String[] states = userInput.split(",");
-		String stateFilter = "";
+		StringBuilder stateFilterBuilder = new StringBuilder();
 		for (String state : states) {
-			stateFilter += "Status eq '" + state + "' or ";
+			stateFilterBuilder.append("Status eq '")
+					.append(state)
+					.append("' or ");
 		}
+		String stateFilter = stateFilterBuilder.toString();
 		if (stateFilter.length() > 1) {
 			stateFilter = stateFilter.substring(0, stateFilter.length() - " or ".length());
 		}
@@ -80,7 +77,7 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 	}
 
 	private List<String> getPolicyIds(PushJobData jobData) {
-		List<String> policyIds = new ArrayList<String>();
+		List<String> policyIds = new ArrayList<>();
 		// If the user passed in some policy ids, use them. If not go figure out the
 		// application's registered policies
 		if (jobData.getAppscanData().getPolicyids() != null) {
@@ -89,26 +86,20 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 			}
 
 		} else {
-			for (String policyId : getApplicationPolicies(jobData)) {
-				policyIds.add(policyId);
-			}
+			policyIds.addAll(getApplicationPolicies(jobData));
 		}
 		return policyIds;
 	}
 
 	private List<String> getApplicationPolicies(PushJobData jobData) {
-		List<String> policyIds = new ArrayList<String>();
+		List<String> policyIds = new ArrayList<>();
 
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setErrorHandler(new ResponseErrorHandler());
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData));
-		headers.add("Content-Type", "application/json");
-		headers.add("Accept", "application/json");
+		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 
-		HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+		HttpEntity<Object> entity = new HttpEntity<>(headers);
 		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
-				.path(REST_POLICY.replaceAll("APPID", jobData.getAppscanData().getAppid()));
+				.path(REST_POLICY.replace("APPID", jobData.getAppscanData().getAppid()));
 
 		ResponseEntity<Policy[]> response = restTemplate.exchange(urlBuilder.build().encode().toUri(), HttpMethod.GET,
 				entity, Policy[].class);

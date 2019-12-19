@@ -5,14 +5,10 @@
  */
 package vsts
 
-import java.util.List
-import java.util.Map
-
 import common.IAppScanIssue
 import common.IProvider
 import common.RESTUtils
 import common.Utils
-import groovy.json.JsonBuilder
 import groovy.json.JsonSlurper
 
 /**
@@ -88,7 +84,7 @@ class VSTSProvider extends VSTSConstants implements IProvider {
 	}
 	
 	@Override
-	public void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
+	public void submitIssue(IAppScanIssue appscanIssue, Map <String, Object> config, List<String> errors, Map<String, String> results){
 		def API_CREATEISSUE   = "/_apis/wit/workitems/\$${config.get(ISSUETYPE)}?api-version=1.0"
 		def API_UPLOADATTACHMENT = "/_apis/wit/attachments?fileName=issueDetails-{issueKey}.html&api-version=1.0"
 		def API_ADDATTACHMENT = "/_apis/wit/workitems/{issueKey}?api-version=1.0" 

@@ -20,7 +20,7 @@ import com.hcl.appscan.issuegateway.issues.PushJobData;
 public abstract class AuthHandler {
 
 	protected static Map<String, String> bearerTokens = Collections
-			.synchronizedMap(new PassiveExpiringMap<String, String>(1000 * 60 * 60 * 3)); // 3 hour expiry
+			.synchronizedMap(new PassiveExpiringMap<>(1000 * 60 * 60 * 3)); // 3 hour expiry
 
 	public String getBearerToken(PushJobData jobData) {
 		String url = jobData.getAppscanData().getUrl();
@@ -44,7 +44,7 @@ public abstract class AuthHandler {
 			RestTemplate restTemplate = getRestTemplate();
 			HttpHeaders headers = new HttpHeaders();
 			headers.add(getAuthorizationHeaderName(), bearerToken);
-			HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+			HttpEntity<Object> entity = new HttpEntity<>(headers);
 			ResponseEntity<AppsCountResponse> response = restTemplate.exchange(url + getValidationAPI(), HttpMethod.GET,
 					entity, AppsCountResponse.class);
 			if (response.getStatusCode().is2xxSuccessful()) {

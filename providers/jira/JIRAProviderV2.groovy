@@ -6,9 +6,6 @@ package jira
 
 import common.IAppScanIssue
 import common.IProvider
-import common.RESTUtils
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 
 class JIRAProviderV2 implements IProvider{
 	//Provider name

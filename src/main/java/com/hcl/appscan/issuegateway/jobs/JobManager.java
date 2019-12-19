@@ -36,11 +36,11 @@ public class JobManager {
 	private JobManager() {
 		executor = Executors.newCachedThreadPool();
 		// Expiration time of 3 hours
-		jobResults = Collections.synchronizedMap(new PassiveExpiringMap<String, PushJobResult>(1000 * 60 * 60 * 3));
+		jobResults = Collections.synchronizedMap(new PassiveExpiringMap<>(1000 * 60 * 60 * 3));
 	}
 
 	public PushJobResult submitJob(Job job) {
-		executor.submit(new FutureTask<Boolean>(job));
+		executor.submit(new FutureTask<>(job));
 		jobResults.put(job.getId(), new PushJobResult(job.getId(), "Created", null, null));
 		return jobResults.get(job.getId());
 	}

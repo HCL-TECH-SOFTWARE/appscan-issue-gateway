@@ -88,6 +88,6 @@ class RTCProviderV2 implements IProvider {
     }
 	
 	@Override
-	public void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
+	public void submitIssue(IAppScanIssue appscanIssue, Map <String, Object> config, List<String> errors, Map<String, String> results){
 	}
 }

@@ -2,28 +2,25 @@
  * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
- 
+
 package vsts
 
 import common.IAppScanIssue
 import common.IProvider
-import common.RESTUtils
-import groovy.json.JsonBuilder
-import groovy.json.JsonSlurper
 
 class VSTSProviderV2 implements IProvider {
-	
+
 	//Provider name
 	static def PROVIDER_NAME = "vsts"
 
 	//Required fields
 	static def SERVER_URL  = "url"
 	static def API_KEY    = "apiKey"
-	
+
 	//Optional fields
 	static def SEVERITYMAP = "severitymap"
 	static def ISSUETYPE = "issuetype"
-	
+
 	//Description
 	static def PROVIDER_DESCRIPTION =
 	[
@@ -48,7 +45,7 @@ class VSTSProviderV2 implements IProvider {
 		'        },                                                                                                ',
 		'        \'imData\': {                                                                                       ',
 		'          \'provider\': \'vsts\',                                                                             ',
-		'          \'config\': {                                                                                     ',		 
+		'          \'config\': {                                                                                     ',
 		'            \'url\': \'https://dev.azure.com/<VSTS_userid>/<VSTS_projectName>\',                              ',
 		'            \'apiKey\': \'apikey\',                                                                            ',
 		'            \'issuetype\': \'Bug\',                                                                         ',
@@ -60,23 +57,23 @@ class VSTSProviderV2 implements IProvider {
 		'            }                                                                                            ',
 		'     }                                                                                                    '
 	]
-	
+
 	@Override
 	public String getId() {
 		return PROVIDER_NAME;
 	}
-	
+
 	@Override
 	List<String> getDescription() {
 		return PROVIDER_DESCRIPTION;
 	}
-	
+
 	@Override
 	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors, Map<String, String> results) {
-		
+
 	}
-		
+
 	@Override
-	public void submitIssue(IAppScanIssue appscanIssue, Map <String,String> config, List<String> errors, Map<String, String> results){
-	}	
+	public void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors, Map<String, String> results) {
+	}
 }

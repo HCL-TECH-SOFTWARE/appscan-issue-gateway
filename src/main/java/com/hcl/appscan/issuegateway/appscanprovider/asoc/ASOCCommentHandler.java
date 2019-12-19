@@ -1,23 +1,21 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018,2019. 
+ * © Copyright HCL Technologies Ltd. 2018,2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
-import java.util.List;
-import java.util.Map;
-
+import com.hcl.appscan.issuegateway.issues.AppScanIssue;
+import com.hcl.appscan.issuegateway.issues.PushJobData;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
-import com.hcl.appscan.issuegateway.issues.AppScanIssue;
-import com.hcl.appscan.issuegateway.issues.PushJobData;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class ASOCCommentHandler {
 
@@ -25,15 +23,12 @@ public class ASOCCommentHandler {
 	private static final String COMMENT_TOKEN = "AppScan Issue Gateway";
 
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
-		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replaceAll("ISSUEID", issue.get("Id"));
+		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", issue.get("Id"));
 
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setErrorHandler(new ResponseErrorHandler());
-		HttpHeaders headers = new HttpHeaders();
-		headers.add(HttpHeaders.AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
-		headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-		headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
+
 		ResponseEntity<Comment[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Comment[].class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
 			String[] comments = new String[responseEntity.getBody().length];
@@ -53,23 +48,19 @@ public class ASOCCommentHandler {
 
 	public void submitComments(PushJobData jobData, List<String> errors, Map<String, String> results) {
 
-		for (String issueId : results.keySet()) {
+		for (Entry<String, String> result : results.entrySet()) {
 			// Only handle result entries that have a value that starts with "http" (A link to a defect)
-			if (!results.get(issueId).startsWith("http")) {
+			if (!result.getValue().startsWith("http")) {
 				break;
 			}
 
-			String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replaceAll("ISSUEID", issueId);
+			String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", result.getKey());
 
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.setErrorHandler(new ResponseErrorHandler());
-			HttpHeaders headers = new HttpHeaders();
-			headers.add(HttpHeaders.AUTHORIZATION, ASOCAuthHandler.getInstance().getBearerToken(jobData));
-			headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-			headers.add(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 			Comment comment = new Comment();
-			comment.Comment = getCommentToken() + " created the following issue:\n" + results.get(issueId);
-			HttpEntity<Comment> entity = new HttpEntity<Comment>(comment, headers);
+			comment.Comment = getCommentToken() + " created the following issue:\n" + result.getValue();
+			HttpEntity<Comment> entity = new HttpEntity<>(comment, headers);
 			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
 			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
 				errors.add("An error occured adding a comment to an AppScan issue. A status code of "

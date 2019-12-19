@@ -38,7 +38,7 @@ public class PushJobData {
 		this.imData = imData;
 	}
 
-	static public class AppScanData {
+	public static class AppScanData {
 
 		@NotBlank
 		@ApiModelProperty(position = 1, required = true, value = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.")

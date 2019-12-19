@@ -61,7 +61,6 @@ public class PushJobService {
 					"Error loading the issue management provider: " + submitJobData.getImData().getProvider());
 		}
 		PushJob submitJob = new PushJob(appscanProvider, provider);
-		PushJobResult jobResult = JobManager.getInstance().submitJob(submitJob);
-		return jobResult;
+		return JobManager.getInstance().submitJob(submitJob);
 	}
 }

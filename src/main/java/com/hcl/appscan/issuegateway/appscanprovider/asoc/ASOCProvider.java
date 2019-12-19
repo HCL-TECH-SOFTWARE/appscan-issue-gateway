@@ -22,7 +22,7 @@ public class ASOCProvider implements IAppScanProvider {
 	}
 
 	@Override
-	public AppScanIssue[] getIssues(List<String> errors) throws Exception {
+	public AppScanIssue[] getIssues(List<String> errors) {
 		return new ASOCIssueRetrievalHandler().retrieveIssues(jobData, errors);
 	}
 
@@ -32,13 +32,13 @@ public class ASOCProvider implements IAppScanProvider {
 	}
 
 	@Override
-	public void retrieveReports(AppScanIssue[] filteredIssues, List<String> errors) throws Exception {
+	public void retrieveReports(AppScanIssue[] filteredIssues, List<String> errors) {
 		new ASOCReportHandler().retrieveReports(filteredIssues, jobData, errors);
 	}
 
 	@Override
 	public void submitIssuesAndUpdateAppScanProvider(AppScanIssue[] filteredIssues, List<String> errors,
-			Map<String, String> results, IProvider provider) throws Exception {
+			Map<String, String> results, IProvider provider) {
 		provider.submitIssues(filteredIssues, jobData.getImData().getConfig(), errors, results);
 		new ASOCCommentHandler().submitComments(jobData, errors, results);
 	}

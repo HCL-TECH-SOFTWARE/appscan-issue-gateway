@@ -1,17 +1,13 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018. 
+ * © Copyright HCL Technologies Ltd. 2018.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
+import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
+import com.hcl.appscan.issuegateway.issues.AppScanIssue;
+import com.hcl.appscan.issuegateway.issues.PushJobData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -22,18 +18,22 @@ import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
-import com.hcl.appscan.issuegateway.issues.AppScanIssue;
-import com.hcl.appscan.issuegateway.issues.PushJobData;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class ASOCReportHandler {
 
-	private final String REST_CREATEREPORT = "/api/v2/Apps/APPID/Issues/CreateReport";
-	private final String REST_REPORTJOBS = "/api/v2/Issues/ReportJobs/REPORTID";
-	private final String REST_REPORTS = "/api/v2/Issues/Reports/REPORTID";
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private static final String REST_CREATE_REPORT = "/api/v2/Reports/Security/Application/APPID";
+	private static final String REST_REPORT_STATUS = "/api/V2/Reports/REPORTID";
+	private static final String REST_REPORT_DOWNLOAD = "/api/v2/Reports/Download/REPORTID";
 
-	public void retrieveReports(AppScanIssue[] issues, PushJobData jobData, List<String> errors) throws Exception {
+	private static final Logger logger = LoggerFactory.getLogger(ASOCReportHandler.class);
+
+	public void retrieveReports(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
 
 		for (AppScanIssue issue : issues) {
 			try {
@@ -42,7 +42,7 @@ public class ASOCReportHandler {
 				// Step 3: Download the report and add it to the issue
 				String reportId = postReportJob(jobData, issue.get("Id"), errors);
 				if ((reportId != null) && reportId.length() > 1) {
-					if (waitForReportJob(jobData, reportId, errors)) {
+					if (waitForReportJob(jobData, reportId)) {
 						File reportFile = downloadReport(jobData, reportId, errors);
 						if (reportFile != null) {
 							issue.setIssueDetails(reportFile);
@@ -58,21 +58,18 @@ public class ASOCReportHandler {
 		}
 	}
 
-	private String postReportJob(PushJobData jobData, String issueId, List<String> errors) throws Exception {
+	private String postReportJob(PushJobData jobData, String issueId, List<String> errors) {
 		String url = jobData.getAppscanData().getUrl()
-				+ REST_CREATEREPORT.replaceAll("APPID", jobData.getAppscanData().getAppid());
+				+ REST_CREATE_REPORT.replace("APPID", jobData.getAppscanData().getAppid());
 
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.setErrorHandler(new ResponseErrorHandler());
-		HttpHeaders headers = new HttpHeaders();
-		headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData));
-		headers.add("Content-Type", "application/json");
-		headers.add("Accept", "application/json");
+		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
+
 		CreateReportRequest createReportRequest = new CreateReportRequest();
 		createReportRequest.OdataFilter = "Id eq '" + issueId + "'";
 		createReportRequest.Configuration = new CreateReportRequestConfiguration();
 
-		HttpEntity<CreateReportRequest> entity = new HttpEntity<CreateReportRequest>(createReportRequest, headers);
+		HttpEntity<CreateReportRequest> entity = new HttpEntity<>(createReportRequest, headers);
 		ResponseEntity<ReportJobResponse> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity,
 				ReportJobResponse.class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
@@ -83,17 +80,14 @@ public class ASOCReportHandler {
 		return null;
 	}
 
-	private Boolean waitForReportJob(PushJobData jobData, String reportId, List<String> errors) throws Exception {
-		String url = jobData.getAppscanData().getUrl() + REST_REPORTJOBS.replaceAll("REPORTID", reportId);
+	private boolean waitForReportJob(PushJobData jobData, String reportId) {
+		String url = jobData.getAppscanData().getUrl() + REST_REPORT_STATUS.replace("REPORTID", reportId);
 
-		for (long stop = System.nanoTime() + TimeUnit.MINUTES.toNanos(2); stop > System.nanoTime();) {
-			RestTemplate restTemplate = new RestTemplate();
-			restTemplate.setErrorHandler(new ResponseErrorHandler());
-			HttpHeaders headers = new HttpHeaders();
-			headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData));
-			headers.add("Content-Type", "application/json");
-			headers.add("Accept", "application/json");
-			HttpEntity<Object> entity = new HttpEntity<Object>(headers);
+		for (long stop = System.nanoTime() + TimeUnit.MINUTES.toNanos(2); stop > System.nanoTime(); ) {
+			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
+
+			HttpEntity<Object> entity = new HttpEntity<>(headers);
 			ResponseEntity<ReportJobResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
 					ReportJobResponse.class);
 			if (responseEntity.getBody().Status.equals("Ready")) {
@@ -108,29 +102,29 @@ public class ASOCReportHandler {
 		return false;
 	}
 
-	private File downloadReport(PushJobData jobData, String reportId, List<String> errors)
-			throws IOException, Exception {
-		String url = jobData.getAppscanData().getUrl() + REST_REPORTS.replaceAll("REPORTID", reportId);
+	private File downloadReport(PushJobData jobData, String reportId, List<String> errors) throws IOException {
+		String url = jobData.getAppscanData().getUrl() + REST_REPORT_DOWNLOAD.replace("REPORTID", reportId);
 
-		List<HttpMessageConverter<?>> messageConverters = new ArrayList<HttpMessageConverter<?>>();
+		List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 		messageConverters.add(new ByteArrayHttpMessageConverter());
+
 		RestTemplate restTemplate = new RestTemplate(messageConverters);
 		restTemplate.setErrorHandler(new ResponseErrorHandler());
+
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Authorization", ASOCAuthHandler.getInstance().getBearerToken(jobData));
 		HttpEntity<String> entity = new HttpEntity<>(headers);
+
 		ResponseEntity<byte[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, byte[].class, "1");
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
 			File tempFile = File.createTempFile("appscan", ".html");
-			FileOutputStream stream = new FileOutputStream(tempFile);
-			try {
+			try (FileOutputStream stream = new FileOutputStream(tempFile)) {
 				stream.write(responseEntity.getBody());
-			} finally {
-				stream.close();
 			}
 			return tempFile;
 		}
-		errors.add("An error occurred downloading a report. Receieved " + responseEntity.getStatusCodeValue() + " from "
+		errors.add("An error occurred downloading a report. Receieved " + responseEntity.getStatusCodeValue() + " " +
+				"from "
 				+ url);
 		return null;
 	}
@@ -138,7 +132,7 @@ public class ASOCReportHandler {
 	@SuppressWarnings("unused")
 	private static class CreateReportRequest {
 		public String OdataFilter;
-		public String[] PolicyIds = new String[] { "00000000-0000-0000-0000-000000000000" };
+		public String[] PolicyIds = new String[]{"00000000-0000-0000-0000-000000000000"};
 		public CreateReportRequestConfiguration Configuration;
 	}
 

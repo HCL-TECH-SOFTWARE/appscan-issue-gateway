@@ -10,13 +10,14 @@ import java.util.Map;
 
 public interface IProvider {
 
-	public String getId();
+	String getId();
 
-	public List<String> getDescription();
+	List<String> getDescription();
 
-	public void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors,
-			Map<String, String> results);
+	void submitIssues(IAppScanIssue[] issues, Map<String, Object> config, List<String> errors,
+	                  Map<String, String> results);
 
-	public void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors,
-			Map<String, String> results);
+	void submitIssue(IAppScanIssue appscanIssue, Map<String, Object> config, List<String> errors,
+	                 Map<String, String> results);
+
 }

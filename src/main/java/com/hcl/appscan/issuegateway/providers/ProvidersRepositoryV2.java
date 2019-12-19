@@ -1,28 +1,29 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.providers;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.util.HashMap;
-import java.util.Map;
-
+import common.IProvider;
+import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import common.IProvider;
-import groovy.lang.GroovyClassLoader;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProvidersRepositoryV2 {
+
+	private ProvidersRepositoryV2() {}
+
 	private static Map<String, IProvider> providers = null;
 
-	private static final Logger logger = LoggerFactory.getLogger(ProvidersRepository.class);
+	private static final Logger logger = LoggerFactory.getLogger(ProvidersRepositoryV2.class);
 
-	public synchronized static Map<String, IProvider> getProviders() {
+	public static synchronized Map<String, IProvider> getProviders() {
 		if (providers == null) {
-			providers = new HashMap<String, IProvider>();
+			providers = new HashMap<>();
 			File providersRoot = new File(System.getProperty("providers.path", "."));
 			for (File providerPath : getSubFolders(providersRoot)) {
 				File providerGroovy = getFirstProvider(providerPath);
@@ -42,21 +43,13 @@ public class ProvidersRepositoryV2 {
 	}
 
 	private static File[] getSubFolders(File parent) {
-		return parent.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File current, String name) {
-				return new File(current, name).isDirectory() && !name.equals("common");
-			}
-		});
+		return parent.listFiles((current, name) ->
+				new File(current, name).isDirectory() && !name.equals("common"));
 	}
 
 	private static File getFirstProvider(File parent) {
-		File[] children = parent.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File current, String name) {
-				return name.endsWith("ProviderV2.groovy") && new File(current, name).isFile();
-			}
-		});
+		File[] children = parent.listFiles((current, name) ->
+				name.endsWith("ProviderV2.groovy") && new File(current, name).isFile());
 		if (children.length > 0) {
 			return children[0];
 		}
