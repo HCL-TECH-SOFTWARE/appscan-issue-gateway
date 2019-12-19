@@ -112,7 +112,7 @@ test.json:
 }
 ```
 
-Please use the file [ASE_issue_details_response.txt](docs/samples/ase/ASE_issue_details_response.txt) to know about the different attributes of issue details in ASE which can be used in the request json.
+Please use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue_details_response.txt) to know about the different attributes of issue details in ASE which can be used in the request json.
 
 Most JSON examples are self-explanatory, but for the purpose of understanding refer to the following summary:
 
@@ -147,4 +147,4 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 
 ## License
 
-All files found in this project are licensed under the [Apache License 2.0](LICENSE).
+All files found in this project are licensed under the [Apache License 2.0](LICENSE.txt).
