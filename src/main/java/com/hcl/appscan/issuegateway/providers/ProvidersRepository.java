@@ -6,13 +6,13 @@
 package com.hcl.appscan.issuegateway.providers;
 
 import common.IProvider;
-import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 // For now, when a new provider is added the service would need to be restarted. 
 // Would want to avoid that with perhaps a directoryWatcher + reload function here
@@ -27,19 +27,23 @@ public class ProvidersRepository {
 	public static synchronized Map<String, IProvider> getProviders() {
 		if (providers == null) {
 			providers = new HashMap<>();
-			File providersRoot = new File(System.getProperty("providers.path", "."));
-			for (File providerPath : getSubFolders(providersRoot)) {
-				File providerGroovy = getFirstProvider(providerPath);
-				if (providerGroovy == null) {
-					continue;
-				}
-				try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-					classLoader.addClasspath(providersRoot.getAbsolutePath());
-					IProvider provider = (IProvider) classLoader.parseClass(providerGroovy).newInstance();
-					providers.put(provider.getId(), provider);
-				} catch (Exception e) {
-					logger.error("Internal Server Error while loading providers", e);
-				}
+//			File providersRoot = new File(System.getProperty("providers.path", "."));
+//			for (File providerPath : getSubFolders(providersRoot)) {
+//				File providerGroovy = getFirstProvider(providerPath);
+//				if (providerGroovy == null) {
+//					continue;
+//				}
+//				try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
+//					classLoader.addClasspath(providersRoot.getAbsolutePath());
+//					IProvider provider = (IProvider) classLoader.parseClass(providerGroovy).newInstance();
+//					providers.put(provider.getId(), provider);
+//				} catch (Exception e) {
+//					logger.error("Internal Server Error while loading providers", e);
+//				}
+//			}
+
+			for (IProvider provider : ServiceLoader.load(IProvider.class)) {
+				providers.put(provider.getId(), provider);
 			}
 		}
 		return providers;

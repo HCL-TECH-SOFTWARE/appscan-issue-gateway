@@ -1,0 +1,7 @@
+jira.JIRAProvider
+#jira.JIRAProviderV2
+rtc.RTCProvider
+#rtc.RTCProviderV2
+vsts.VSTSProvider
+#vsts.VSTSProviderV2
+sample.SampleProvider

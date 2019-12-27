@@ -17,6 +17,7 @@ import com.hcl.appscan.issuegateway.providers.ProvidersRepository;
 
 import common.IAppScanIssue;
 import common.IProvider;
+import rtc.RTCProvider;
 
 public class ASECreateIssueAndSyncHandler {
 	
@@ -38,10 +39,11 @@ public class ASECreateIssueAndSyncHandler {
 		if (validate(jobData)) {
 			for (IAppScanIssue issue:issues) {
 				// Calling setup connection for RTC since this is available in the RTC provide groovy inside the submitIssues() method which we are not using in case of ASE.
-				if (jobData.getImData().getProvider().equalsIgnoreCase("rtc")) {
+				if (provider.getId().equalsIgnoreCase("rtc")) {
 					IProvider rtcInstance=ProvidersRepository.getProviders().get("rtc");
 					Class<? extends IProvider> rtcProviderClass=rtcInstance.getClass();
 					rtcProviderClass.getDeclaredMethod( "setupConnection", new Class[] {} ).invoke( rtcInstance, new Object[] {} ) ;
+					((RTCProvider) provider).setupConnection();
 				}
 				
 				((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
