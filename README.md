@@ -1,6 +1,6 @@
 # AppScan Issue Management Gateway Service
 
-The AppScan Issue Management Gateway service helps to synchronize issues between [HCL AppScan On Cloud](https://cloud.appscan.com/), IBM AppScan Enterprise(ASE) and other issue management systems, such as JIRA. This capability helps AppScan users to get the security issue data "pushed" into other systems thereby avoid building all the REST calls and plumbing. For seamless synchronization capability, this service itself operates as a REST API.
+The AppScan Issue Management Gateway service helps to synchronize issues between [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcltechsw.com/wps/portal/products/appscan/offerings/enterprise) and other issue management systems, such as JIRA. This capability helps AppScan users to get the security issue data "pushed" into other systems thereby avoid building all the REST calls and plumbing. For seamless synchronization capability, this service itself operates as a REST API.
 An ideal use case of this service is implemented in an automated scanning workflow where it is called for issue processing.
 
 YouTube links (HCL AppScan on Cloud only):
@@ -12,7 +12,7 @@ YouTube links (HCL AppScan on Cloud only):
 
 - A Java 8 Runtime
 - A REST Client (such as "curl" or your language of choice) to submit requests to the service
-- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [ASE installation](<https://www.ibm.com/support/knowledgecenter/SSW2NF_9.0.3/com.ibm.ase.help.doc/helpindex_ase.html>)
+- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [HCL Appscan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html)
 - A supported Issue Management system: Jira, VSTS(Azure DevOps), or RTC
 
 ## Getting Started
@@ -118,7 +118,7 @@ Most JSON examples are self-explanatory, but for the purpose of understanding re
 
 Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. For Deprecated APIs, please refer the Model and Example Value on the swagger page.
 
-**appscanData**: configuration required to connect to HCL AppScan On Cloud and extract issues
+**appscanData**: configuration required to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
 
 - appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE and for AppScan on Cloud it is ASOC.
 - url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
