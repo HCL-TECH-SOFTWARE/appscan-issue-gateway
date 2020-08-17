@@ -52,5 +52,5 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 - projectarea: The RTC project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
 - issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
 - summary: (Optional) Issue attributes can be included with %% substitution variables. For example &#39;AppScan: %IssueType% found at %Location%
-- description: (Optional) Issue attributes can be included with %% substitution variables. For example &#39;\&lt;b\&gt;Security issue:\&lt;/b\&gt; %IssueType%\&lt;br\&gt;\&lt;/br\&gt; \&lt;b\&gt;Scanner:\&lt;/b\&gt; %Scanner%.&#39;
+- description: (Optional) Issue attributes can be included with %% substitution variables. For example "Security issue: %IssueType% Scanner:%Scanner%"
 - filedAgainst: The category of the issue in RTC.
