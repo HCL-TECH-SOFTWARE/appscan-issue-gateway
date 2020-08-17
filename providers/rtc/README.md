@@ -4,7 +4,7 @@
 ```json
 {
   "appscanData": {
-    "appscanProvider":"ASOC",
+    "appscanProvider": "ASOC",
     "url": "https://cloud.appscan.com",
     "apikeyid": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
     "apikeysecret": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
@@ -12,24 +12,27 @@
     "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
     "issuestates": "Open",
     "maxissues": 10,
-    "includeIssuefilters": { "Severity":"High"},
+    "includeIssuefilters": {
+      "Severity": "High"
+    },
     "excludeIssuefilters": {},
-    "other": { "checkduplicates": "true" }
+    "other": {
+      "checkduplicates": "true"
+    }
   },
-
-"imData": {
-"provider": "rtc",
-"config": {
-"url": "https://<server>:<port>/ccm",
-"username": "username",
-"password": "password",
-"projectarea": "ABC",
-"issuetype": "defect",
-"otherfields": {
-"filedAgainst":"My Root Category Name/My Child Category",
-}
-}
-}
+  "imData": {
+    "provider": "rtc",
+    "config": {
+      "url": "https://<server>:<port>/ccm",
+      "username": "username",
+      "password": "password",
+      "projectarea": "ABC",
+      "issuetype": "defect",
+      "otherfields": {
+        "filedAgainst": "My Root Category Name/My Child Category"
+      }
+    }
+  }
 }
 ```
 Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary of what is being specified there:
