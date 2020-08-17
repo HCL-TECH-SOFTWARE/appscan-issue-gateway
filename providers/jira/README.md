@@ -17,28 +17,28 @@
     "other": { "checkduplicates": "true" }
   },
 "imData": {
-"provider": "jira",
-"config": {
-"url": "https://<jira server>",
-"username": "testuser",
-"password": "password",
-"projectkey": "ABC",
-"issuetype": "Story",
-"summary": "Security issue: %IssueType% found by %Scanner%.",
-"severityfield": "severity",
-"severitymap":{
-"High": "Highest",
-"Medium": "Highest",
-"Low": "Highest",
-"Informational": "Highest"
-},
-"otherfields": {
-"labels": [
-"appscan",
-"security"
-]
-}
-}
+      "provider": "jira",
+      "config": {
+      "url": "https://<jira server>",
+      "username": "testuser",
+      "password": "password",
+      "projectkey": "ABC",
+      "issuetype": "Story",
+      "summary": "Security issue: %IssueType% found by %Scanner%.",
+      "severityfield": "severity",
+      "severitymap":{
+      "High": "Highest",
+      "Medium": "Highest",
+      "Low": "Highest",
+      "Informational": "Highest"
+      },
+      "otherfields": {
+      "labels": [
+      "appscan",
+      "security"
+      ]
+      }
+  }
 }
 }
 ```
