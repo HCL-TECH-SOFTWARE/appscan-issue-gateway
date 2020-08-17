@@ -1,61 +1,47 @@
-# **Jira Provider**
+# Jira Provider
 
-**Sample JSON model to start using the Jira integration**
-
+## Sample JSON model to start using the Jira integration
+```json
 {
-
-&quot;appscanData&quot;: {
-
-&quot;appscanProvider&quot;:&quot;ASoC or ASE&quot;,
-
-&quot;url&quot;: &quot;https://cloud.appscan.com&quot; or &quot;https://hostname:port\_number/ase &quot;,
-
-&quot;apikeyid&quot;: &quot;077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg&quot;,
-
-&quot;apikeysecret&quot;: &quot;077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg&quot;,
-
-&quot;appid&quot;: &quot;application\_id&quot;,
-
-&quot;policyids&quot;: &quot;ebb9185a-45c9-e711-8de5-002590ac753d&quot;,
-
-&quot;issuestates&quot;: &quot;Open&quot;,
-
-&quot;maxissues&quot;: 10,
-
-&quot;includeIssuefilters&quot;: { &quot;Severity&quot;:&quot;High&quot;},
-
-&quot;excludeIssuefilters&quot;: {},
-
-&quot;other&quot;: { &quot;checkduplicates&quot;: &quot;true&quot; }
-
+  "appscanData": {
+    "appscanProvider":"ASoC or ASE",
+    "url": "https://cloud.appscan.com” or “https://hostname:port_number/ase ",
+    "apikeyid": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
+    "apikeysecret": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
+    "appid": "application_id",
+    "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
+    "issuestates": "Open",
+    "maxissues": 10,
+    "includeIssuefilters": { "Severity":"High"},
+    "excludeIssuefilters": {},
+    "other": { "checkduplicates": "true" }
+  },
+"imData": {
+"provider": "jira",
+"config": {
+"url": "https://<jira server>",
+"username": "testuser",
+"password": "password",
+"projectkey": "ABC",
+"issuetype": "Story",
+"summary": "Security issue: %IssueType% found by %Scanner%.",
+"severityfield": "severity",
+"severitymap":{
+"High": "Highest",
+"Medium": "Highest",
+"Low": "Highest",
+"Informational": "Highest"
 },
-
-&quot;imData&quot;: {
-
-&quot;provider&quot;: &quot;jira&quot;, &quot;config&quot;: {
-
-&quot;url&quot;: &quot;[http://jirastaging.com/](http://jirastaging.com/)&quot;,
-
-&quot;username&quot;: &quot;testuser&quot;,
-
-&quot;password&quot;: &quot;passwopd&quot;,
-
-&quot;projectkey&quot;: &quot;ABC&quot;,
-
-&quot;issuetype&quot;: &quot;Story&quot;,
-
-&quot;summary&quot;: &quot;Security issue: %IssueType% found by %Scanner%.&quot;, &quot;severityfield&quot;: &quot;severity&quot;, &quot;severitymap&quot;: { &quot;High&quot;: &quot;Highest&quot;, &quot;Medium&quot;: &quot;Highest&quot;,
-
-&quot;Low&quot;: &quot;Highest&quot;,
-
-&quot;Informational&quot;: &quot;Highest&quot; }, &quot;otherfields&quot;: {
-
-&quot;labels&quot;: [&quot;appscan&quot;, &quot;security&quot;] } }
-
+"otherfields": {
+"labels": [
+"appscan",
+"security"
+]
 }
-
 }
-
+}
+}
+```
 Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary of what is being specified there:
 
 **appscanData** : configuration required to connect to HCL Application Security on Cloud or HCL AppScan Enterprise and extract issues
@@ -70,9 +56,9 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 
 **imData** : configuration required to connect to the Issue Management system (Jira in this case)
 
-- url: the JIRA URL to connect to Eg: [http://jirastaging.com/](http://jirastaging.com/)&quot;.
-- Username: The user name to connect to the Jira url.
-- Password: The password used to connect to the Jira url.
+- url: the JIRA URL to connect to.
+- Username: The user name to connect to the Jira URL.
+- Password: The password used to connect to the Jira URL.
 - Projectkey: The Jira project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
 - issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
 - summary: (Optional) Override default issue summary. Issue attributes can be included with %% substitution variables. For example the default is &#39;AppScan: %IssueType% found at %Location%&#39;
