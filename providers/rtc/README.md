@@ -1,61 +1,37 @@
 # **RTC Provider**
 
 **Sample JSON model to start using the RTC integration**
-
+```json
 {
+  "appscanData": {
+    "appscanProvider":"ASOC",
+    "url": "https://cloud.appscan.com",
+    "apikeyid": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
+    "apikeysecret": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
+    "appid": "application_id",
+    "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
+    "issuestates": "Open",
+    "maxissues": 10,
+    "includeIssuefilters": { "Severity":"High"},
+    "excludeIssuefilters": {},
+    "other": { "checkduplicates": "true" }
+  },
 
-&quot;appscanData&quot;: {
-
-&quot;appscanProvider&quot;:&quot;ASoC or ASE&quot;,
-
-&quot;url&quot;: &quot;https://cloud.appscan.com&quot; or &quot;https://hostname:port\_number/ase &quot;,
-
-&quot;apikeyid&quot;: &quot;077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg&quot;,
-
-&quot;apikeysecret&quot;: &quot;077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg&quot;,
-
-&quot;appid&quot;: &quot;application\_id&quot;,
-
-&quot;policyids&quot;: &quot;ebb9185a-45c9-e711-8de5-002590ac753d&quot;,
-
-&quot;issuestates&quot;: &quot;Open&quot;,
-
-&quot;maxissues&quot;: 10,
-
-&quot;includeIssuefilters&quot;: { &quot;Severity&quot;:&quot;High&quot;},
-
-&quot;excludeIssuefilters&quot;: {},
-
-&quot;other&quot;: { &quot;checkduplicates&quot;: &quot;true&quot; }
-
-},
-
-&quot;imData&quot;: {
-
-&quot;provider&quot;: &quot;rtc&quot;,
-
-&quot;config&quot;: {
-
-&quot;url&quot;: &quot;https://localhost:9443/ccm&quot;,
-
-&quot;username&quot;: &quot;username&quot;,
-
-&quot;password&quot;: &quot;password&quot;,
-
-&quot;projectarea&quot;: &quot;ABC&quot;,
-
-&quot;issuetype&quot;: &quot;defect&quot;,
-
-&quot;otherfields&quot;: {
-
-&quot;filedAgainst&quot; : &quot;My Root Category Name/My Child Category&quot;,
-
+"imData": {
+"provider": "rtc",
+"config": {
+"url": "https://<server>:<port>/ccm",
+"username": "username",
+"password": "password",
+"projectarea": "ABC",
+"issuetype": "defect",
+"otherfields": {
+"filedAgainst":"My Root Category Name/My Child Category",
 }
-
-} }
-
 }
-
+}
+}
+```
 Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary of what is being specified there:
 
 **appscanData** : configuration required to connect to HCL Application Security on Cloud or HCL AppScan Enterprise and extract issues
@@ -70,9 +46,9 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 
 **imData** : configuration required to connect to the Issue Management system (RTC in this case)
 
-- url: The RTC URL to connect to Eg: https://localhost:9443/ccm&quot;.
-- Username: The user name to connect to the RTC url.
-- Password: The password used to connect to the RTC url.
+- url: The RTC URL to connect to.
+- Username: The user name to connect to the RTC URL.
+- Password: The password used to connect to the RTC URL.
 - projectarea: The RTC project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
 - issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
 - summary: (Optional) Issue attributes can be included with %% substitution variables. For example &#39;AppScan: %IssueType% found at %Location%
