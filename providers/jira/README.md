@@ -4,7 +4,7 @@
 ```json
 {
   "appscanData": {
-    "appscanProvider":"ASoC or ASE",
+    "appscanProvider": "ASoC or ASE",
     "url": "https://cloud.appscan.com” or “https://hostname:port_number/ase ",
     "apikeyid": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
     "apikeysecret": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
@@ -12,13 +12,17 @@
     "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
     "issuestates": "Open",
     "maxissues": 10,
-    "includeIssuefilters": { "Severity":"High"},
+    "includeIssuefilters": {
+      "Severity": "High"
+    },
     "excludeIssuefilters": {},
-    "other": { "checkduplicates": "true" }
+    "other": {
+      "checkduplicates": "true"
+    }
   },
-"imData": {
-      "provider": "jira",
-      "config": {
+  "imData": {
+    "provider": "jira",
+    "config": {
       "url": "https://<jira server>",
       "username": "testuser",
       "password": "password",
@@ -26,20 +30,20 @@
       "issuetype": "Story",
       "summary": "Security issue: %IssueType% found by %Scanner%.",
       "severityfield": "severity",
-      "severitymap":{
-      "High": "Highest",
-      "Medium": "Highest",
-      "Low": "Highest",
-      "Informational": "Highest"
+      "severitymap": {
+        "High": "Highest",
+        "Medium": "Highest",
+        "Low": "Highest",
+        "Informational": "Highest"
       },
       "otherfields": {
-      "labels": [
-      "appscan",
-      "security"
-      ]
+        "labels": [
+          "appscan",
+          "security"
+        ]
       }
+    }
   }
-}
 }
 ```
 Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary of what is being specified there:
