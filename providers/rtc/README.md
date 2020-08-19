@@ -4,21 +4,18 @@
 ```json
 {
   "appscanData": {
-    "appscanProvider": "ASOC",
-    "url": "https://cloud.appscan.com",
-    "apikeyid": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
-    "apikeysecret": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
-    "appid": "application_id",
-    "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
-    "issuestates": "Open",
+    "appscanProvider": "ASOC or ASE",
+    "url": "https://cloud.appscan.com or https://hostname:port_number/ase",
+    "apikeyid": "00000000-0000-000000000-000000000000",
+    "apikeysecret": "111111111-11-1111111-111111111111-1111-11111",
+    "appid": "22222222222-2222222-22222222222222-2",
+    "issuestates": "New,Open",
     "maxissues": 10,
-    "includeIssuefilters": {
-      "Severity": "High"
-    },
-    "excludeIssuefilters": {},
     "other": {
-      "checkduplicates": "true"
-    }
+      "checkduplicates": false
+    },
+    "includeIssueFilters": {},
+    "excludeIssueFilters": {}
   },
   "imData": {
     "provider": "rtc",
