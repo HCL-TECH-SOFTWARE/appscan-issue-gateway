@@ -4,29 +4,30 @@
 ```json
 {
   "appscanData": {
-    "appscanProvider": "ASOC or ASE",
+    "appscanProvider": "ASoC or ASE",
     "url": "https://cloud.appscan.com or https://hostname:port_number/ase",
     "apikeyid": "00000000-0000-000000000-000000000000",
     "apikeysecret": "111111111-11-1111111-111111111111-1111-11111",
     "appid": "22222222222-2222222-22222222222222-2",
+    "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
     "issuestates": "New,Open",
     "maxissues": 10,
     "other": {
-      "checkduplicates": false
+      "checkduplicates": true
     },
-    "includeIssueFilters": {},
+    "includeIssueFilters": {"Severity": "High"},
     "excludeIssueFilters": {}
   },
   "imData": {
     "provider": "rtc",
     "config": {
       "url": "https://<server>:<port>/ccm",
-      "username": "username",
-      "password": "password",
-      "projectarea": "ABC",
+      "username": "testuser",
+      "password": "testpassword",
+      "projectarea": "Test Project Area",
       "issuetype": "defect",
       "otherfields": {
-        "filedAgainst": "My Root Category Name/My Child Category"
+        "filedAgainst": "RTC Category Name"
       }
     }
   }
