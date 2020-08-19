@@ -46,11 +46,12 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 
 **imData** : configuration required to connect to the Issue Management system (RTC in this case)
 
-- url: The RTC URL to connect to.
-- Username: The user name to connect to the RTC URL.
-- Password: The password used to connect to the RTC URL.
+- url: The RTC Server URL to connect to.
+- Username: The user name to connect to the RTC Server  URL.
+- Password: The password used to connect to the RTC Server URL.
 - projectarea: The RTC project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
-- issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
+- issuetype: Issue type of the RTC.
+- otherfields: other fields
+- filedAgainst: The category of the issue in RTC.
 - summary: (Optional) Issue attributes can be included with %% substitution variables. For example &#39;AppScan: %IssueType% found at %Location%
 - description: (Optional) Issue attributes can be included with %% substitution variables. For example "Security issue: %IssueType% Scanner:%Scanner%"
-- filedAgainst: The category of the issue in RTC.
