@@ -4,32 +4,33 @@
 ```json
 {
   "appscanData": {
-    "appscanProvider":"ASOC",
+    "appscanProvider": "ASoC",
     "url": "https://cloud.appscan.com",
-    "apikeyid": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
-    "apikeysecret": "077---------sfgjfsdgjfgj------fgjgfjffgjgfjfg",
-    "appid": "application_id",
-    "policyids": "ebb9185a-45c9-e711-8de5-002590ac753d",
-    "issuestates": "Open",
+    "apikeyid": "00000000-0000-000000000-000000000000",
+    "apikeysecret": "111111111-11-1111111-111111111111-1111-11111",
+    "appid": "22222222222-2222222-22222222222222-2",
+    "policyids": "333333-33-3-333-3-3333333333333333333-333333-333333",
+    "issuestates": "New,Open",
     "maxissues": 10,
-    "includeIssuefilters": { "Severity":"High"},
-    "excludeIssuefilters": {},
-    "other": { "checkduplicates": "true" }
+    "other": {
+      "checkduplicates": true
+    },
+    "includeIssueFilters": {"Severity": "High"},
+    "excludeIssueFilters": {}
   },
-
-"imData": {
-"provider": "rtc",
-"config": {
-"url": "https://<server>:<port>/ccm",
-"username": "username",
-"password": "password",
-"projectarea": "ABC",
-"issuetype": "defect",
-"otherfields": {
-"filedAgainst":"My Root Category Name/My Child Category",
-}
-}
-}
+  "imData": {
+    "provider": "rtc",
+    "config": {
+      "url": "https://<server>:<port>/ccm",
+      "username": "testuser",
+      "password": "testpassword",
+      "projectarea": "Test Project Area",
+      "issuetype": "defect",
+      "otherfields": {
+        "filedAgainst": "RTC Category Name"
+      }
+    }
+  }
 }
 ```
 Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary of what is being specified there:
@@ -46,11 +47,12 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 
 **imData** : configuration required to connect to the Issue Management system (RTC in this case)
 
-- url: The RTC URL to connect to.
-- Username: The user name to connect to the RTC URL.
-- Password: The password used to connect to the RTC URL.
+- url: The RTC Server URL to connect to.
+- Username: The user name to connect to the RTC Server  URL.
+- Password: The password used to connect to the RTC Server URL.
 - projectarea: The RTC project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
-- issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
+- issuetype: Issue type of the RTC.
+- otherfields: other fields
+- filedAgainst: The category of the issue in RTC.
 - summary: (Optional) Issue attributes can be included with %% substitution variables. For example &#39;AppScan: %IssueType% found at %Location%
 - description: (Optional) Issue attributes can be included with %% substitution variables. For example "Security issue: %IssueType% Scanner:%Scanner%"
-- filedAgainst: The category of the issue in RTC.
