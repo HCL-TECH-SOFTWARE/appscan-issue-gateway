@@ -127,7 +127,7 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 - issuestates: (Optional) A specific set of issue states to focus on. Default = "Open"
 - maxissues: (Optional) The maximum number of issues you want to process in this job. This is helpful when playing
   with the service and you just want to see what it will do with a small subset of your total issues. Default = 25
-- includeIssuefilters, excludeIssuefilters : Additional filters to be used to further trim the results. These filters are regex expression that can act on issue attribute. Multiple values for a specific parameter can be provided. Specific issue can be moved by providing an issue id (only one id can be provided in includeFilters and if provided, other filters will be discarded).
+- includeIssuefilters, excludeIssuefilters: Additional filters to be used to further trim the results. These filters are regex expression that can act on issue attribute. Multiple values for a specific parameter can be provided. Specific issue can be moved by providing an issue id (only one id can be provided in includeFilters and if provided, other filters will be discarded).
 
 **imData**: configuration required to connect to the Issue Management system (JIRA in this case)
 
