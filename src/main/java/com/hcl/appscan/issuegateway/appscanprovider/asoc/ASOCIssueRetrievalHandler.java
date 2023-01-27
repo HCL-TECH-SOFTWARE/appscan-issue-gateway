@@ -1,12 +1,13 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019.
+ * © Copyright HCL Technologies Ltd. 2019, 2023.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
-import com.hcl.appscan.issuegateway.appscanprovider.IIssueRetrievalHandler;
-import com.hcl.appscan.issuegateway.issues.AppScanIssue;
-import com.hcl.appscan.issuegateway.issues.PushJobData;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
@@ -17,14 +18,13 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
+import com.hcl.appscan.issuegateway.appscanprovider.IIssueRetrievalHandler;
+import com.hcl.appscan.issuegateway.issues.AppScanIssue;
+import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
-	private static final String REST_ISSUES = "/api/v2/Apps/APPID/Issues";
-	private static final String REST_POLICY = "/api/v2/Apps/APPID/Policy";
+	private static final String REST_ISSUES = "/api/v2/Issues/Application/APPID";
 	private static final Logger logger = LoggerFactory.getLogger(ASOCIssueRetrievalHandler.class);
 
 	@Override
@@ -40,18 +40,24 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 					.path(REST_ISSUES.replace("APPID", jobData.getAppscanData().getAppid()))
 					.queryParam("$filter", getStateFilters(jobData.getAppscanData().getIssuestates()))
 					.queryParam("$orderby", "SeverityValue");
-			for (String policyId : getPolicyIds(jobData)) {
-				urlBuilder.queryParam("policyId", policyId);
+			
+			List<String> policies = getPolicyIds(jobData);
+			if(policies == null) {
+				//Apply all policies
+				urlBuilder.queryParam("applyPolicies", "All");
+			} else {
+				urlBuilder.queryParam("applyPolicies", "Select");
+				urlBuilder.queryParam("selectPolicyIds", policies.toArray());
 			}
 
 			URI theURI = urlBuilder.build().encode().toUri();
-			ResponseEntity<AppScanIssue[]> response = restTemplate.exchange(theURI, HttpMethod.GET, entity,
-					AppScanIssue[].class);
+			ResponseEntity<ASOCIssueResponse> response = restTemplate.exchange(theURI, HttpMethod.GET, entity,
+					ASOCIssueResponse.class);
 			if (!response.getStatusCode().is2xxSuccessful()) {
 				errors.add("Error: Receieved a " + response.getStatusCodeValue() + " status code from " + theURI);
 				logger.error("Error: Receieved a " + response.getStatusCodeValue() + " status code from " + theURI);
 			}
-			return response.getBody();
+			return response.getBody().Items;
 		} catch (RestClientException e) {
 			errors.add("Internal Server Error while retrieving AppScan Issues: " + e.getMessage());
 			logger.error("Internal Server Error while retrieving AppScan Issues", e);
@@ -77,43 +83,19 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 	}
 
 	private List<String> getPolicyIds(PushJobData jobData) {
-		List<String> policyIds = new ArrayList<>();
-		// If the user passed in some policy ids, use them. If not go figure out the
-		// application's registered policies
+		List<String> policyIds = null;
+		// If the user passed in some policy ids, use them. If not, apply All.
 		if (jobData.getAppscanData().getPolicyids() != null) {
+			policyIds = new ArrayList<>();
 			for (String policyId : jobData.getAppscanData().getPolicyids().split(",")) {
 				policyIds.add(policyId.trim());
 			}
-
-		} else {
-			policyIds.addAll(getApplicationPolicies(jobData));
 		}
+		
 		return policyIds;
 	}
-
-	private List<String> getApplicationPolicies(PushJobData jobData) {
-		List<String> policyIds = new ArrayList<>();
-
-		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
-		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
-
-		HttpEntity<Object> entity = new HttpEntity<>(headers);
-		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
-				.path(REST_POLICY.replace("APPID", jobData.getAppscanData().getAppid()));
-
-		ResponseEntity<Policy[]> response = restTemplate.exchange(urlBuilder.build().encode().toUri(), HttpMethod.GET,
-				entity, Policy[].class);
-
-		for (Policy policy : response.getBody()) {
-			if (policy.Enabled) {
-				policyIds.add(policy.Id);
-			}
-		}
-		return policyIds;
-	}
-
-	private static class Policy {
-		public boolean Enabled;
-		public String Id;
+	
+	private static class ASOCIssueResponse {
+		public AppScanIssue[] Items;
 	}
 }
