@@ -24,8 +24,7 @@
     "provider": "jira",
     "config": {
       "url": "https://<jira server>",
-      "username": "testuser",
-      "password": "testpassword",
+      "token": "xxxxxxxx",
       "projectkey": "Test Project key",
       "issuetype": "Story",
       "summary": "Security issue: %IssueType% found by %Scanner%.",
@@ -61,10 +60,11 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 
 **imData** : configuration required to connect to the Issue Management system (Jira in this case)
 
-- url: the JIRA URL to connect to.
-- Username: The user name to connect to the Jira URL.
-- Password: The password used to connect to the Jira URL.
-- Projectkey: The Jira project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
+- url: The JIRA URL to connect to.
+- token: (Recommended) A personal access token for authentication. 
+- username: (Optional) The user name to connect to the Jira URL. Using an access token is recommended.
+- password: (Optional) The password used to connect to the Jira URL. Using an access token is recommended.
+- projectkey: The Jira project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
 - issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
 - summary: (Optional) Override default issue summary. Issue attributes can be included with %% substitution variables. For example the default is &#39;AppScan: %IssueType% found at %Location%&#39;
 - severityfield: (Optional) Field Id that corresponds to &#39;priority&#39; or &#39;severity&#39;. This field will be populated with the AppScan Issue Severity. Default value = &#39;priority&#39;

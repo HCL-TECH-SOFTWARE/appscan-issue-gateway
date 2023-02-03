@@ -1,6 +1,6 @@
 /**
  * � Copyright IBM Corporation 2018.
- * � Copyright HCL Technologies Ltd. 2018,2019.
+ * � Copyright HCL Technologies Ltd. 2018,2023.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package jira
@@ -46,12 +46,8 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 			errors.add("JIRA Configuration: URL must be set");
 			valid = false;
 		}
-		if (!config.containsKey(USERNAME)) {
-			errors.add("JIRA Configuration: Username must be set");
-			valid = false;
-		}
-		if (!config.containsKey(PASSWORD)) {
-			errors.add("JIRA Configuration: Password must be set");
+		if (!(config.containsKey(USERNAME) && config.containsKey(PASSWORD)) && !config.containsKey(TOKEN)) {
+			errors.add("JIRA Configuration: Username and Password or Token must be set");
 			valid = false;
 		}
 		if (!config.containsKey(PROJECTKEY)) {
@@ -135,9 +131,15 @@ class JIRAProvider extends JIRAConstants implements IProvider {
 	}
 			
 	private getAuthString(Map<String, Object> config) {
-		def username = config.get(USERNAME)
-		def password = config.get(PASSWORD)
-		"Basic " + (username + ":" + password).bytes.encodeBase64().toString()
+		if(config.containsKey(USERNAME) && config.containsKey(PASSWORD)){
+			def username = config.get(USERNAME)
+			def password = config.get(PASSWORD)
+			"Basic " + (username + ":" + password).bytes.encodeBase64().toString()
+		}
+		else {
+			def token = config.get(TOKEN)
+			"Bearer " + token
+		}
 	}
 	
 	private createIssueJSON(IAppScanIssue appscanIssue, Map<String, Object> config) {
