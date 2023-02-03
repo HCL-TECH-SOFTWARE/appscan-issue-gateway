@@ -14,7 +14,7 @@ public class JIRAConstants {
 	static def SERVER_URL  = "url"
 	static def USERNAME    = "username"
 	static def PASSWORD    = "password"
-	static def TOKEN	   = "token"
+	static def TOKEN       = "token"
 	static def PROJECTKEY  = "projectkey"
 	
 	//Optional fields
@@ -29,7 +29,7 @@ public class JIRAConstants {
 	[
 		'JIRA provider. Configuration fields are below',
 		'(Required)' + SERVER_URL    + ': The JIRA URL to connect to',
-		'(Optional)' + TOKEN		 + ': A personal access token. Required if not using username and password.',
+		'(Optional)' + TOKEN         + ': A personal access token. Required if not using username and password.',
 		'(Optional)' + USERNAME      + ': User name. Required if not using a personal access token.',
 		'(Optional)' + PASSWORD      + ': Password. Required if not using a personal access token.',
 		'(Required)' + PROJECTKEY    + ': Project Key',
