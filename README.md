@@ -3,11 +3,6 @@
 The AppScan Issue Management Gateway service helps to synchronize issues between [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcltechsw.com/wps/portal/products/appscan/offerings/enterprise) and other issue management systems, such as JIRA. This capability helps AppScan users to get the security issue data "pushed" into other systems thereby avoid building all the REST calls and plumbing. For seamless synchronization capability, this service itself operates as a REST API.
 An ideal use case of this service is implemented in an automated scanning workflow where it is called for issue processing.
 
-YouTube links (HCL AppScan on Cloud only):
-
-- Part 1: [https://youtu.be/7-a18ypMpM4](https://youtu.be/7-a18ypMpM4)
-- Part 2: [https://youtu.be/\_lsozLQ5CnM](https://youtu.be/_lsozLQ5CnM)
-
 ## Prerequisites
 
 - A Java 8 Runtime
