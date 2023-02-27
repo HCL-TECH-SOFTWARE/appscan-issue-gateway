@@ -6,7 +6,7 @@ package com.hcl.appscan.issuegateway.issues;
 
 import java.util.Map;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class V1PushJobData {
 
@@ -22,23 +22,23 @@ public class V1PushJobData {
 	}
 
 	public class AppScanDataV1 {
-		@ApiModelProperty(position = 1, required = false, value = "The root URL if connecting to any version of ASoC other than public cloud", example = "https://cloud.appscan.com")
+		@Schema(required = false, description = "The root URL if connecting to any version of ASoC other than public cloud", example = "https://cloud.appscan.com")
 		private String url = "https://cloud.appscan.com";
-		@ApiModelProperty(position = 2, required = true, value = "Your API Key Id generated from Application Security on Cloud")
+		@Schema(required = true, description = "Your API Key Id generated from Application Security on Cloud")
 		private String apikeyid;
-		@ApiModelProperty(position = 3, required = true, value = "Your API Key Secret generated from Application Security on Cloud")
+		@Schema(required = true, description = "Your API Key Secret generated from Application Security on Cloud")
 		private String apikeysecret;
-		@ApiModelProperty(position = 4, required = true, value = "The Id of the ASoC application to be processed")
+		@Schema(required = true, description = "The Id of the ASoC application to be processed")
 		private String appid;
-		@ApiModelProperty(position = 5, required = false, example = "25", value = "Maximum number of issues to process. The default is 25. Pass in a value of -1 to have no limit")
+		@Schema(required = false, example = "25", description = "Maximum number of issues to process. The default is 25. Pass in a value of -1 to have no limit")
 		private Integer maxissues = 25;
-		@ApiModelProperty(position = 6, required = false, value = "Issue States to process.  The default is to only process issues that are 'Open'. To also process new issues use 'New, Open'")
+		@Schema(required = false, description = "Issue States to process.  The default is to only process issues that are 'Open'. To also process new issues use 'New, Open'")
 		private String issuestates = "Open";
-		@ApiModelProperty(position = 7, required = false, value = "Comma separated list of ASoC policy ids used to filter the results. If not specified, the application's registered policies will be used")
+		@Schema(required = false, description = "Comma separated list of ASoC policy ids used to filter the results. If not specified, the application's registered policies will be used")
 		private String policyids;
-		@ApiModelProperty(position = 8, required = false, value = "List of regex experessions to run on Issue fields, to further filter the results")
+		@Schema(required = false, description = "List of regex experessions to run on Issue fields, to further filter the results")
 		private Map<String, String> issuefilters;
-		@ApiModelProperty(position = 9, required = false, value = "Other internal debug or demo settings")
+		@Schema(required = false, description = "Other internal debug or demo settings")
 		private Map<String, String> other;
 
 		public String getUrl() {
@@ -122,9 +122,9 @@ public class V1PushJobData {
 	}
 
 	public class IMDataV1 {
-		@ApiModelProperty(position = 1, required = true, value = "The Issue Management provider to use (e.g. 'jira')")
+		@Schema(required = true, description = "The Issue Management provider to use (e.g. 'jira')")
 		private String provider;
-		@ApiModelProperty(position = 2, required = true, value = "List of configuration settings to be used while processing the issues. See the help of the appropriate Issue Management provider for specifics")
+		@Schema(required = true, description = "List of configuration settings to be used while processing the issues. See the help of the appropriate Issue Management provider for specifics")
 		private Map<String, Object> config;
 
 		public String getProvider() {

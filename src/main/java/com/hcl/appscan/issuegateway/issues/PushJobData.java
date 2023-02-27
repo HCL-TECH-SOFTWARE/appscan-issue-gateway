@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018,2019. 
+ * © Copyright HCL Technologies Ltd. 2018,2023. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues;
@@ -10,10 +10,9 @@ import java.util.Map;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
-@ApiModel
+@Schema
 public class PushJobData {
 
 	@Valid
@@ -41,41 +40,41 @@ public class PushJobData {
 	public static class AppScanData {
 
 		@NotBlank
-		@ApiModelProperty(position = 1, required = true, value = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.")
+		@Schema(required = true, defaultValue = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.")
 		private String appscanProvider;
 
-		@ApiModelProperty(position = 2, required = true, value = "The root URL of the ASE instance if the product is ASE and production site of Appscan on Cloud if it is ASoC", example = "https://hostname:port_number/ase , \"https://cloud.appscan.com\"")
+		@Schema(required = true, defaultValue = "The root URL of the ASE instance if the product is ASE and production site of Appscan on Cloud if it is ASoC", example = "https://hostname:port_number/ase , \"https://cloud.appscan.com\"")
 		@NotBlank
 		private String url;
 
-		@ApiModelProperty(position = 3, required = true, value = "Your API Key Id generated from ASE or ASoC account")
+		@Schema(required = true, defaultValue = "Your API Key Id generated from ASE or ASoC account")
 		@NotBlank
 		private String apikeyid;
 
-		@ApiModelProperty(position = 4, required = true, value = "Your API Key Secret generated from ASE or ASoC account")
+		@Schema(required = true, defaultValue = "Your API Key Secret generated from ASE or ASoC account")
 		@NotBlank
 		private String apikeysecret;
 
-		@ApiModelProperty(position = 5, required = true, value = "The Id of the ASoC or ASE application to be processed")
+		@Schema(required = true, defaultValue = "The Id of the ASoC or ASE application to be processed")
 		@NotBlank
 		private String appid;
 
-		@ApiModelProperty(position = 6, required = false, example = "25", value = "Maximum number of issues to process. The default is 25.")
+		@Schema(required = false, example = "25", defaultValue = "Maximum number of issues to process. The default is 25.")
 		private Integer maxissues = 25;
 
-		@ApiModelProperty(position = 7, required = false, value = "Issue States to process.The default will process issues that are in 'Open' state. For multiple states, use comma separated vlaues, as for e.g. 'New, Open'")
+		@Schema(required = false, defaultValue = "Issue States to process.The default will process issues that are in 'Open' state. For multiple states, use comma separated vlaues, as for e.g. 'New, Open'")
 		private String issuestates = "Open";
 
-		@ApiModelProperty(position = 8, required = false, value = "Applicable only for ASoC.Comma separated list of ASoC policy ids used to filter the results. If not specified, the application's registered policies will be used")
+		@Schema(required = false, defaultValue = "Applicable only for ASoC.Comma separated list of ASoC policy ids used to filter the results. If not specified, the application's registered policies will be used")
 		private String policyids;
 
-		@ApiModelProperty(position = 9, required = false, value = "List of regex experessions to run on Issue fields, to further filter the results.If Id filter is used , only one id can be provided and all other filters will be ignored . If Id is not provided then multiple values of other parameters can be provided like \"Severity\":\"High,Medium\"")
+		@Schema(required = false, defaultValue = "List of regex experessions to run on Issue fields, to further filter the results.If Id filter is used , only one id can be provided and all other filters will be ignored . If Id is not provided then multiple values of other parameters can be provided like \"Severity\":\"High,Medium\"")
 		private Map<String, String> includeIssuefilters;
 
-		@ApiModelProperty(position = 10, required = false, value = "List of regex experessions to run on Issue fields, to further filter the results.These values will be used to exclude the issues from the result.")
+		@Schema(required = false, defaultValue = "List of regex experessions to run on Issue fields, to further filter the results.These values will be used to exclude the issues from the result.")
 		private Map<String, String> excludeIssuefilters;
 
-		@ApiModelProperty(position = 11, required = false, value = "Other internal debug or demo settings")
+		@Schema(required = false, defaultValue = "Other internal debug or demo settings")
 		private Map<String, String> other;
 
 		public String getAppscanProvider() {
@@ -169,11 +168,11 @@ public class PushJobData {
 
 	static public class IMData {
 
-		@ApiModelProperty(position = 1, required = true, value = "The Issue Management provider to use (e.g. 'jira')")
+		@Schema(required = true, defaultValue = "The Issue Management provider to use (e.g. 'jira')")
 		@NotBlank
 		private String provider;
 
-		@ApiModelProperty(position = 2, required = true, value = "List of configuration settings to be used while processing the issues. See the help of the appropriate Issue Management provider for specifics")
+		@Schema(required = true, defaultValue = "List of configuration settings to be used while processing the issues. See the help of the appropriate Issue Management provider for specifics")
 		private Map<String, Object> config;
 
 		public String getProvider() {
