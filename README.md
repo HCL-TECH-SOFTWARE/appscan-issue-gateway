@@ -136,7 +136,7 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 
 ## Known Issues & Limitations
 
-- The JIRA support only handles Basic Auth (username and password) or using a personal access token.
+- The JIRA support only handles Basic Auth (username and password) or using a personal access token (available for ASoC only).
 - A robust automated test suite is required.
 - The service is English only and need to go through a String externalization exercise.
 
