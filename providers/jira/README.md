@@ -61,9 +61,9 @@ Hopefully some of the JSON is self-explanatory, but here&#39;s a quick summary o
 **imData** : configuration required to connect to the Issue Management system (Jira in this case)
 
 - url: The JIRA URL to connect to.
-- token: (Recommended) A personal access token for authentication. 
-- username: (Optional) The user name to connect to the Jira URL. Using an access token is recommended.
-- password: (Optional) The password used to connect to the Jira URL. Using an access token is recommended.
+- token: (Optional) A personal access token for authentication. Note that this is not the same as an API token.
+- username: (Optional) The user name used to connect to Jira. This can only be used with an API token in the password field.
+- password: (Optional) The password used to connect to Jira or an API token. A personal access token cannot be used here.
 - projectkey: The Jira project name to be used for the issue migration. The issues would be migrated from ASE(or ASoC) to this project.
 - issuetype: (Optional) Used if you would like to override the default issue type. Default = &quot;Bug&quot;
 - summary: (Optional) Override default issue summary. Issue attributes can be included with %% substitution variables. For example the default is &#39;AppScan: %IssueType% found at %Location%&#39;

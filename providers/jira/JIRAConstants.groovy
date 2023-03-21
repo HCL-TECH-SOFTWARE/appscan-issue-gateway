@@ -29,9 +29,9 @@ public class JIRAConstants {
 	[
 		'JIRA provider. Configuration fields are below',
 		'(Required)'    + SERVER_URL    + ': The JIRA URL to connect to',
-		'(Recommended)' + TOKEN         + ': A personal access token. Required if not using username and password.',
+		'(Optional)'    + TOKEN         + ': A personal access token for authentication. Note that this is not the same as an API token.',
 		'(Optional)'    + USERNAME      + ': User name. Required if not using a personal access token.',
-		'(Optional)'    + PASSWORD      + ': Password. Required if not using a personal access token.',
+		'(Optional)'    + PASSWORD      + ': Password or API token. A personal access token cannot be used here.',
 		'(Required)'    + PROJECTKEY    + ': Project Key',
 		'(Optional)'    + ISSUETYPE     + ': Issue Type.Default value is bug',
 	    '(Optional)'    + SUMMARY       + ': Override default issue summary. Issue attributes can be included with %% substitution variables.  For example the default is \'AppScan: %IssueType% found at %Location%\'',
