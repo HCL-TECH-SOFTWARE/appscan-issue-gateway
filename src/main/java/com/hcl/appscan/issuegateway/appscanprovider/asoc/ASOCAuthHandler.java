@@ -11,8 +11,8 @@ import com.hcl.appscan.issuegateway.appscanprovider.AuthHandler;
 
 public class ASOCAuthHandler extends AuthHandler {
 
-	private static final String REST_APIKEYLOGIN = "/api/v2/Account/ApiKeyLogin";
-	private static final String REST_APPSCOUNT = "/api/v2/Apps/Count";
+	private static final String REST_APIKEYLOGIN = "/api/v4/Account/ApiKeyLogin";
+	private static final String REST_APPSCOUNT = "/api/v4/Account/IsAuthenticated";
 
 	private static ASOCAuthHandler authHandler;
 

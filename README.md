@@ -37,7 +37,7 @@ The service provides two resources:
 1. GET /providers - Query the currently registered providers
 2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA.
 
-Please Note: The deprecated APIs POST and GET /issues/pushjobs support only ASoC issues. New version of APIs i.e POST and GET /v2/issues/pushjobs support both ASE and ASoC.
+Please Note: The deprecated APIs POST and GET /issues/pushjobs support only ASoC issues. New version of APIs i.e POST and GET /v4/issues/pushjobs support both ASE and ASoC.
 
 To confirm the service request status, expand the "GET /providers" API and click the "Try It out!" button.
 ![get providers screenshot](docs/images/tryitout.png?raw=true)
@@ -111,7 +111,7 @@ Please use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue
 
 Most JSON examples are self-explanatory, but for the purpose of understanding refer to the following summary:
 
-Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. For Deprecated APIs, please refer the Model and Example Value on the swagger page.
+Please note : Below information is w.r.t to the new APIs /v4/issues/pushjobs. For Deprecated APIs, please refer the Model and Example Value on the swagger page.
 
 **appscanData**: configuration required to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
 

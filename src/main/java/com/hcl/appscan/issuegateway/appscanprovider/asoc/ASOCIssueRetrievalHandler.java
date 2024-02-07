@@ -24,7 +24,7 @@ import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
-	private static final String REST_ISSUES = "/api/v2/Issues/Application/APPID";
+	private static final String REST_ISSUES = "/api/v4/Issues/Application/APPID";
 	private static final Logger logger = LoggerFactory.getLogger(ASOCIssueRetrievalHandler.class);
 
 	@Override

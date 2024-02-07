@@ -30,7 +30,7 @@ public class ProvidersController {
 		return ProvidersRepository.getProviders().values();
 	}
 
-	@GetMapping(value = "/v2/providers", produces = "application/json")
+	@GetMapping(value = "/v4/providers", produces = "application/json")
 	@Operation(summary = "Get configured issue service providers", description = "This API returns all configured issue service providers. "
 			+ "Issue service providers are encouraged to include documentation about their specific configuration requirements "
 			+ "in the response to this API. Note:Due to some swagger limitations, such as the inability to handle formatting characters, it is observed that the response "

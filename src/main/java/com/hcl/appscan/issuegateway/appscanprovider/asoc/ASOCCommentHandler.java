@@ -19,7 +19,7 @@ import java.util.Map.Entry;
 
 public class ASOCCommentHandler {
 
-	private static final String REST_COMMENT = "/api/v2/Issues/ISSUEID/Comments";
+	private static final String REST_COMMENT = "/api/v4/Issues/ISSUEID/Comments";
 	private static final String COMMENT_TOKEN = "AppScan Issue Gateway";
 
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
@@ -29,11 +29,12 @@ public class ASOCCommentHandler {
 		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 
-		ResponseEntity<Comment[]> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Comment[].class);
+		ResponseEntity<Comment> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity, Comment.class);
 		if (responseEntity.getStatusCode().is2xxSuccessful()) {
-			String[] comments = new String[responseEntity.getBody().length];
-			for (int i = 0; i < responseEntity.getBody().length; i++) {
-				comments[i] = responseEntity.getBody()[i].Comment;
+			Comment[] responseArray = responseEntity.getBody().Items;
+			String[] comments = new String[responseArray.length];
+			for (int i = 0; i < responseArray.length; i++) {
+				comments[i] = responseArray[i].Comment;
 			}
 			return comments;
 		}
@@ -71,5 +72,6 @@ public class ASOCCommentHandler {
 
 	private static class Comment {
 		public String Comment;
+		public Comment[] Items;
 	}
 }

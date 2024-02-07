@@ -17,19 +17,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ASOCReportHandler {
 
-	private static final String REST_CREATE_REPORT = "/api/v2/Reports/Security/Application/APPID";
-	private static final String REST_REPORT_STATUS = "/api/V2/Reports/REPORTID";
-	private static final String REST_REPORT_DOWNLOAD = "/api/v2/Reports/Download/REPORTID";
+	private static final String REST_CREATE_REPORT = "/api/v4/Reports/Security/Application/APPID";
+	private static final String REST_REPORT_STATUS = "/api/v4/Reports";
+	private static final String REST_REPORT_DOWNLOAD = "/api/v4/Reports/REPORTID/Download";
 
 	private static final Logger logger = LoggerFactory.getLogger(ASOCReportHandler.class);
 
@@ -66,7 +68,7 @@ public class ASOCReportHandler {
 		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 
 		CreateReportRequest createReportRequest = new CreateReportRequest();
-		createReportRequest.OdataFilter = "Id eq '" + issueId + "'";
+		createReportRequest.OdataFilter = "Id eq "+ issueId +"";
 		createReportRequest.Configuration = new CreateReportRequestConfiguration();
 
 		HttpEntity<CreateReportRequest> entity = new HttpEntity<>(createReportRequest, headers);
@@ -81,17 +83,24 @@ public class ASOCReportHandler {
 	}
 
 	private boolean waitForReportJob(PushJobData jobData, String reportId) {
-		String url = jobData.getAppscanData().getUrl() + REST_REPORT_STATUS.replace("REPORTID", reportId);
+		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
+				.path(REST_REPORT_STATUS)
+				.queryParam("$filter", ("Id eq REPORTID").replace("REPORTID",reportId));
 
+		URI theURI = urlBuilder.build().encode().toUri();
 		for (long stop = System.nanoTime() + TimeUnit.MINUTES.toNanos(2); stop > System.nanoTime(); ) {
 			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
 			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 
 			HttpEntity<Object> entity = new HttpEntity<>(headers);
-			ResponseEntity<ReportJobResponse> responseEntity = restTemplate.exchange(url, HttpMethod.GET, entity,
+			ResponseEntity<ReportJobResponse> responseEntity = restTemplate.exchange(theURI, HttpMethod.GET, entity,
 					ReportJobResponse.class);
-			if (responseEntity.getBody().Status.equals("Ready")) {
-				return true;
+			if (responseEntity.getStatusCode().is2xxSuccessful()) {
+				ReportJobResponse[] responseArray = responseEntity.getBody().Items;
+				ReportJobResponse response = responseArray[0];
+				if (response.Status.equals("Ready")) {
+					return true;
+				}
 			}
 			try {
 				Thread.sleep(200);
@@ -159,6 +168,7 @@ public class ASOCReportHandler {
 		public String Status;
 		public String Message;
 		public String Key;
+		public ReportJobResponse[] Items;
 		// public Integer Progress;
 	}
 }
