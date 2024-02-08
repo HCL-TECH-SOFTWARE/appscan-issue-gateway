@@ -56,7 +56,7 @@ public class PushJobController {
 			description = "This API creates a Job that will process AppScan issues and push them into other issue management systems. "
 			+ "The job is completely controlled by the JSON that is passed in. The details of the JSON will vary depending on your target issue management system."
 			+ "To view configuration details, invoke the GET /providers API below and the details will be in the response")
-	public PushJobResult postIssuesPushJobsV4(
+	public PushJobResult postIssuesPushJobsV2(
 			@Valid @RequestBody @Parameter(name = "body", required = true) PushJobData submitJobData) {
 		try {
 			new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(submitJobData);
@@ -79,7 +79,7 @@ public class PushJobController {
 	@Operation(summary = "Get an issue push job", description = "A PushJob will have a Status of \"Running - Current Operation\" until the job has either finished successfully or failed. "
 			+ "The errors field holds problems that were encountered during the operation. "
 			+ "The results field will (if successful) hold a Map of AppScan Issue Ids and their associated Issues in the other issue management system.")
-	public PushJobResult getIssuesPushJobsV4(String id) {
+	public PushJobResult getIssuesPushJobsV2(String id) {
 		return pushJobService.getStatus(id);
 	}
 

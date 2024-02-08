@@ -31,7 +31,7 @@ import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public class ASEIssueReportHandler {
 	
-	private final String REST_ISSUE_DETAILS_FILE   = "/api/issues/details_v4";
+	private final String REST_ISSUE_DETAILS_FILE   = "/api/issues/details_v2";
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	
