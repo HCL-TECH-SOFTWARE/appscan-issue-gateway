@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 public class ASOCCommentHandler {
 
 	private static final String REST_COMMENT = "/api/v4/Issues/ISSUEID/Comments";
+	private static final String SUBMIT_COMMENT = "/api/v4/Issues/Application/APPID";
 	private static final String COMMENT_TOKEN = "AppScan Issue Gateway";
 
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
@@ -55,14 +56,14 @@ public class ASOCCommentHandler {
 				break;
 			}
 
-			String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", result.getKey());
+			String url = jobData.getAppscanData().getUrl() + SUBMIT_COMMENT.replace("APPID", jobData.getAppscanData().getAppid());
 
 			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
 			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 			Comment comment = new Comment();
 			comment.Comment = getCommentToken() + " created the following issue:\n" + result.getValue();
 			HttpEntity<Comment> entity = new HttpEntity<>(comment, headers);
-			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, entity, String.class);
+			ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
 			if (!responseEntity.getStatusCode().is2xxSuccessful()) {
 				errors.add("An error occured adding a comment to an AppScan issue. A status code of "
 						+ responseEntity.getStatusCodeValue() + " was received from " + url);
