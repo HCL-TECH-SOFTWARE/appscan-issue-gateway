@@ -12,7 +12,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -56,7 +58,11 @@ public class ASOCCommentHandler {
 				break;
 			}
 
-			String url = jobData.getAppscanData().getUrl() + SUBMIT_COMMENT.replace("APPID", jobData.getAppscanData().getAppid());
+			UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
+					.path((SUBMIT_COMMENT).replace("APPID",jobData.getAppscanData().getAppid()))
+					.queryParam("odataFilter", ("Id eq ISSUEID").replace("ISSUEID",result.getKey()));
+
+			URI url = urlBuilder.build().encode().toUri();
 
 			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
 			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
