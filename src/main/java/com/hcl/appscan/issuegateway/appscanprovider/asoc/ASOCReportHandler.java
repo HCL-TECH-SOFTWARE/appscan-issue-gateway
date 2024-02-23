@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018.
+ * © Copyright HCL Technologies Ltd. 2018, 2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
@@ -68,7 +68,7 @@ public class ASOCReportHandler {
 		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 
 		CreateReportRequest createReportRequest = new CreateReportRequest();
-		createReportRequest.OdataFilter = "Id eq "+ issueId +"";
+		createReportRequest.OdataFilter = "Id eq "+ issueId;
 		createReportRequest.Configuration = new CreateReportRequestConfiguration();
 
 		HttpEntity<CreateReportRequest> entity = new HttpEntity<>(createReportRequest, headers);
