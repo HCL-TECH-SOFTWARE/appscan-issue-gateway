@@ -60,7 +60,7 @@ public class ASOCCommentHandler {
 
 			UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
 					.path((SUBMIT_COMMENT).replace("APPID",jobData.getAppscanData().getAppid()))
-					.queryParam("odataFilter", ("Id eq ISSUEID").replace("ISSUEID",result.getKey()));
+					.queryParam("odataFilter", ("Id eq " + result.getKey()));
 
 			URI url = urlBuilder.build().encode().toUri();
 

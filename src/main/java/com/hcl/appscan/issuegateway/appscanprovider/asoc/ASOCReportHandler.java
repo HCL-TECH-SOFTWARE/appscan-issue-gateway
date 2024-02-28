@@ -85,7 +85,7 @@ public class ASOCReportHandler {
 	private boolean waitForReportJob(PushJobData jobData, String reportId) {
 		UriComponentsBuilder urlBuilder = UriComponentsBuilder.fromUriString(jobData.getAppscanData().getUrl())
 				.path(REST_REPORT_STATUS)
-				.queryParam("$filter", ("Id eq REPORTID").replace("REPORTID",reportId));
+				.queryParam("$filter", ("Id eq " + reportId));
 
 		URI theURI = urlBuilder.build().encode().toUri();
 		for (long stop = System.nanoTime() + TimeUnit.MINUTES.toNanos(2); stop > System.nanoTime(); ) {
