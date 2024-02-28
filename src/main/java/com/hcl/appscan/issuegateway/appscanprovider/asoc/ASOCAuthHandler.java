@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019.
+ * © Copyright HCL Technologies Ltd. 2019, 2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
@@ -11,8 +11,8 @@ import com.hcl.appscan.issuegateway.appscanprovider.AuthHandler;
 
 public class ASOCAuthHandler extends AuthHandler {
 
-	private static final String REST_APIKEYLOGIN = "/api/v2/Account/ApiKeyLogin";
-	private static final String REST_APPSCOUNT = "/api/v2/Apps/Count";
+	private static final String REST_APIKEYLOGIN = "/api/v4/Account/ApiKeyLogin";
+	private static final String REST_APPSCOUNT = "/api/v4/Account/IsAuthenticated";
 
 	private static ASOCAuthHandler authHandler;
 
