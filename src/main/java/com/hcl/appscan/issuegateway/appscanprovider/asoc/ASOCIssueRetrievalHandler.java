@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019, 2023.
+ * © Copyright HCL Technologies Ltd. 2019, 2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
@@ -24,7 +24,7 @@ import com.hcl.appscan.issuegateway.issues.PushJobData;
 
 public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 
-	private static final String REST_ISSUES = "/api/v2/Issues/Application/APPID";
+	private static final String REST_ISSUES = "/api/v4/Issues/Application/APPID";
 	private static final Logger logger = LoggerFactory.getLogger(ASOCIssueRetrievalHandler.class);
 
 	@Override
