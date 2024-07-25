@@ -28,7 +28,12 @@ public class ASOCCommentHandler {
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
 		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", issue.get("Id"));
 
-		RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+		RestTemplate restTemplate;
+		if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
+			restTemplate = ASOCUtils.createUntrustedASOCRestTemplate();
+		}else{
+			restTemplate = ASOCUtils.createASOCRestTemplate();
+		}
 		HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 		HttpEntity<String> entity = new HttpEntity<>(headers);
 
@@ -64,7 +69,12 @@ public class ASOCCommentHandler {
 
 			URI url = urlBuilder.build().encode().toUri();
 
-			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
+			RestTemplate restTemplate;
+			if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
+				restTemplate = ASOCUtils.createUntrustedASOCRestTemplate();
+			}else{
+				restTemplate = ASOCUtils.createASOCRestTemplate();
+			}
 			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 			Comment comment = new Comment();
 			comment.Comment = getCommentToken() + " created the following issue:\n" + result.getValue();

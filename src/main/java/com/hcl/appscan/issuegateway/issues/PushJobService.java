@@ -20,6 +20,8 @@ public class PushJobService {
 	private static final String ASOC = "ASOC";
 	private static final String ASE = "ASE";
 
+	private static final String A360 = "A360";
+
 	public PushJobResult getStatus(String id) {
 		return JobManager.getInstance().getJobResult(id);
 	}
@@ -48,7 +50,7 @@ public class PushJobService {
 		IAppScanProvider appscanProvider;
 		if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASE)) {
 			appscanProvider = new ASEProvider(submitJobData);
-		} else if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASOC)) {
+		} else if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASOC) || submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(A360)) {
 			appscanProvider = new ASOCProvider(submitJobData);
 		} else {
 			throw new IllegalArgumentException(

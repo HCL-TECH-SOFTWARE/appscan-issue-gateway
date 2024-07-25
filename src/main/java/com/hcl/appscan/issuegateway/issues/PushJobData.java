@@ -40,7 +40,7 @@ public class PushJobData {
 	public static class AppScanData {
 
 		@NotBlank
-		@Schema(required = true, defaultValue = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.")
+		@Schema(required = true, defaultValue = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC , for AppScan 360 it is A360")
 		private String appscanProvider;
 
 		@Schema(required = true, defaultValue = "The root URL of the ASE instance if the product is ASE and production site of Appscan on Cloud if it is ASoC", example = "https://hostname:port_number/ase , \"https://cloud.appscan.com\"")
@@ -73,7 +73,8 @@ public class PushJobData {
 
 		@Schema(required = false, defaultValue = "List of regex experessions to run on Issue fields, to further filter the results.These values will be used to exclude the issues from the result.")
 		private Map<String, String> excludeIssuefilters;
-
+		@Schema(required = false, defaultValue = "To specify trusted or untrusted connection. For trusted connection , specify 'true'. For Untrusted connection , specify ''false")
+		private String trusted = "true";
 		@Schema(required = false, defaultValue = "Other internal debug or demo settings")
 		private Map<String, String> other;
 
@@ -163,6 +164,14 @@ public class PushJobData {
 
 		public void setOther(Map<String, String> other) {
 			this.other = other;
+		}
+
+		public String getTrusted() {
+			return trusted;
+		}
+
+		public void setTrusted(String trusted) {
+			this.trusted = trusted;
 		}
 	}
 

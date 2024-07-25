@@ -40,8 +40,13 @@ public class ASOCReportHandler {
 				
 				List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 				messageConverters.add(new ByteArrayHttpMessageConverter());
-
-				RestTemplate restTemplate = new RestTemplate(messageConverters);
+				RestTemplate restTemplate;
+				if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
+					restTemplate = ASOCUtils.createUntrustedASOCRestTemplate();
+				}else{
+					restTemplate = ASOCUtils.createASOCRestTemplate();
+				}
+				restTemplate.setMessageConverters(messageConverters);
 				restTemplate.setErrorHandler(new ResponseErrorHandler());
 
 				HttpHeaders headers = new HttpHeaders();

@@ -4,10 +4,22 @@
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.ssl.SSLContextBuilder;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import com.hcl.appscan.issuegateway.appscanprovider.AuthHandler;
+
+import javax.net.ssl.SSLContext;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+
+import static org.apache.http.impl.client.HttpClients.custom;
 
 public class ASOCAuthHandler extends AuthHandler {
 
@@ -25,12 +37,31 @@ public class ASOCAuthHandler extends AuthHandler {
 
 	@Override
 	protected RestTemplate getRestTemplate() {
-		return new RestTemplate();
+		RestTemplateBuilder builder = new RestTemplateBuilder();
+		return builder
+				.requestFactory(this::validateAllCertificatesRequestFactory)
+				.build();
 	}
+	private ClientHttpRequestFactory validateAllCertificatesRequestFactory(){
+		SSLContext sslContext = null;
+		try {
+			sslContext = SSLContextBuilder.create()
+					.loadTrustMaterial((chain, authType) -> true) // Trust all certificates
+					.build();
+		} catch (NoSuchAlgorithmException | KeyManagementException | KeyStoreException e) {
+			throw new RuntimeException(e);
+		}
 
+		CloseableHttpClient httpClient = custom()
+				.setSSLContext(sslContext)
+				.setSSLHostnameVerifier((hostname, session) -> true) // Disable hostname verification
+				.build();
+
+		return new HttpComponentsClientHttpRequestFactory(httpClient);
+	}
 	@Override
 	protected String authenticate(String url, String apikeyid, String apikeysecret) {
-		RestTemplate restTemplate = new RestTemplate();
+		RestTemplate restTemplate = getRestTemplate();
 		ApiKeyLoginRequest apiKeyLoginRequest = new ApiKeyLoginRequest();
 		apiKeyLoginRequest.KeyId = apikeyid;
 		apiKeyLoginRequest.KeySecret = apikeysecret;
