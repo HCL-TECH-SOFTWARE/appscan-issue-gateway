@@ -1,13 +1,13 @@
 # AppScan Issue Management Gateway Service
 
-The AppScan Issue Management Gateway service helps to synchronize issues between [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcltechsw.com/wps/portal/products/appscan/offerings/enterprise) and other issue management systems, such as JIRA. This capability helps AppScan users to get the security issue data "pushed" into other systems thereby avoid building all the REST calls and plumbing. For seamless synchronization capability, this service itself operates as a REST API.
+The AppScan Issue Management Gateway service helps to synchronize issues between [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcltechsw.com/wps/portal/products/appscan/offerings/enterprise) , [HCL AppScan 360º](https://www.hcl-software.com/appscan/products/appscan360)and other issue management systems, such as JIRA. This capability helps AppScan users to get the security issue data "pushed" into other systems thereby avoid building all the REST calls and plumbing. For seamless synchronization capability, this service itself operates as a REST API.
 An ideal use case of this service is implemented in an automated scanning workflow where it is called for issue processing.
 
 ## Prerequisites
 
 - A Java 8 Runtime
 - A REST Client (such as "curl" or your language of choice) to submit requests to the service
-- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [HCL Appscan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html)
+- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [HCL Appscan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html) or an [HCL AppScan 360º installation] (https://help.hcl-software.com/appscan/360/1.3.0/InstallMain_360.html)
 - A supported Issue Management system: Jira, VSTS(Azure DevOps), or RTC
 
 ## Getting Started
@@ -82,6 +82,7 @@ test.json:
     "maxissues": 3,
     "includeIssuefilters": {},
     "excludeIssuefilters": {},
+    "trusted":"true",
     "other": {}
   },
   "imData": {
@@ -115,7 +116,7 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 
 **appscanData**: configuration required to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
 
-- appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE and for AppScan on Cloud it is ASOC.
+- appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE , for AppScan on Cloud it is ASOC and for AppScan 360 it is A360.
 - url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
 - appid: The id of the application that will be used when querying for issues
 - policyids: (Optional) Specific Policy Ids to be used when pulling the results from AppScan. If specifying multiple Policy Ids then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application's registered polices will be pulled. This is applicable only for ASoC and not for ASE.
@@ -123,6 +124,7 @@ Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. Fo
 - maxissues: (Optional) The maximum number of issues you want to process in this job. This is helpful when playing
   with the service and you just want to see what it will do with a small subset of your total issues. Default = 25
 - includeIssuefilters, excludeIssuefilters: Additional filters to be used to further trim the results. These filters are regex expression that can act on issue attribute. Multiple values for a specific parameter can be provided. Specific issue can be moved by providing an issue id (only one id can be provided in includeFilters and if provided, other filters will be discarded).
+- trusted : Use this to specify trusted or untrusted connection. For trusted connection , specify 'true'. For Untrusted connection , specify ''false"
 
 **imData**: configuration required to connect to the Issue Management system (JIRA in this case)
 
