@@ -7,7 +7,7 @@ An ideal use case of this service is implemented in an automated scanning workfl
 
 - A Java 8 Runtime
 - A REST Client (such as "curl" or your language of choice) to submit requests to the service
-- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [HCL Appscan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html) or an [HCL AppScan 360º installation] (https://help.hcl-software.com/appscan/360/1.3.0/InstallMain_360.html)
+- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [HCL Appscan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html) or an [HCL AppScan 360º installation](https://help.hcl-software.com/appscan/360/1.3.0/InstallMain_360.html)
 - A supported Issue Management system: Jira, VSTS(Azure DevOps), or RTC
 
 ## Getting Started
