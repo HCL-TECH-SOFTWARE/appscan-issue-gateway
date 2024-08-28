@@ -78,7 +78,7 @@ test.json:
     "apikeysecret": "kkV0jB/bClfdgjd4dfgmkjftfgo0Dfj/YNkMPp6w=",
     "appid": "75c285f9-1995-e711-80ba-002324b5f40c",
     "policyids": "351231200-0134212346-123461234asdrs6",
-    "issuestates": "New,Open",
+    "issuestates": "Open",
     "maxissues": 3,
     "includeIssuefilters": {},
     "excludeIssuefilters": {},
