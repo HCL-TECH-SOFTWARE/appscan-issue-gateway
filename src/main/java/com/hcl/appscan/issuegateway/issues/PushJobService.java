@@ -56,7 +56,7 @@ public class PushJobService {
 			throw new IllegalArgumentException(
 					"appscanProvider is invalid: " + submitJobData.getAppscanData().getAppscanProvider());
 		}
-		if(!submitJobData.getAppscanData().getTrusted().equalsIgnoreCase("true") || !submitJobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
+		if(!submitJobData.getAppscanData().getTrusted().equalsIgnoreCase("true") && !submitJobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
 			throw new IllegalArgumentException(
 					"trusted field is invalid. Only 'true' or 'false' is allowed.");
 		}
