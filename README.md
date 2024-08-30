@@ -117,35 +117,37 @@ Use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue_detail
 Refer to the following summary for additional information about the JSON examples:
 
 Note: The following information is for the new APIs /v2/issues/pushjobs. For deprecated APIs, refer to the Model and Example Value on the Swagger page.
+## AppScan Data (appscanData)
 
-**appscanData**: configuration required to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
+**appscanData**: Required configuration to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
 
-- appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE , for AppScan on Cloud it is ASOC and for AppScan 360 it is A360.
-- url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
-- appid: The id of the application that will be used when querying for issues
-- policyids: (Optional) Specific Policy Ids to be used when pulling the results from AppScan. If specifying multiple Policy Ids then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application's registered polices will be pulled. This is applicable only for ASoC and not for ASE.
-- issuestates: (Optional) A specific set of issue states to focus on. Default = "Open"
-- maxissues: (Optional) The maximum number of issues you want to process in this job. This is helpful when playing
-  with the service and you just want to see what it will do with a small subset of your total issues. Default = 25
-- includeIssuefilters, excludeIssuefilters: Additional filters to be used to further trim the results. These filters are regex expression that can act on issue attribute. Multiple values for a specific parameter can be provided. Specific issue can be moved by providing an issue id (only one id can be provided in includeFilters and if provided, other filters will be discarded).
-- trusted : Use this to specify trusted or untrusted connection. For trusted connection , specify 'true'. This field is applicable only for AppScan 360°. For Untrusted connection , specify ''false". For trusted connections , please ensure that the A360 server root certificate is imported to the JAVA Keystore. To import the root certificate into Java Keystore use the below keytool command - 
-Example - keytool -importcert -file "<PATH TO CERTIFICATE FILE>" -keystore "C:\Program Files\OpenLogic\jdk-17.0.7.7-hotspot\lib\security\cacerts" -alias  "a360rootcrt"
+- **appscanProvider**: The provider of AppScan products. For AppScan Enterprise, it is ASE, for AppScan on Cloud, it is ASOC and for AppScan 360°, it is A360.
+- **url, apikeyid, apikeysecret**: Information required to authenticate with the AppScan REST APIs.
+- **appid**: The ID of the application used when querying for issues
+- **policyids**: (Optional) Specific policy IDs for pulling the results from AppScan. If specifying multiple policy IDs, then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application’s registered policies will be pulled. This applies to AppScan on Cloud only and not to AppScan Enterprise.
+- **issuestates**: (Optional) A specific set of issue states to include. Default = “Open”.
+- **maxissues**: (Optional)The maximum number of issues to process in this job. This is helpful when experimenting with the service to experience how it handles a small subset of your total issues. Default = 25.
+- **includeIssuefilters, excludeIssuefilters**: Additional filters for further trimming the results. These filters are regex expressions that can act on issue attributes. Multiple values for a specific parameter can be provided. The specific issue can be moved by providing an issue ID (only one ID can be provided in includeFilters and if provided, other filters will be discarded).
+- **trusted** :Specify trusted or untrusted connections. This field is applicable only for AppScan 360. For trusted connection, specify ‘true’. For untrusted connections, specify ’’false”. For trusted connections, ensure that the AppScan 360° server root certificate is imported to the Java keystore. To import the root certificate into Java keystore use the following keytool command:
+keytool -importcert -file "<PATH TO CERTIFICATE FILE>" -keystore "C:\Program Files\OpenLogic\jdk-17.0.7.7-hotspot\lib\security\cacerts" -alias  "a360rootcrt"
+
+## Issue Management (imData)
 
 **imData**: configuration required to connect to the Issue Management system (JIRA in this case)
 
-- url, username, password: authentication
-- projectkey: All issues submitted in JIRA must be submitted against a project
-- issuetype: (Optional) Used if you would like to override the default issue type. Default = "Bug"
-- summary: (Optional) Override the default summary that the JIRA provider uses. Notice that there is basic support here for variable expansion to include required issue data in the summary
-- severityfield: (Optional) The field id for the given issuetype that represents the "severity" or "priority". This field will be populated with the issue severity which can be configured with the "severitymap" field below. Default value = "priority"
-- severitymap: (Optional) AppScan severities are High, Medium, Low, Informational. With this setting you can change how those will be mapped when submitting the issue to JIRA. For example, perhaps your team considers Medium security issues to be High priority
-- otherfields: (Optional) This is an area where you can provide any other JSON that JIRA understands.
+- **url, username, password**: Authentication
+- **projectkey**: All issues submitted in Jira must be submitted against a project.
+- **issuetype**: (Optional) Override the default issue type. Default = “Bug”.
+- **summary**: (Optional) Override the default summary used by the Jira provider. Notice that there is basic support here for variable expansion to include required issue data in the summary
+- **severityfield**: (Optional) The field ID for the given issuetype that represents the “severity” or “priority”. This field is populated with the issue severity configured with the “severitymap” field below. Default value = “priority”.
+- **severitymap**: (Optional) Change how AppScan severities are mapped when submitting the issue to Jira.  AppScan severities are High, Medium, Low, and Informational. .For example, if your team considers Medium security issues to be High priority, map it with severitymap.
+- **otherfields**: (Optional)Provide any other JSON that Jira understands.
 
 ## Known Issues & Limitations
 
-- JIRA support only handles Basic Auth (username and API token) or using a personal access token (available for ASoC only).
-- A robust automated test suite is required.
-- The service is English only and need to go through a String externalization exercise.
+- **Jira authentication**: The service supports only Basic Auth (username and API token) or personal access tokens (available for AppScan on Cloud only).
+- **Automated test suite**:A robust automated test suite is required for complete coverage.
+- **Language support**: The service is English only and needs to go through a String externalization exercise for other languages.
 
 ## License
 
