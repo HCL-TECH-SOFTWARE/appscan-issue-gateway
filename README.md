@@ -1,12 +1,12 @@
 # AppScan Issue Management Gateway Service
 
-The AppScan Issue Management Gateway service synchronize issues between  [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcltechsw.com/wps/portal/products/appscan/offerings/enterprise), [HCL AppScan 360º](https://www.hcl-software.com/appscan/products/appscan360) and other issue management systems, such as Jira. AppScan users can "push" security issue data into other systems to avoid building all the REST calls and plumbing.  For seamless synchronization capability, this service itself operates as a REST API. An ideal use case of this service is an automated scanning workflow where it is called for issue processing.
+The AppScan Issue Management Gateway service synchronize issues between  [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcl-software.com/appscan/products/appscan-enterprise), [HCL AppScan 360º](https://www.hcl-software.com/appscan/products/appscan360) and other issue management systems, such as Jira. AppScan users can "push" security issue data into other systems to avoid building all the REST calls and plumbing.  For seamless synchronization capability, this service itself operates as a REST API. An ideal use case of this service is an automated scanning workflow where it is called for issue processing.
 
 ## Prerequisites
 
 - Java 8 runtime
 - REST client (such as “curl” or your language of choice) to submit requests to the service
-- [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) , an [HCL AppScan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html) or an [HCL AppScan 360º installation](https://help.hcl-software.com/appscan/360/1.3.0/InstallMain_360.html)
+- [HCL AppScan on Cloud API Key](https://help.hcl-software.com/appscan/ASoC/appseccloud_generate_api_key_cm.html) , an [HCL AppScan Enterprise installation](https://help.hcl-software.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html) or an [HCL AppScan 360º installation](https://help.hcl-software.com/appscan/360/1.3.0/InstallMain_360.html)
 - Supported issue management system: Jira, VSTS (Azure DevOps), or RTC
 
 ## Getting Started
