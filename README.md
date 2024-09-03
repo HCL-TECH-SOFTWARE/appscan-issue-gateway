@@ -36,7 +36,7 @@ Query the currently registered providers
 2.	POST & GET /issues/pushjobs
 Submit and get the results from a “push job” that takes a set of issues from AppScan and creates associated issues in Jira.
 
-Note: The deprecated APIs, POST and GET /issues/pushjobs support only AppScan on Cloud issues. The new version of APIs, POST and GET /v2/issues/pushjobs supports both AppScan Enterprise and AppScan on Cloud.
+Note: The deprecated APIs, POST and GET /issues/pushjobs support only AppScan on Cloud issues. The new version of APIs, POST and GET /v2/issues/pushjobs supports  AppScan Enterprise , AppScan 360° and AppScan on Cloud.
 
 ## Example 
 To confirm the service request status, expand the “GET /providers” API and click “Try It out!”
