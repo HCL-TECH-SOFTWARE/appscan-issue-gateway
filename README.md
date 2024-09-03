@@ -128,8 +128,7 @@ Note: The following information is for the new APIs /v2/issues/pushjobs. For dep
 - **issuestates**: (Optional) A specific set of issue states to include. Default = “Open”.
 - **maxissues**: (Optional)The maximum number of issues to process in this job. This is helpful when experimenting with the service to experience how it handles a small subset of your total issues. Default = 25.
 - **includeIssuefilters, excludeIssuefilters**: Additional filters for further trimming the results. These filters are regex expressions that can act on issue attributes. Multiple values for a specific parameter can be provided. The specific issue can be moved by providing an issue ID (only one ID can be provided in includeFilters and if provided, other filters will be discarded).
-- **trusted** :Specify trusted or untrusted connections. This field is applicable only for AppScan 360. For trusted connection, specify ‘true’. For untrusted connections, specify ’’false”. For trusted connections, ensure that the AppScan 360° server root certificate is imported to the Java keystore. To import the root certificate into Java keystore use the following keytool command:
-keytool -importcert -file "<PATH TO CERTIFICATE FILE>" -keystore "C:\Program Files\OpenLogic\jdk-17.0.7.7-hotspot\lib\security\cacerts" -alias  "a360rootcrt"
+- **trusted**: Specify trusted or untrusted connections. This field is applicable only for AppScan 360°. For trusted connection, specify "true". For untrusted connections, specify ’’false”. For trusted connections, ensure that the AppScan 360° server root certificate is imported to the Java keystore. To import the root certificate into Java keystore use the following keytool command: keytool -importcert -file "<Cert File Path>" -keystore "C:\Program Files\OpenLogic\jdk-17.0.7.7-hotspot\lib\security\cacerts" -alias "a360rootcrt"
 
 ## Issue Management (imData)
 
