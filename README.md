@@ -23,7 +23,7 @@ java -jar appscan-issue-gateway.jar
 
 java -Dserver.port=4444 -jar appscan-issue-gateway.jar
 
-The server starts in a few seconds and the Spring Boot logo appears. Open a browser to access the REST API documentation at  [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) :
+The server starts in a few seconds and the Spring Boot logo appears. Open a browser to access the REST API documentation at  [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ![swagger screenshot](docs/images/swagger.png?raw=true)
 
@@ -119,12 +119,12 @@ Refer to the following summary for additional information about the JSON example
 Note: The following information is for the new APIs /v2/issues/pushjobs. For deprecated APIs, refer to the Model and Example Value on the Swagger page.
 ## AppScan Data (appscanData)
 
-**appscanData**: Required configuration to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
+**appscanData**: Required configuration to connect to HCL AppScan On Cloud , HCL AppScan Enterprise or HCL AppScan 360° and extract issues
 
 - **appscanProvider**: The provider of AppScan products. For AppScan Enterprise, it is ASE, for AppScan on Cloud, it is ASOC and for AppScan 360°, it is A360.
 - **url, apikeyid, apikeysecret**: Information required to authenticate with the AppScan REST APIs.
 - **appid**: The ID of the application used when querying for issues
-- **policyids**: (Optional) Specific policy IDs for pulling the results from AppScan. If specifying multiple policy IDs, then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application’s registered policies will be pulled. This applies to AppScan on Cloud only and not to AppScan Enterprise.
+- **policyids**: (Optional) Specific policy IDs for pulling the results from AppScan. If specifying multiple policy IDs, then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application’s registered policies will be pulled. This applies to AppScan on Cloud and AppScan 360° only and not to AppScan Enterprise.
 - **issuestates**: (Optional) A specific set of issue states to include. Default = “Open”.
 - **maxissues**: (Optional)The maximum number of issues to process in this job. This is helpful when experimenting with the service to experience how it handles a small subset of your total issues. Default = 25.
 - **includeIssuefilters, excludeIssuefilters**: Additional filters for further trimming the results. These filters are regex expressions that can act on issue attributes. Multiple values for a specific parameter can be provided. The specific issue can be moved by providing an issue ID (only one ID can be provided in includeFilters and if provided, other filters will be discarded).
@@ -140,7 +140,7 @@ keytool -importcert -file "<PATH TO CERTIFICATE FILE>" -keystore "C:\Program Fil
 - **issuetype**: (Optional) Override the default issue type. Default = “Bug”.
 - **summary**: (Optional) Override the default summary used by the Jira provider. Notice that there is basic support here for variable expansion to include required issue data in the summary
 - **severityfield**: (Optional) The field ID for the given issuetype that represents the “severity” or “priority”. This field is populated with the issue severity configured with the “severitymap” field below. Default value = “priority”.
-- **severitymap**: (Optional) Change how AppScan severities are mapped when submitting the issue to Jira.  AppScan severities are High, Medium, Low, and Informational. .For example, if your team considers Medium security issues to be High priority, map it with severitymap.
+- **severitymap**: (Optional) Change how AppScan severities are mapped when submitting the issue to Jira.  AppScan severities are Critial , High, Medium, Low, and Informational. .For example, if your team considers Medium security issues to be High priority, map it with severitymap.
 - **otherfields**: (Optional)Provide any other JSON that Jira understands.
 
 ## Known Issues & Limitations
