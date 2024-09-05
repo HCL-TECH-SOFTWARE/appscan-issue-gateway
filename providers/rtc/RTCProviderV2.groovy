@@ -49,7 +49,7 @@ class RTCProviderV2 implements IProvider {
 		'     {                                                                                                    ',
 		'       \'appscanData\': {                                                                                 ',
 		'           \'appscanProvider\': \'ASE or A360 or ASOC\',                                                         ',
-		'           \'url\': \'https://hostname:port_number/ase\' or \'https://<AppScan 360 Server URL>\' or \'https://cloud.appscan.com\',                                                     ',
+		'           \'url\': \'https://hostname:port_number/ase\' or \'https://<AppScan 360° Server URL>\' or \'https://cloud.appscan.com\',                                                     ',
 		'           \'apikeyid\': \'00000000-0000-000000000-000000000000\',                                        ',
 		'           \'apikeysecret\': \'111111111-11-1111111-111111111111-1111-11111\',                            ',
 		'           \'appid\': \'22222222222-2222222-22222222222222-2\',                                           ',
