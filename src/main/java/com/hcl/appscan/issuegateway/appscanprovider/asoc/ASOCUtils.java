@@ -1,3 +1,7 @@
+/**
+ * © Copyright HCL Technologies Ltd. 2018, 2024.
+ * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
+ */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
 
 import com.hcl.appscan.issuegateway.errors.ResponseErrorHandler;
