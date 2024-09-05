@@ -139,7 +139,7 @@ Note: The following information is for the new APIs /v2/issues/pushjobs. For dep
 - **issuetype**: (Optional) Override the default issue type. Default = “Bug”.
 - **summary**: (Optional) Override the default summary used by the Jira provider. Notice that there is basic support here for variable expansion to include required issue data in the summary
 - **severityfield**: (Optional) The field ID for the given issuetype that represents the “severity” or “priority”. This field is populated with the issue severity configured with the “severitymap” field below. Default value = “priority”.
-- **severitymap**: (Optional) Change how AppScan severities are mapped when submitting the issue to Jira.  AppScan severities are Critial , High, Medium, Low, and Informational. .For example, if your team considers Medium security issues to be High priority, map it with severitymap.
+- **severitymap**: (Optional) Change how AppScan severities are mapped when submitting the issue to Jira.  AppScan severities are Critical , High, Medium, Low, and Informational. .For example, if your team considers Medium security issues to be High priority, map it with severitymap.
 - **otherfields**: (Optional)Provide any other JSON that Jira understands.
 
 ## Known Issues & Limitations
