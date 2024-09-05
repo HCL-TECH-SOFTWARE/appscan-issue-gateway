@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018,2023. 
+ * © Copyright HCL Technologies Ltd. 2018,2023,2024 .
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues;
@@ -40,29 +40,29 @@ public class PushJobData {
 	public static class AppScanData {
 
 		@NotBlank
-		@Schema(required = true, defaultValue = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for Appscan on Cloud it is ASOC.")
+		@Schema(required = true, defaultValue = "The Provider of appscan product . example : for Appscan Enterprise it is ASE , for AppScan 360° it is A360 , for AppScan on Cloud it is ASOC ")
 		private String appscanProvider;
 
-		@Schema(required = true, defaultValue = "The root URL of the ASE instance if the product is ASE and production site of Appscan on Cloud if it is ASoC", example = "https://hostname:port_number/ase , \"https://cloud.appscan.com\"")
+		@Schema(required = true, defaultValue = "The root URL of the ASE instance if the product is ASE , the root URL of the AppScan 360° instance if the product is AppScan 360 and production site of Appscan on Cloud if it is ASoC", example = "https://hostname:port_number/ase ,https://<AppScan 360° Server URL>/  , \"https://cloud.appscan.com\"")
 		@NotBlank
 		private String url;
 
-		@Schema(required = true, defaultValue = "Your API Key Id generated from ASE or ASoC account")
+		@Schema(required = true, defaultValue = "Your API Key Id generated from ASE , AppScan 360° or ASoC account")
 		@NotBlank
 		private String apikeyid;
 
-		@Schema(required = true, defaultValue = "Your API Key Secret generated from ASE or ASoC account")
+		@Schema(required = true, defaultValue = "Your API Key Secret generated from ASE , AppScan 360° or ASoC account")
 		@NotBlank
 		private String apikeysecret;
 
-		@Schema(required = true, defaultValue = "The Id of the ASoC or ASE application to be processed")
+		@Schema(required = true, defaultValue = "The Id of the ASE , AppScan 360° or ASoC application to be processed")
 		@NotBlank
 		private String appid;
 
 		@Schema(required = false, example = "25", defaultValue = "Maximum number of issues to process. The default is 25.")
 		private Integer maxissues = 25;
 
-		@Schema(required = false, defaultValue = "Issue States to process.The default will process issues that are in 'Open' state. For multiple states, use comma separated vlaues, as for e.g. 'New, Open'")
+		@Schema(required = false, defaultValue = "Issue States to process.The default will process issues that are in 'Open' state. For multiple states, use comma separated values, as for e.g. 'Open, Reopened'")
 		private String issuestates = "Open";
 
 		@Schema(required = false, defaultValue = "Applicable only for ASoC.Comma separated list of ASoC policy ids used to filter the results. If not specified, the application's registered policies will be used")
@@ -73,7 +73,8 @@ public class PushJobData {
 
 		@Schema(required = false, defaultValue = "List of regex experessions to run on Issue fields, to further filter the results.These values will be used to exclude the issues from the result.")
 		private Map<String, String> excludeIssuefilters;
-
+		@Schema(required = false, defaultValue = "To specify trusted or untrusted connection. For trusted connection , specify 'true'. For Untrusted connection , specify 'false'. This field is applicable only for AppScan 360° . For trusted connections , please ensure that the AppScan 360° server root certificate is imported to the JAVA Keystore.")
+		private String trusted = "true";
 		@Schema(required = false, defaultValue = "Other internal debug or demo settings")
 		private Map<String, String> other;
 
@@ -163,6 +164,14 @@ public class PushJobData {
 
 		public void setOther(Map<String, String> other) {
 			this.other = other;
+		}
+
+		public String getTrusted() {
+			return trusted;
+		}
+
+		public void setTrusted(String trusted) {
+			this.trusted = trusted;
 		}
 	}
 

@@ -1,6 +1,6 @@
 package rtc
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019 , 2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 import javax.xml.parsers.DocumentBuilder
@@ -48,16 +48,17 @@ class RTCProviderV2 implements IProvider {
 		'Complete JSON Example: (replace single quotes with double quotes)                                         ',
 		'     {                                                                                                    ',
 		'       \'appscanData\': {                                                                                 ',
-		'           \'appscanProvider\': \'ASE or ASOC\',                                                         ',
-		'           \'url\': \'https://cloud.appscan.com\' or \'https://hostname:port_number/ase\',                                                     ',
+		'           \'appscanProvider\': \'ASE or A360 or ASOC\',                                                         ',
+		'           \'url\': \'https://hostname:port_number/ase\' or \'https://<AppScan 360° Server URL>\' or \'https://cloud.appscan.com\',                                                     ',
 		'           \'apikeyid\': \'00000000-0000-000000000-000000000000\',                                        ',
 		'           \'apikeysecret\': \'111111111-11-1111111-111111111111-1111-11111\',                            ',
 		'           \'appid\': \'22222222222-2222222-22222222222222-2\',                                           ',
-		'           \'issuestates\': \'New,Open\',                                                                 ',
+		'           \'issuestates\': \'Open,Reopened\',                                                                 ',
 		'           \'maxissues\': 10,                                                                             ',
 		'           \'other\': { \'checkduplicates\': false }                                                      ',
 		'           \'includeIssueFilters\': {}                                                                             ',
 		'           \'excludeIssueFilters\': {}                                                                             ',
+		'           \'trusted\': \'true\'                                                                                   ',
 		'        },                                                                                                ',
 		'        \'imData\': {                                                                                     ',
 		'          \'provider\': \'rtc\',                                                                          ',

@@ -1,71 +1,75 @@
 # AppScan Issue Management Gateway Service
 
-The AppScan Issue Management Gateway service helps to synchronize issues between [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcltechsw.com/wps/portal/products/appscan/offerings/enterprise) and other issue management systems, such as JIRA. This capability helps AppScan users to get the security issue data "pushed" into other systems thereby avoid building all the REST calls and plumbing. For seamless synchronization capability, this service itself operates as a REST API.
-An ideal use case of this service is implemented in an automated scanning workflow where it is called for issue processing.
+The AppScan Issue Management Gateway service synchronize issues between  [HCL AppScan On Cloud](https://cloud.appscan.com/), [HCL AppScan Enterprise(ASE)](https://www.hcl-software.com/appscan/products/appscan-enterprise), [HCL AppScan 360º](https://www.hcl-software.com/appscan/products/appscan360) and other issue management systems, such as Jira. AppScan users can "push" security issue data into other systems to avoid building all the REST calls and plumbing.  For seamless synchronization capability, this service itself operates as a REST API. An ideal use case of this service is an automated scanning workflow where it is called for issue processing.
 
 ## Prerequisites
 
-- A Java 8 Runtime
-- A REST Client (such as "curl" or your language of choice) to submit requests to the service
-- An [HCL AppScan on Cloud API Key](https://help.hcltechsw.com/appscan/ASoC/appseccloud_generate_api_key_cm.html?query=API%20key) or an [HCL Appscan Enterprise installation](https://help.hcltechsw.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html)
-- A supported Issue Management system: Jira, VSTS(Azure DevOps), or RTC
+- Java 8 runtime
+- REST client (such as “curl” or your language of choice) to submit requests to the service
+- [HCL AppScan on Cloud API Key](https://help.hcl-software.com/appscan/ASoC/appseccloud_generate_api_key_cm.html) , an [HCL AppScan Enterprise installation](https://help.hcl-software.com/appscan/Enterprise/10.0.0/topics/c_node_installing.html) or an [HCL AppScan 360º installation](https://help.hcl-software.com/appscan/360/1.3.0/InstallMain_360.html)
+- Supported issue management system: Jira, VSTS (Azure DevOps), or RTC
 
 ## Getting Started
 
-To use the AppScan Issue Management Gateway service, perform the following:
+To use AppScan Issue Management Gateway service:
 
-Download “AppScan Issue Management Gateway Service” from <https://github.com/hclproducts/appscan-issue-gateway/releases> and extract its content to a location on your computer.
+1.	Download “AppScan Issue Management Gateway Service” from https://github.com/hclproducts/appscan-issue-gateway/releases and extract its content to a location on your computer.
 
-Run the following command to start the service on the default port (8080):
+2.	Run the following command to start the service on the default port (8080):
 
-```sh
 java -jar appscan-issue-gateway.jar
-```
 
-Choosing a different port is as follows:
+3.	To run the service on a different port, use:
 
-```sh
 java -Dserver.port=4444 -jar appscan-issue-gateway.jar
-```
 
-The server starts in a few seconds and the Spring Boot logo appears. Open a browser, and access the REST API documentation at [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html) :
+The server starts in a few seconds and the Spring Boot logo appears. Open a browser to access the REST API documentation at  [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ![swagger screenshot](docs/images/swagger.png?raw=true)
 
-The service provides two resources:
+## Available API Resources
+The service provides two API resources:
 
-1. GET /providers - Query the currently registered providers
-2. POST & GET /issues/pushjobs - Submit and get the results from a "Push Job" that takes a set of Issues from AppScan and creates associated issues in JIRA.
+1.	GET /providers
+Query the currently registered providers
 
-Please Note: The deprecated APIs POST and GET /issues/pushjobs support only ASoC issues. New version of APIs i.e POST and GET /v2/issues/pushjobs support both ASE and ASoC.
+2.	POST & GET /issues/pushjobs
+Submit and get the results from a “push job” that takes a set of issues from AppScan and creates associated issues in Jira.
 
-To confirm the service request status, expand the "GET /providers" API and click the "Try It out!" button.
+Note: The deprecated APIs, POST and GET /issues/pushjobs support only AppScan on Cloud issues. The new version of APIs, POST and GET /v2/issues/pushjobs supports  AppScan Enterprise , AppScan 360° and AppScan on Cloud.
+
+## Example 
+To confirm the service request status, expand the “GET /providers” API and click “Try It out!”
+
 ![get providers screenshot](docs/images/tryitout.png?raw=true)
 
-Following providers are registered:
+The following providers are registered:
 
-1. Jira Provider
-2. RTC Provider
-3. VSTS Provider
-4. A Sample Provider is also present to demonstrate the ease with which other providers can be added to the system.
+- Jira Provider
+- RTC Provider
+- VSTS Provider
+- A sample provider to demonstrate the ease with which other providers can be added to the system. 
 
 ![sample provider screenshot](docs/images/providers.png?raw=true)
 
-Before we start submitting jobs, let's take a look at the end goal: An automatically submitted JIRA issue with fields filled in from AppScan:
+## Submitting Jobs
+
+Before submitting jobs, identify the end goal: a Jira issue submitted automatically, with fields filled in from AppScan: 
+
 ![example jira issue screenshot](docs/images/jirabug.png?raw=true)
 
 Notes:
 
-- All fields have been programmatically set including the Summary, the Description, the Priority and also some Labels.
-- There is a file attached, which is a single-issue report that a developer can use to understand the details of the issue.
+- Summary: All fields, including Summary, Description, Priority, and Labels, are set programmatically.
+- Attachments: The attached file is a single-issue report with issue details.
 
-The following curl helps you submit jobs to the service:
+Use the following curl command to submit jobs to the service:
 
 ```sh
 curl http://localhost:8080/issues/pushjobs -H "Content-Type: application/json" -H "Accept: application/json" -X POST -d @test.json
 ```
 
-This command uses a JSON file. Refer the following example:(Also a sample json file for ASE request named sample_request_ase.json can be found in this repository)
+This command uses a JSON file. For example: 
 
 test.json:
 
@@ -78,10 +82,11 @@ test.json:
     "apikeysecret": "kkV0jB/bClfdgjd4dfgmkjftfgo0Dfj/YNkMPp6w=",
     "appid": "75c285f9-1995-e711-80ba-002324b5f40c",
     "policyids": "351231200-0134212346-123461234asdrs6",
-    "issuestates": "New,Open",
+    "issuestates": "Open",
     "maxissues": 3,
     "includeIssuefilters": {},
     "excludeIssuefilters": {},
+    "trusted":"true",
     "other": {}
   },
   "imData": {
@@ -106,39 +111,42 @@ test.json:
   }
 }
 ```
+Note: A sample JSON file for an AppScan Enterprise request (sample_request_ase.json) can be found in the same repository
+Use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue_details_response.json)to learn about the different attributes of issue details in AppScan Enterprise which can be used in the request JSON.
 
-Please use the file [ASE_issue_details_response.json](docs/samples/ase/ASE_issue_details_response.json) to know about the different attributes of issue details in ASE which can be used in the request json.
+Refer to the following summary for additional information about the JSON examples:
 
-Most JSON examples are self-explanatory, but for the purpose of understanding refer to the following summary:
+Note: The following information is for the new APIs /v2/issues/pushjobs. For deprecated APIs, refer to the Model and Example Value on the Swagger page.
+## AppScan Data (appscanData)
 
-Please note : Below information is w.r.t to the new APIs /v2/issues/pushjobs. For Deprecated APIs, please refer the Model and Example Value on the swagger page.
+**appscanData**: Required configuration to connect to HCL AppScan On Cloud , HCL AppScan Enterprise or HCL AppScan 360° and extract issues
 
-**appscanData**: configuration required to connect to HCL AppScan On Cloud or HCL AppScan Enterprise and extract issues
+- **appscanProvider**: The provider of AppScan products. For AppScan Enterprise, it is ASE, for AppScan on Cloud, it is ASOC and for AppScan 360°, it is A360.
+- **url, apikeyid, apikeysecret**: Information required to authenticate with the AppScan REST APIs.
+- **appid**: The ID of the application used when querying for issues
+- **policyids**: (Optional) Specific policy IDs for pulling the results from AppScan. If specifying multiple policy IDs, then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application’s registered policies will be pulled. This applies to AppScan on Cloud and AppScan 360° only and not to AppScan Enterprise.
+- **issuestates**: (Optional) A specific set of issue states to include. Default = “Open”.
+- **maxissues**: (Optional)The maximum number of issues to process in this job. This is helpful when experimenting with the service to experience how it handles a small subset of your total issues. Default = 25.
+- **includeIssuefilters, excludeIssuefilters**: Additional filters for further trimming the results. These filters are regex expressions that can act on issue attributes. Multiple values for a specific parameter can be provided. The specific issue can be moved by providing an issue ID (only one ID can be provided in includeFilters and if provided, other filters will be discarded).
+- **trusted**: Specify trusted or untrusted connections. This field is applicable only for AppScan 360°. For trusted connection, specify "true". For untrusted connections, specify ’’false”. For trusted connections, ensure that the AppScan 360° server root certificate is imported to the Java keystore. To import the root certificate into Java keystore use the following keytool command: keytool -importcert -file "<Cert File Path>" -keystore "C:\Program Files\OpenLogic\jdk-17.0.7.7-hotspot\lib\security\cacerts" -alias "a360rootcrt"
 
-- appscanProvider: The provider of AppScan product.For AppScan Enterprise it is ASE and for AppScan on Cloud it is ASOC.
-- url, apikeyid, apikeysecret: information required to authenticate with the AppScan REST APIs
-- appid: The id of the application that will be used when querying for issues
-- policyids: (Optional) Specific Policy Ids to be used when pulling the results from AppScan. If specifying multiple Policy Ids then provide a comma-separated list. By default, only issues that are open and out-of-compliance with the application's registered polices will be pulled. This is applicable only for ASoC and not for ASE.
-- issuestates: (Optional) A specific set of issue states to focus on. Default = "Open"
-- maxissues: (Optional) The maximum number of issues you want to process in this job. This is helpful when playing
-  with the service and you just want to see what it will do with a small subset of your total issues. Default = 25
-- includeIssuefilters, excludeIssuefilters: Additional filters to be used to further trim the results. These filters are regex expression that can act on issue attribute. Multiple values for a specific parameter can be provided. Specific issue can be moved by providing an issue id (only one id can be provided in includeFilters and if provided, other filters will be discarded).
+## Issue Management (imData)
 
 **imData**: configuration required to connect to the Issue Management system (JIRA in this case)
 
-- url, username, password: authentication
-- projectkey: All issues submitted in JIRA must be submitted against a project
-- issuetype: (Optional) Used if you would like to override the default issue type. Default = "Bug"
-- summary: (Optional) Override the default summary that the JIRA provider uses. Notice that there is basic support here for variable expansion to include required issue data in the summary
-- severityfield: (Optional) The field id for the given issuetype that represents the "severity" or "priority". This field will be populated with the issue severity which can be configured with the "severitymap" field below. Default value = "priority"
-- severitymap: (Optional) AppScan severities are High, Medium, Low, Informational. With this setting you can change how those will be mapped when submitting the issue to JIRA. For example, perhaps your team considers Medium security issues to be High priority
-- otherfields: (Optional) This is an area where you can provide any other JSON that JIRA understands.
+- **url, username, password**: Authentication
+- **projectkey**: All issues submitted in Jira must be submitted against a project.
+- **issuetype**: (Optional) Override the default issue type. Default = “Bug”.
+- **summary**: (Optional) Override the default summary used by the Jira provider. Notice that there is basic support here for variable expansion to include required issue data in the summary
+- **severityfield**: (Optional) The field ID for the given issuetype that represents the “severity” or “priority”. This field is populated with the issue severity configured with the “severitymap” field below. Default value = “priority”.
+- **severitymap**: (Optional) Change how AppScan severities are mapped when submitting the issue to Jira.  AppScan severities are Critical , High, Medium, Low, and Informational. .For example, if your team considers Medium security issues to be High priority, map it with severitymap.
+- **otherfields**: (Optional)Provide any other JSON that Jira understands.
 
 ## Known Issues & Limitations
 
-- JIRA support only handles Basic Auth (username and API token) or using a personal access token (available for ASoC only).
-- A robust automated test suite is required.
-- The service is English only and need to go through a String externalization exercise.
+- **Jira authentication**: The service supports only Basic Auth (username and API token) or personal access tokens (available for AppScan on Cloud only).
+- **Automated test suite**:A robust automated test suite is required for complete coverage.
+- **Language support**: The service is English only and needs to go through a String externalization exercise for other languages.
 
 ## License
 

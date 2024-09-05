@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019 , 2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package jira
@@ -51,16 +51,17 @@ class JIRAProviderV2 implements IProvider{
 		'Complete JSON Example: (replace single quotes with double quotes and ignore leading and trailing double quotes on each line)                                                       ',
 		'     {                                                                                                    ',                                                                 
 		'       \'appscanData\': {                                                                                   ',                                     
-		'           \'appscanProvider\': \'ASE or ASOC\',                                                         ',
-		'           \'url\': \'https://cloud.appscan.com\' or \'https://hostname:port_number/ase\',                                                         ',
+		'           \'appscanProvider\': \'ASE or A360 or ASOC\',                                                         ',
+		'           \'url\': \'https://hostname:port_number/ase\' or \'https://<AppScan 360° Server URL>\' , \'https://cloud.appscan.com\' ,                                                         ',
 		'           \'apikeyid\': \'00000000-0000-000000000-000000000000\',                                            ',
 		'           \'apikeysecret\': \'111111111-11-1111111-111111111111-1111-11111\',                                ',
-		'           \'issuestates\': \'New,Open\',                                                                     ',
+		'           \'issuestates\': \'Open,Reopened\',                                                                     ',
 		'           \'appid\': \'22222222222-2222222-22222222222222-2\',                                               ',
 		'           \'maxissues\': 10,                                                                               ',
 		'           \'policyids\': \'333333-33-3-333-3-3333333333333333333-333333-333333\'                             ',
 		'           \'includeIssueFilters\': {}                                                                             ',
 		'           \'excludeIssueFilters\': {}                                                                             ',
+		'           \'trusted\': \'true\'                                                                                   ',
 		'        },                                                                                                ',
 		'        \'imData\': {                                                                                       ',
 		'          \'provider\': \'jira\',                                                                             ',
