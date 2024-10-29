@@ -118,11 +118,15 @@ class RTCProvider implements IProvider {
 
 			StringWriter changeRequestData = new StringWriter()
 			changeRequest.writeXML(changeRequestData)
-
+			println changeRequestData.toString()
 			//prepares connection and submit issue
 			HttpURLConnection createWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, attr.workItemCreation, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_POST)
 
 			if (createWorkItemConnection.responseCode == 201) {
+//				createWorkItemConnection.inputStream.withReader { reader ->
+//					String response = reader.text
+//					println "Response Body: ${response}"
+//				}
 				String workItemURL = createWorkItemConnection.getHeaderField("location")
 				// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
 				String idKey="Id";

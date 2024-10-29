@@ -21,7 +21,8 @@ class Attributes {
 	
 	String summary
 	String description	
-	String categoryName	
+	String categoryName
+	String severity
 
 	RDFUtil rdfUtil
 	Map <String,String> config
@@ -45,6 +46,7 @@ class Attributes {
 		Map<String,String> otherfields = config.get(Constants.OTHERFIELDS)
 		if (otherfields!= null) {
 			setFiledAgaint(otherfields[Constants.FILED_AGAINST_PROPERTY])
+			setSeverity(otherfields[Constants.SEVERITY])
 		}			
 
 	}
@@ -83,14 +85,25 @@ class Attributes {
 		} 
 	}
 
+
+	String setSeverity(String severity) {
+		if (severity != null && !severity.isEmpty()) {
+			this.severity = rdfUtil.getValueURL(severity, "severity", "dcterms:title")
+		}
+	}
+
+
 	/**
 	 * Get Filed Againt field URL
 	 * @return String to filed againt connection
 	 */
 	String getFiledAgaint() {
 		return categoryName
-	}	
+	}
 
+	String getSeverity() {
+		return severity
+	}
 		
 	/**
 	 * Get Summary of work item

@@ -25,6 +25,7 @@ class ChangeRequest {
 	static final String RTC_EXT_CONTEXT_ID="rtc_ext:contextId"
 	static final String RTC_CM_FILED_AGAINST = "rtc_cm:filedAgainst"
 	static final String RTC_CM_ATTACHMENT="rtc_cm:com.ibm.team.workitem.linktype.attachment.attachment"
+	static final String OSLC_CM_SEVERITY="oslc_cmx:severity"
 	
 	String uri
 	String dcTitle
@@ -35,6 +36,7 @@ class ChangeRequest {
 
 	String filedAgainst
 	String attachmentURL
+	String severity
 
 	/**
 	 * Creates a ChangeRequest based on the DOM structure
@@ -49,6 +51,7 @@ class ChangeRequest {
 		this.dcDescription = getChildContent(element, CM_DESCRIPTION)
 		this.contextId = getChildContent(element, RTC_EXT_CONTEXT_ID)
 		this.filedAgainst = getChildContent(element, RTC_CM_FILED_AGAINST, RDF_RESOURCE)
+		this.severity = getChildContent(element,OSLC_CM_SEVERITY,RDF_RESOURCE)
 	}
 
 	/**
@@ -60,6 +63,7 @@ class ChangeRequest {
 		dcDescription = attr.description
 		dcType = attr.workItemType
 		filedAgainst = attr.filedAgaint
+		severity = attr.severity
 		
 	}
 	
@@ -93,6 +97,7 @@ class ChangeRequest {
 			appendXMLAttributeAsResource(out, RTC_CM_ATTACHMENT, attachmentURL)
 		}
 		appendXMLAttributeAsResource(out, RTC_CM_FILED_AGAINST, filedAgainst)
+		appendXMLAttributeAsResource(out,OSLC_CM_SEVERITY, severity)
 
 		out.append("\t</oslc_cm:ChangeRequest>\n")
 		out.append("</rdf:RDF>\n")
