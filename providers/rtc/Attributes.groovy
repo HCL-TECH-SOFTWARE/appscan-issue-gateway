@@ -7,7 +7,7 @@ package rtc
 
 import common.IAppScanIssue
 import rtc.RTCConstants as Constants
-
+import common.Utils
 /**
  * This class encapsulates information from json file.
  */
@@ -23,7 +23,7 @@ class Attributes {
 	String description	
 	String categoryName
 	String severity
-
+	static def SEVERITYMAP   = "severitymap"
 	RDFUtil rdfUtil
 	Map <String,String> config
 	IAppScanIssue appscanIssue
@@ -44,9 +44,10 @@ class Attributes {
 		this.config = config
 
 		Map<String,String> otherfields = config.get(Constants.OTHERFIELDS)
+
 		if (otherfields!= null) {
 			setFiledAgaint(otherfields[Constants.FILED_AGAINST_PROPERTY])
-			setSeverity(otherfields[Constants.SEVERITY])
+			//setSeverity(otherfields[Constants.SEVERITY])
 		}			
 
 	}
@@ -58,8 +59,9 @@ class Attributes {
 	 * @param connection connection server
 	 */
 	Attributes(Map <String,String> config, IAppScanIssue appscanIssue, ServerCommunication connection) {
-		this(config, connection)		
-
+		this(config, connection)
+		this.severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+		setSeverity(this.severity);
 		this.appscanIssue = appscanIssue
 	}
 	
@@ -123,7 +125,7 @@ class Attributes {
 	 * @return String description
 	 */
 	String getDescription() {
-		if (description != null && !summary.isEmpty())
+		if (description != null && !description.isEmpty())
 			return description
 		if (appscanIssue != null)
 			description = computeTextWorkItem(appscanIssue, config, Constants.DESCRIPTION)
