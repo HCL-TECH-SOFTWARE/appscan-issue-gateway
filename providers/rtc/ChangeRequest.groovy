@@ -98,7 +98,6 @@ class ChangeRequest {
 		}
 		appendXMLAttributeAsResource(out, RTC_CM_FILED_AGAINST, filedAgainst)
 		appendXMLAttributeAsResource(out,OSLC_CM_SEVERITY, severity)
-		out.append("\t<rtc_cm:estimate>57600000</rtc_cm:estimate>\n");
 		out.append("\t</oslc_cm:ChangeRequest>\n")
 		out.append("</rdf:RDF>\n")
 		out.flush()

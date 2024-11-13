@@ -124,11 +124,23 @@ class Attributes {
 	 * Get Description of work item
 	 * @return String description
 	 */
+
 	String getDescription() {
 		if (description != null && !description.isEmpty())
 			return description
 		if (appscanIssue != null)
 			description = computeTextWorkItem(appscanIssue, config, Constants.DESCRIPTION)
+		if(description == null || description.isEmpty()){
+			def issueTypeString = "IssueType"
+			def scanNameString ="ScanName";
+			description = appscanIssue.get("Scanner") + " found a " + appscanIssue.get("Severity") + " priority issue."
+
+			description += "\nIssue Type: " + Utils.escape(appscanIssue.get(issueTypeString))
+			description += "\nLocation: "   + Utils.escape(appscanIssue.get("Location"))
+			description += "\nScan Name: "  + Utils.escape(appscanIssue.get(scanNameString))
+
+			description += "\nSee the attached report for more information"
+		}
 		return description
 	}
 	
@@ -152,8 +164,10 @@ class Attributes {
 	 * @param workItemAttribute field text to be treated
 	 * @return String with value field inputed
 	 */
+
 	private String computeTextWorkItem(IAppScanIssue appscanIssue, Map<String, Object> config, String workItemAttribute) {
 		Object item = config.get(workItemAttribute)
+
 		if (item == null)
 			return ""
 		Collection elements = item.split("%")
