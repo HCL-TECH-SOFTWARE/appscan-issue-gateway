@@ -133,7 +133,8 @@ class Attributes {
 		if(description == null || description.isEmpty()){
 			def issueTypeString = "IssueType"
 			def scanNameString ="ScanName";
-			description = appscanIssue.get("Scanner") + " found a " + appscanIssue.get("Severity") + " priority issue."
+			def severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+			description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue."
 
 			description += "\nIssue Type: " + Utils.escape(appscanIssue.get(issueTypeString))
 			description += "\nLocation: "   + Utils.escape(appscanIssue.get("Location"))
