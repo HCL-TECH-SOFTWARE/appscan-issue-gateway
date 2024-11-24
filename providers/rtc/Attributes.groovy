@@ -60,8 +60,11 @@ class Attributes {
 	 */
 	Attributes(Map <String,String> config, IAppScanIssue appscanIssue, ServerCommunication connection) {
 		this(config, connection)
-		this.severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
-		setSeverity(this.severity);
+		if (config.get("severitymap") != null) {
+			this.severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+			setSeverity(this.severity);
+		}
+
 		this.appscanIssue = appscanIssue
 	}
 	
@@ -133,8 +136,14 @@ class Attributes {
 		if(description == null || description.isEmpty()){
 			def issueTypeString = "IssueType"
 			def scanNameString ="ScanName";
-			def severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
-			description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue."
+			def severity
+			if (config.get("severitymap") != null)  {
+				 severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+				description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue."
+			}else{
+				 severity = appscanIssue.get("Severity");
+				description = appscanIssue.get("Scanner") + " found a " + severity + " severity issue."
+			}
 
 			description += "\nIssue Type: " + Utils.escape(appscanIssue.get(issueTypeString))
 			description += "\nLocation: "   + Utils.escape(appscanIssue.get("Location"))

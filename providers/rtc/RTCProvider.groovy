@@ -97,6 +97,7 @@ class RTCProvider implements IProvider {
 		if (serverURL.endsWith("/")) {
 			config.put(Constants.SERVER_URL, serverURL.substring(0, serverURL.length() -1))
 		}
+
 		return valid
 	}
 
@@ -118,6 +119,12 @@ class RTCProvider implements IProvider {
 
 			StringWriter changeRequestData = new StringWriter()
 			changeRequest.writeXML(changeRequestData)
+
+			// if changeRequest xml does not contain "oslc_cmx:severity" set error
+			if (!changeRequestData.toString().contains("oslc_cmx:severity")) {
+				errors.add("severitymap is not set properly or does not contain valid severity values. Setting default value of severity from RTC Configuration")
+
+			}
 			//prepares connection and submit issue
 			HttpURLConnection createWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, attr.workItemCreation, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_POST)
 
