@@ -138,10 +138,10 @@ class Attributes {
 			def scanNameString ="ScanName";
 			def severity
 			if (config.get("severitymap") != null)  {
-				 severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+				severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
 				description = appscanIssue.get("Scanner") + " found a " + severity + " priority issue."
 			}else{
-				 severity = appscanIssue.get("Severity");
+				severity = appscanIssue.get("Severity");
 				description = appscanIssue.get("Scanner") + " found a " + severity + " severity issue."
 			}
 
