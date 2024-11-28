@@ -48,7 +48,6 @@ class Attributes {
 
 		if (otherfields!= null) {
 			setFiledAgaint(otherfields[Constants.FILED_AGAINST_PROPERTY])
-			//setSeverity(otherfields[Constants.SEVERITY])
 		}			
 
 	}
