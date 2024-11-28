@@ -2,7 +2,7 @@ package rtc
 /**
  * © Copyright IBM Corporation 2018.
  * © Copyright PrimeUP Solucoes em TI LTDA 2018.
- * © Copyright HCL Technologies Ltd. 2019.
+ * © Copyright HCL Technologies Ltd. 2019,2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
  
@@ -122,7 +122,7 @@ class RTCProvider implements IProvider {
 
 			// if changeRequest xml does not contain "oslc_cmx:severity" set error
 			if (!changeRequestData.toString().contains("oslc_cmx:severity")) {
-				errors.add("severitymap is not set properly or does not contain valid severity values. Setting default value of severity from RTC Configuration")
+				errors.add("The severity map configuration is invalid or missing. Default severity will be used from the RTC configuration. Update the severity map in Request JSON to resolve this issue.")
 
 			}
 			//prepares connection and submit issue
