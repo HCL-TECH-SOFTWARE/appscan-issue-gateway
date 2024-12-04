@@ -43,7 +43,7 @@ public class RTCConstants {
 	static def FILEDAGAINST = "filedAgainst"
 	static def SUMMARY = "summary"
 	static def  DESCRIPTION = "description"
-	
+	static def SEVERITY = "severity"
 	//Description
 	static def PROVIDER_DESCRIPTION =
 	[

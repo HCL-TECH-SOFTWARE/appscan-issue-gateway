@@ -2,7 +2,7 @@ package rtc
 /**
  * © Copyright IBM Corporation 2018.
  * © Copyright PrimeUP Solucoes em TI LTDA 2018.
- * © Copyright HCL Technologies Ltd. 2019.
+ * © Copyright HCL Technologies Ltd. 2019,2024.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
  
@@ -97,6 +97,7 @@ class RTCProvider implements IProvider {
 		if (serverURL.endsWith("/")) {
 			config.put(Constants.SERVER_URL, serverURL.substring(0, serverURL.length() -1))
 		}
+
 		return valid
 	}
 
@@ -119,10 +120,16 @@ class RTCProvider implements IProvider {
 			StringWriter changeRequestData = new StringWriter()
 			changeRequest.writeXML(changeRequestData)
 
+			// if changeRequest xml does not contain "oslc_cmx:severity" set error
+			if (!changeRequestData.toString().contains("oslc_cmx:severity")) {
+				errors.add("The severity map configuration is invalid or missing. Default severity will be used from the RTC configuration. Update the severity map in Request JSON to resolve this issue.")
+
+			}
 			//prepares connection and submit issue
 			HttpURLConnection createWorkItemConnection = connection.sendSecureDocument(attr.serverUrl, attr.workItemCreation, attr.username, attr.password, changeRequestData.toString(), ServerCommunication.METHOD_POST)
 
 			if (createWorkItemConnection.responseCode == 201) {
+
 				String workItemURL = createWorkItemConnection.getHeaderField("location")
 				// ASE issuedetails API returns "id" while the ASOC issues API returns "Id"
 				String idKey="Id";

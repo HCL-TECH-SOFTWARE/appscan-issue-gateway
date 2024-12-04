@@ -1,5 +1,6 @@
 package rtc
 /**
+ * © Copyright HCL Technologies Ltd. 2024.
  * © Copyright IBM Corporation 2018.
  * © Copyright PrimeUP Solucoes em TI LTDA 2018.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
@@ -7,7 +8,7 @@ package rtc
 
 import common.IAppScanIssue
 import rtc.RTCConstants as Constants
-
+import common.Utils
 /**
  * This class encapsulates information from json file.
  */
@@ -21,8 +22,9 @@ class Attributes {
 	
 	String summary
 	String description	
-	String categoryName	
-
+	String categoryName
+	String severity
+	static def SEVERITYMAP   = "severitymap"
 	RDFUtil rdfUtil
 	Map <String,String> config
 	IAppScanIssue appscanIssue
@@ -43,6 +45,7 @@ class Attributes {
 		this.config = config
 
 		Map<String,String> otherfields = config.get(Constants.OTHERFIELDS)
+
 		if (otherfields!= null) {
 			setFiledAgaint(otherfields[Constants.FILED_AGAINST_PROPERTY])
 		}			
@@ -56,7 +59,11 @@ class Attributes {
 	 * @param connection connection server
 	 */
 	Attributes(Map <String,String> config, IAppScanIssue appscanIssue, ServerCommunication connection) {
-		this(config, connection)		
+		this(config, connection)
+		if (config.get("severitymap") != null) {
+			this.severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+			setSeverity(this.severity);
+		}
 
 		this.appscanIssue = appscanIssue
 	}
@@ -83,14 +90,25 @@ class Attributes {
 		} 
 	}
 
+
+	String setSeverity(String severity) {
+		if (severity != null && !severity.isEmpty()) {
+			this.severity = rdfUtil.getValueURL(severity, "severity", "dcterms:title")
+		}
+	}
+
+
 	/**
 	 * Get Filed Againt field URL
 	 * @return String to filed againt connection
 	 */
 	String getFiledAgaint() {
 		return categoryName
-	}	
+	}
 
+	String getSeverity() {
+		return severity
+	}
 		
 	/**
 	 * Get Summary of work item
@@ -109,11 +127,28 @@ class Attributes {
 	 * Get Description of work item
 	 * @return String description
 	 */
+
 	String getDescription() {
-		if (description != null && !summary.isEmpty())
+		if (description != null && !description.isEmpty())
 			return description
 		if (appscanIssue != null)
 			description = computeTextWorkItem(appscanIssue, config, Constants.DESCRIPTION)
+		if(description == null || description.isEmpty()){
+			def issueTypeString = "IssueType"
+			def scanNameString ="ScanName";
+			def severity
+			if (config.get("severitymap") != null)  {
+				severity = Utils.escape(config.get(SEVERITYMAP).get(appscanIssue.get("Severity")))
+			}else{
+				severity = appscanIssue.get("Severity");
+			}
+			description = appscanIssue.get("Scanner") + " found a " + severity + " severity issue."
+			description += "\nIssue Type: " + Utils.escape(appscanIssue.get(issueTypeString))
+			description += "\nLocation: "   + Utils.escape(appscanIssue.get("Location"))
+			description += "\nScan Name: "  + Utils.escape(appscanIssue.get(scanNameString))
+
+			description += "\nSee the attached report for more information"
+		}
 		return description
 	}
 	
@@ -137,8 +172,10 @@ class Attributes {
 	 * @param workItemAttribute field text to be treated
 	 * @return String with value field inputed
 	 */
+
 	private String computeTextWorkItem(IAppScanIssue appscanIssue, Map<String, Object> config, String workItemAttribute) {
 		Object item = config.get(workItemAttribute)
+
 		if (item == null)
 			return ""
 		Collection elements = item.split("%")
