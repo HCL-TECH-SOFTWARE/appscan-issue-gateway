@@ -94,7 +94,7 @@ public abstract class FilterHandler {
 	private boolean containsMatch(AppScanIssue issue, Map<String, List<Pattern>> patterns) {
 		for (String field : patterns.keySet()) {
 			for (Pattern p : patterns.get(field)) {
-				Matcher m = p.matcher(issue.get(field));
+				Matcher m = p.matcher((String)issue.get(field));
 				if (m.matches()) {
 					return true;
 				}

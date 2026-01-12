@@ -22,7 +22,7 @@ import com.hcl.appscan.issuegateway.issues.PushJobData;
 public class ASEExternalIdHandler implements ASEConstants {
 
 	public boolean isExternalIdPresent(AppScanIssue issue, PushJobData jobData, List<String> errors)throws Exception {
-		ResponseEntity<ASEIssueDetail> details= getIssueDetail(issue.get("id"), jobData, errors);
+		ResponseEntity<ASEIssueDetail> details= getIssueDetail((String)issue.get("id"), jobData, errors);
 		ASEIssueDetail.AttributeCollection.Attributes [] attributesArray=details.getBody().getAttributeCollection().getAttributeArray();
 		// this is to directly check the externalId which is present as the 40th element in the attribute array
 		if (attributesArray[39].getLookup().equals("externalid")) {

@@ -37,9 +37,9 @@ public class ASEIssueReportHandler {
 	
 	public void retrieveReports(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
 	
-		for (AppScanIssue issue : issues) {
-		    try {
-			    File reportFile = getFile(jobData, issue.get("id"), errors);
+	for (AppScanIssue issue : issues) {
+	    try {
+		    File reportFile = getFile(jobData, (String)issue.get("id"), errors);
 		    	if (reportFile != null) {
 		    		issue.setIssueDetails(reportFile);
 		    	}

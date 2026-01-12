@@ -18,7 +18,7 @@ interface IAppScanIssue {
 
 	File getIssueDetails()
 
-	String get(String name)
+	Object get(String name)
 
 }
 

@@ -44,10 +44,10 @@ public class ASECreateIssueAndSyncHandler {
 					rtcProviderClass.getDeclaredMethod( "setupConnection", new Class[] {} ).invoke( rtcInstance, new Object[] {} ) ;
 				}
 				
-				((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
-				((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
-				provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
-				externalIdHandler.updateExternalId(issue.get("id"), jobData, errors, results);
+			((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape((String)((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
+			((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape((String)((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
+			provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
+			externalIdHandler.updateExternalId((String)issue.get("id"), jobData, errors, results);
 			}
 		}
 	}

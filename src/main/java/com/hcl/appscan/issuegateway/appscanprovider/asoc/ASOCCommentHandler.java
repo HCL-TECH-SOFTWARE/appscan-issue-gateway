@@ -26,7 +26,7 @@ public class ASOCCommentHandler {
 	private static final String COMMENT_TOKEN = "AppScan Issue Gateway";
 
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
-		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", issue.get("Id"));
+		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", (String)issue.get("Id"));
 
 		RestTemplate restTemplate;
 		if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){

@@ -36,8 +36,8 @@ public class ASOCReportHandler {
 		for (AppScanIssue issue : issues) {
 			try {
 				String url = jobData.getAppscanData().getUrl()
-						+REST_ISSUE_DETAIL.replace("ISSUEID",issue.get("Id"));
-				
+						+REST_ISSUE_DETAIL.replace("ISSUEID",(String)issue.get("Id"));
+
 				List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 				messageConverters.add(new ByteArrayHttpMessageConverter());
 				RestTemplate restTemplate;
