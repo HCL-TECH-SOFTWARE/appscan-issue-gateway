@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018.
+ * © Copyright HCL Technologies Ltd. 2018, 2026.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues;
@@ -17,16 +17,16 @@ import common.IAppScanIssue;
 public class AppScanIssue implements IAppScanIssue {
 
 	private File issueDetails;
-	private Map<String, String> issueFields = new HashMap<>();
+	private Map<String, Object> issueFields = new HashMap<>();
 
 	@Override
 	@JsonAnyGetter
-	public String get(String name) {
+	public Object get(String name) {
 		return issueFields.get(name);
 	}
 
 	@JsonAnySetter
-	public void set(String name, String value) {
+	public void set(String name, Object value) {
 		issueFields.put(name, value);
 	}
 

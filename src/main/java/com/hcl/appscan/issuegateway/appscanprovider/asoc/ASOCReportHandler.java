@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018, 2024.
+ * © Copyright HCL Technologies Ltd. 2018, 2026.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
@@ -36,8 +36,8 @@ public class ASOCReportHandler {
 		for (AppScanIssue issue : issues) {
 			try {
 				String url = jobData.getAppscanData().getUrl()
-						+REST_ISSUE_DETAIL.replace("ISSUEID",issue.get("Id"));
-				
+						+REST_ISSUE_DETAIL.replace("ISSUEID",(String)issue.get("Id"));
+
 				List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 				messageConverters.add(new ByteArrayHttpMessageConverter());
 				RestTemplate restTemplate;

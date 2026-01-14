@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019, 2026.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.ase;
@@ -37,9 +37,9 @@ public class ASEIssueReportHandler {
 	
 	public void retrieveReports(AppScanIssue[] issues, PushJobData jobData, List<String> errors) {
 	
-		for (AppScanIssue issue : issues) {
-		    try {
-			    File reportFile = getFile(jobData, issue.get("id"), errors);
+	for (AppScanIssue issue : issues) {
+	    try {
+		    File reportFile = getFile(jobData, (String)issue.get("id"), errors);
 		    	if (reportFile != null) {
 		    		issue.setIssueDetails(reportFile);
 		    	}

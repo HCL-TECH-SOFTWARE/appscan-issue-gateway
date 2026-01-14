@@ -1,6 +1,6 @@
 /**
  * © Copyright IBM Corporation 2018.
- * © Copyright HCL Technologies Ltd. 2018,2024.
+ * © Copyright HCL Technologies Ltd. 2018, 2026.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.asoc;
@@ -26,7 +26,7 @@ public class ASOCCommentHandler {
 	private static final String COMMENT_TOKEN = "AppScan Issue Gateway";
 
 	public String[] getComments(AppScanIssue issue, PushJobData jobData, List<String> errors) {
-		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", issue.get("Id"));
+		String url = jobData.getAppscanData().getUrl() + REST_COMMENT.replace("ISSUEID", (String)issue.get("Id"));
 
 		RestTemplate restTemplate;
 		if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){

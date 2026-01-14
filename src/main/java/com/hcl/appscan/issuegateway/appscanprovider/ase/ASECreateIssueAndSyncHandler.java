@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019. 
+ * © Copyright HCL Technologies Ltd. 2019, 2026.
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.appscanprovider.ase;
@@ -44,10 +44,10 @@ public class ASECreateIssueAndSyncHandler {
 					rtcProviderClass.getDeclaredMethod( "setupConnection", new Class[] {} ).invoke( rtcInstance, new Object[] {} ) ;
 				}
 				
-				((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
-				((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape(((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
-				provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
-				externalIdHandler.updateExternalId(issue.get("id"), jobData, errors, results);
+			((AppScanIssue)issue).set("Issue Type", HtmlUtils.htmlUnescape((String)((AppScanIssue)issue).get("Issue Type")).replaceAll("\"", "'"));
+			((AppScanIssue)issue).set("Location", HtmlUtils.htmlUnescape((String)((AppScanIssue)issue).get("Location")).replaceAll("\"", "'"));
+			provider.submitIssue(issue, jobData.getImData().getConfig(), errors, results);
+			externalIdHandler.updateExternalId((String)issue.get("id"), jobData, errors, results);
 			}
 		}
 	}
