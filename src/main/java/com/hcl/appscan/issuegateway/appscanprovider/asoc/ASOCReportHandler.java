@@ -37,16 +37,11 @@ public class ASOCReportHandler {
 			try {
 				String url = jobData.getAppscanData().getUrl()
 						+REST_ISSUE_DETAIL.replace("ISSUEID",(String)issue.get("Id"));
-
+				
 				List<HttpMessageConverter<?>> messageConverters = new ArrayList<>();
 				messageConverters.add(new ByteArrayHttpMessageConverter());
-				RestTemplate restTemplate;
-				if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
-					restTemplate = ASOCUtils.createUntrustedASOCRestTemplate();
-				}else{
-					restTemplate = ASOCUtils.createASOCRestTemplate();
-				}
-				restTemplate.setMessageConverters(messageConverters);
+
+				RestTemplate restTemplate = new RestTemplate(messageConverters);
 				restTemplate.setErrorHandler(new ResponseErrorHandler());
 
 				HttpHeaders headers = new HttpHeaders();

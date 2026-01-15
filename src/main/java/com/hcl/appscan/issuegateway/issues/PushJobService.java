@@ -1,5 +1,5 @@
 /**
- * © Copyright HCL Technologies Ltd. 2019 , 2024.
+ * © Copyright HCL Technologies Ltd. 2019. 
  * LICENSE: Apache License, Version 2.0 https://www.apache.org/licenses/LICENSE-2.0
  */
 package com.hcl.appscan.issuegateway.issues;
@@ -19,8 +19,6 @@ public class PushJobService {
 
 	private static final String ASOC = "ASOC";
 	private static final String ASE = "ASE";
-
-	private static final String A360 = "A360";
 
 	public PushJobResult getStatus(String id) {
 		return JobManager.getInstance().getJobResult(id);
@@ -50,16 +48,13 @@ public class PushJobService {
 		IAppScanProvider appscanProvider;
 		if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASE)) {
 			appscanProvider = new ASEProvider(submitJobData);
-		} else if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASOC) || submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(A360)) {
+		} else if (submitJobData.getAppscanData().getAppscanProvider().equalsIgnoreCase(ASOC)) {
 			appscanProvider = new ASOCProvider(submitJobData);
 		} else {
 			throw new IllegalArgumentException(
 					"appscanProvider is invalid: " + submitJobData.getAppscanData().getAppscanProvider());
 		}
-		if(!submitJobData.getAppscanData().getTrusted().equalsIgnoreCase("true") && !submitJobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
-			throw new IllegalArgumentException(
-					"trusted field is invalid. Only 'true' or 'false' is allowed.");
-		}
+
 		IProvider provider = ProvidersRepository.getProviders().get(submitJobData.getImData().getProvider());
 		if (provider == null) {
 			throw new IllegalArgumentException(

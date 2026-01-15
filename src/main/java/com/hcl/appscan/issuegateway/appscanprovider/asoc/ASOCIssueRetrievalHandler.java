@@ -31,13 +31,7 @@ public class ASOCIssueRetrievalHandler implements IIssueRetrievalHandler {
 	public AppScanIssue[] retrieveIssues(PushJobData jobData, List<String> errors) {
 
 		try {
-			RestTemplate restTemplate;
-			if(jobData.getAppscanData().getTrusted().equalsIgnoreCase("false")){
-				 restTemplate = ASOCUtils.createUntrustedASOCRestTemplate();
-			}else{
-				 restTemplate = ASOCUtils.createASOCRestTemplate();
-			}
-
+			RestTemplate restTemplate = ASOCUtils.createASOCRestTemplate();
 			HttpHeaders headers = ASOCUtils.createASOCAuthorizedHeaders(jobData);
 			headers.add("Accept-Language", "en-US,en;q=0.9");
 			HttpEntity<Object> entity = new HttpEntity<>(headers);

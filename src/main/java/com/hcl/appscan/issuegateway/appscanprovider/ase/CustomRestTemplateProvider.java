@@ -41,7 +41,7 @@ public class CustomRestTemplateProvider extends RestTemplate{
 	        @Override
 	        public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
 	            return true;
-	        }
+	        } 
 	    };
 	    SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
 	    SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());

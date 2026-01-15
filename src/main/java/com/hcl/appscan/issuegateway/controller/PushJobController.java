@@ -49,7 +49,7 @@ public class PushJobController {
 			logger.error("Error parsing JSON", e);
 		}
 		return pushJobService.createPushJob(submitJobData);
-	}
+	} 
 
 	@PostMapping(value = "/v2/issues/pushjobs", produces = "application/json")
 	@Operation(summary = "Create a job to push AppScan issues to an issue management system",
